@@ -9,8 +9,8 @@ public class Player {
     int x, dx, y, dy, nx,nx2, left;
     // Contains player image
     Image player;
-    ImageIcon i = new ImageIcon("res/Character/Run (1).png");
-    ImageIcon l = new ImageIcon("res/Character/Run (1).png");
+    ImageIcon i = new ImageIcon("res/Character/Idle (1).png");
+    ImageIcon l = new ImageIcon("res/CharacterLeft/Idle (1).png");
     public Player(){
         
         //Store player image in player
