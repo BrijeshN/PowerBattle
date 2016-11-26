@@ -13,10 +13,14 @@ public class Assets {
     private static final int width = 130;
     private static final int height = 111;
     
-    public static BufferedImage dead, idle, run, melee, jump, shoot;
+    private static final int w = 130;
+    private static final int h = 129;
     
+    public static BufferedImage dead, idle, run, melee, jump, shoot;
+    public static BufferedImage dirt1,dirt2, water1, water2;
     public static void init(){
         SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("/Character/PlayerSprite.png"));
+        SpriteSheet sheet2 = new SpriteSheet(ImageLoader.loadImage("/Map/png/Tiles/TileSprite.png"));
         
         dead = sheet.crop(0, 0, width, height);
         idle = sheet.crop(0, height, width, height);
@@ -24,6 +28,10 @@ public class Assets {
         melee = sheet.crop(0, height * 3, width, height);
         jump = sheet.crop( 0, height * 2, width, height);
         shoot = sheet.crop(width * 5, 0, width, height);
+        
+        dirt1 = sheet2.crop(0, 0, w, h);
+        dirt2 = sheet2.crop(w, 0, w, h);
+        water1 = sheet2.crop(w * 17, 0, w, h);
         
     }
     

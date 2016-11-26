@@ -43,7 +43,7 @@ public class Game implements Runnable {
     // User Input
     private KeyManager keyManager;
 
-    private BufferedImage test;
+    private BufferedImage bg;
 //    private SpriteSheet sheet;
     // Game constructor, pass title, width and height since Diplay takes these three parameter
     public Game(String title, int width, int height) {
@@ -67,7 +67,7 @@ public class Game implements Runnable {
         display.getFrame().addKeyListener(keyManager);
 
         // loads this image
-         test = ImageLoader.loadImage("/BG.png");
+         bg = ImageLoader.loadImage("/BG.png");
         Assets.init();
 
         gameState = new GameState(this);
@@ -107,7 +107,7 @@ public class Game implements Runnable {
         // Before we draw clear the screen
         g.clearRect(0, 0, width, height);
         
-        g.drawImage(test, 0, 0, null);
+        g.drawImage(bg, 0, 0, null);
 
         // End Drawing
         if (State.getState() != null) {
