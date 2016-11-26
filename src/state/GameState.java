@@ -9,6 +9,7 @@ import entity.creature.Player;
 import graphics.Assets;
 import java.awt.Graphics;
 import powerbattle.Game;
+import tiles.Tile;
 
 // Entity - anything that is not a tile
 // Item, enemy and player are entity
@@ -20,7 +21,7 @@ public class GameState extends State{
 
     public GameState(Game game){
         super(game);
-        player = new Player(game, 100, 100);
+        player = new Player(game, 100, 498);
     }
 
     
@@ -36,6 +37,7 @@ public class GameState extends State{
         
         player.render(g);
         //g.drawImage(Assets.run, 0, 0, null);
+        Tile.tiles[1].render(g, -10, 600);
         
     }
     
