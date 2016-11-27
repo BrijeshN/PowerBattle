@@ -6,9 +6,9 @@
 package entity.creature;
 
 import graphics.Assets;
-import static graphics.Assets.shoot;
 import java.awt.Graphics;
 import powerbattle.Game;
+import static graphics.Assets.shootRight;
 
 /**
  *
@@ -21,6 +21,7 @@ public class Player extends Creature {
     int backward = 1000;
     long startTime;
     long endTime;
+    boolean isRight = true;
 
     public Player(Game game, float x, float y) {
         super(x, y, Creature.DEFAULT_CREATURE_WIDTH, Creature.DEFAULT_CREATURE_HEIGHT);
@@ -58,17 +59,28 @@ public class Player extends Creature {
     @Override
     public void render(Graphics g) {
         if (game.getKeyManager().up || game.getKeyManager().right) {
-            animationRun(forward, g);
+            animationRunRight(forward, g);
+            isRight = true;
         } else if (game.getKeyManager().down || game.getKeyManager().left) {
-            animationRun(backward, g);
+            animationRunLeft(forward, g);
+            isRight = false;
         } else if (game.getKeyManager().attack) {
-            animationAtack(forward, g);
+            if (isRight) {
+                animationAtackRight(forward, g);
+            } else {
+                animationAtackLeft(forward, g);
+            }
         } else if (game.getKeyManager().shoot) {
-            g.drawImage(Assets.shoot, (int) x, (int) y, width, height, null);
+            if (isRight) {
+                g.drawImage(Assets.shootRight, (int) x, (int) y, width, height, null);
+            } else {
+                g.drawImage(Assets.shootLeft, (int) x, (int) y, width, height, null);
+            }
+        } else if (isRight) {
+            g.drawImage(Assets.idleRight, (int) x, (int) y, width, height, null);
         } else {
-            g.drawImage(Assets.idle, (int) x, (int) y, width, height, null);
+            g.drawImage(Assets.idleLeft, (int) x, (int) y, width, height, null);
         }
-
 
         endTime = System.currentTimeMillis();
         if ((endTime - startTime) % 4 == 0) {
@@ -80,11 +92,19 @@ public class Player extends Creature {
         }
     }
 
-    public void animationRun(int state, Graphics g) {
-        g.drawImage(Assets.run[state % 5], (int) x, (int) y, width, height, null);
+    public void animationRunRight(int state, Graphics g) {
+        g.drawImage(Assets.runRight[state % 5], (int) x, (int) y, width, height, null);
     }
 
-    public void animationAtack(int state, Graphics g) {
-        g.drawImage(Assets.melee[state % 4], (int) x, (int) y, width, height, null);
+    public void animationAtackRight(int state, Graphics g) {
+        g.drawImage(Assets.meleeRight[state % 4], (int) x, (int) y, width, height, null);
+    }
+
+    public void animationRunLeft(int state, Graphics g) {
+        g.drawImage(Assets.runLeft[state % 5], (int) x, (int) y, width, height, null);
+    }
+
+    public void animationAtackLeft(int state, Graphics g) {
+        g.drawImage(Assets.meleeLeft[state % 4], (int) x, (int) y, width, height, null);
     }
 }
