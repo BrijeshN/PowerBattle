@@ -7,6 +7,7 @@ package state;
 
 import java.awt.Graphics;
 import powerbattle.Game;
+import powerbattle.Handler;
 
 /**
  *
@@ -14,9 +15,9 @@ import powerbattle.Game;
  */
 public class MenuState extends State {
 
-    public MenuState(Game game){
+    public MenuState(Handler handler){
         
-        super(game);
+        super(handler);
         
     }
     

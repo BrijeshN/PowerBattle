@@ -46,9 +46,13 @@ public class Game implements Runnable {
     
     //Game Camera
     private GameCamera gameCamera;
+    
+    // Handler
+    private Handler handler;
 
+    //Background image
     private BufferedImage bg;
-//    private SpriteSheet sheet;
+
     // Game constructor, pass title, width and height since Diplay takes these three parameter
     public Game(String title, int width, int height) {
 
@@ -75,9 +79,10 @@ public class Game implements Runnable {
         Assets.init();
         
         gameCamera = new GameCamera(this, 0, 0);
+        handler = new Handler(this);
 
-        gameState = new GameState(this);
-        menuState = new MenuState(this);
+        gameState = new GameState(handler);
+        menuState = new MenuState(handler);
         State.setState(gameState);
     }
 //int x = 0;
@@ -163,7 +168,7 @@ public class Game implements Runnable {
 
             // if timer is runnig for more than 1 sec
             if (timer >= 1000000000) {
-                System.out.println("Updates and Frames: " + updates);
+               // System.out.println("Updates and Frames: " + updates);
                 updates = 0;
                 timer = 0;
             }

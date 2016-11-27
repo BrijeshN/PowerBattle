@@ -9,6 +9,7 @@ import graphics.Assets;
 import java.awt.Graphics;
 import powerbattle.Game;
 import static graphics.Assets.shootRight;
+import powerbattle.Handler;
 
 /**
  *
@@ -22,8 +23,8 @@ public class Player extends Creature {
     long endTime;
     boolean isRight = true;
 
-    public Player(Game game, float x, float y) {
-        super(game, x, y, Creature.DEFAULT_CREATURE_WIDTH, Creature.DEFAULT_CREATURE_HEIGHT);
+    public Player(Handler handler, float x, float y) {
+        super(handler, x, y, Creature.DEFAULT_CREATURE_WIDTH, Creature.DEFAULT_CREATURE_HEIGHT);
         
         startTime = System.currentTimeMillis();
     }
@@ -34,7 +35,7 @@ public class Player extends Creature {
         getInput();
         move();
         // center on this player entity
-        game.getGameCamera().centerOnEntity(this);
+        handler.getGameCamera().centerOnEntity(this);
 
     }
 
@@ -43,16 +44,16 @@ public class Player extends Creature {
         xMove = 0;
         yMove = 0;
 
-        if (game.getKeyManager().up) {
+        if (handler.getKeyManager().up) {
             yMove = -speed;
         }
-        if (game.getKeyManager().down) {
+        if (handler.getKeyManager().down) {
             yMove = speed;
         }
-        if (game.getKeyManager().left) {
+        if (handler.getKeyManager().left) {
             xMove = -speed;
         }
-        if (game.getKeyManager().right) {
+        if (handler.getKeyManager().right) {
             xMove = speed;
         }
     }
@@ -60,19 +61,19 @@ public class Player extends Creature {
     @Override
     public void render(Graphics g) {
        // g.drawImage(Assets.idleRight,(int) (x - game.getGameCamera().getxOffset()), (int) (y - game.getGameCamera().getyOffset()), width, height, null);
-        if (game.getKeyManager().up ||game.getKeyManager().right) {
+        if (handler.getKeyManager().up ||handler.getKeyManager().right) {
             animationRunRight(forward, g);
             isRight = true;
-        } else if (game.getKeyManager().down || game.getKeyManager().left) {
+        } else if (handler.getKeyManager().down || handler.getKeyManager().left) {
             animationRunLeft(forward, g);
             isRight = false;
-        } else if (game.getKeyManager().attack) {
+        } else if (handler.getKeyManager().attack) {
             if (isRight) {
                 animationAtackRight(forward, g);
             } else {
                 animationAtackLeft(forward, g);
             }
-        } else if (game.getKeyManager().shoot) {
+        } else if (handler.getKeyManager().shoot) {
             if (isRight) {
                 g.drawImage(Assets.shootRight, (int) x, (int) y, width, height, null);
             } else {
@@ -95,7 +96,7 @@ public class Player extends Creature {
     }
 
     public void animationRunRight(int state, Graphics g) {
-        g.drawImage(Assets.runRight[state % 5], (int) (x - game.getGameCamera().getxOffset()), (int) (y - game.getGameCamera().getyOffset()), width, height, null);
+        g.drawImage(Assets.runRight[state % 5], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
     }
 
     public void animationAtackRight(int state, Graphics g) {
@@ -103,7 +104,7 @@ public class Player extends Creature {
     }
 
     public void animationRunLeft(int state, Graphics g) {
-        g.drawImage(Assets.runLeft[state % 5], (int) (x - game.getGameCamera().getxOffset()), (int) (y - game.getGameCamera().getyOffset()), width, height, null);
+        g.drawImage(Assets.runLeft[state % 5], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
     }
 
     public void animationAtackLeft(int state, Graphics g) {

@@ -7,6 +7,7 @@ package entity.creature;
 
 import entity.Entity;
 import powerbattle.Game;
+import powerbattle.Handler;
 
 /**
  *
@@ -28,8 +29,8 @@ public abstract class Creature extends Entity{
     //Movement
     protected float xMove, yMove;
     
-    public Creature(Game game, float x, float y, int width, int height){
-        super(game, x, y, DEFAULT_CREATURE_WIDTH,DEFAULT_CREATURE_HEIGHT );
+    public Creature(Handler handler, float x, float y, int width, int height){
+        super(handler, x, y, DEFAULT_CREATURE_WIDTH,DEFAULT_CREATURE_HEIGHT );
         health = DEFAULT_HEALTH;
         speed = DEFAULT_SPEED;
         xMove = 0;

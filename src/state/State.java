@@ -7,6 +7,7 @@ package state;
 
 import java.awt.Graphics;
 import powerbattle.Game;
+import powerbattle.Handler;
 
 
 public abstract class State {
@@ -24,11 +25,11 @@ public abstract class State {
     
    //CLASS
     
-    protected Game game;
+    protected Handler handler;
     
-    public State(Game game){
+    public State(Handler handler){
         
-        this.game = game;
+        this.handler = handler;
         
     }
     

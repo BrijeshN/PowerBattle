@@ -7,6 +7,7 @@ package entity;
 
 import java.awt.Graphics;
 import powerbattle.Game;
+import powerbattle.Handler;
 
 /**
  *
@@ -18,10 +19,10 @@ public abstract class Entity {
     //to draw image at different sizes
     protected int width, height;
     
-    protected Game game;
+    protected Handler handler;
     
-    public Entity(Game game, float x, float y, int width, int height){
-        this.game = game;
+    public Entity(Handler handler, float x, float y, int width, int height){
+        this.handler = handler;
         this.x = x;
         this.y = y;
         this.width = width;

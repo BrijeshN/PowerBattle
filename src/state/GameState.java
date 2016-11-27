@@ -10,6 +10,7 @@ import graphics.Assets;
 import java.awt.Graphics;
 import map.Map;
 import powerbattle.Game;
+import powerbattle.Handler;
 import tiles.Tile;
 
 // Entity - anything that is not a tile
@@ -21,10 +22,12 @@ public class GameState extends State{
     private Player player;
     private Map map;
 
-    public GameState(Game game){
-        super(game);
-        player = new Player(game, 100, 450);
-        map = new Map(game, "res/Maps/map1.txt");
+    public GameState(Handler handler){
+        super(handler);
+        map = new Map(handler, "res/Maps/map1.txt");
+        handler.setMap(map);
+        player = new Player(handler, 100, 450);
+        
         
     }
 
