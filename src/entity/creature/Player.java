@@ -113,6 +113,9 @@ public class Player extends Creature {
 
         } else if (isRight) {
             g.drawImage(Assets.idleRight, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+            g.setColor(Color.red);
+            g.fillRect((int) (x + bounds.x - handler.getGameCamera().getxOffset()),
+                    (int) (y + bounds.y - handler.getGameCamera().getyOffset()), bounds.width, bounds.height);
 
         } else {
             g.drawImage(Assets.idleLeft, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
