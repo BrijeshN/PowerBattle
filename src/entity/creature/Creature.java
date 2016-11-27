@@ -42,9 +42,6 @@ public abstract class Creature extends Entity {
     }
 
     public void move(){
-         if (y > 550) {
-            y = 550;
-        }
         moveX();
         moveY();
     }
