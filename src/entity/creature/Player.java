@@ -6,6 +6,7 @@
 package entity.creature;
 
 import graphics.Assets;
+import java.awt.Color;
 import java.awt.Graphics;
 import javax.swing.Timer;
 import powerbattle.Handler;
@@ -28,6 +29,11 @@ public class Player extends Creature {
         super(handler, x, y, Creature.DEFAULT_CREATURE_WIDTH, Creature.DEFAULT_CREATURE_HEIGHT);
 
         startTime = System.currentTimeMillis();
+        
+        bounds.x = 32;
+        bounds.y = 32;
+        bounds.width = 40;
+        bounds.height = 50;
     }
 
     @Override
@@ -78,32 +84,56 @@ public class Player extends Creature {
             }
         } else if (isRight) {
             g.drawImage(Assets.idleRight, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+            g.setColor(Color.red);
+            g.fillRect((int) (x + bounds.x - handler.getGameCamera().getxOffset()),
+                   (int) (y + bounds.y - handler.getGameCamera().getyOffset()), bounds.width, bounds.height);
         } else {
             g.drawImage(Assets.idleLeft, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+            g.setColor(Color.red);
+            g.fillRect((int) (x + bounds.x - handler.getGameCamera().getxOffset()),
+                   (int) (y + bounds.y - handler.getGameCamera().getyOffset()), bounds.width, bounds.height);
         }
     }
 
     public void animationRunRight(int time, Graphics g) {
         g.drawImage(Assets.runRight[time % 5], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+        g.setColor(Color.red);
+        g.fillRect((int) (x + bounds.x - handler.getGameCamera().getxOffset()),
+                   (int) (y + bounds.y - handler.getGameCamera().getyOffset()), bounds.width, bounds.height);
     }
 
     public void animationAtackRight(int time, Graphics g) {
         g.drawImage(Assets.meleeRight[time % 4], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+        g.setColor(Color.red);
+        g.fillRect((int) (x + bounds.x - handler.getGameCamera().getxOffset()),
+                   (int) (y + bounds.y - handler.getGameCamera().getyOffset()), bounds.width, bounds.height);
     }
 
     public void animationRunLeft(int time, Graphics g) {
         g.drawImage(Assets.runLeft[time % 5], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+        g.setColor(Color.red);
+        g.fillRect((int) (x + bounds.x - handler.getGameCamera().getxOffset()),
+                   (int) (y + bounds.y - handler.getGameCamera().getyOffset()), bounds.width, bounds.height);
     }
 
     public void animationAtackLeft(int time, Graphics g) {
         g.drawImage(Assets.meleeLeft[time % 4], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+        g.setColor(Color.red);
+        g.fillRect((int) (x + bounds.x - handler.getGameCamera().getxOffset()),
+                   (int) (y + bounds.y - handler.getGameCamera().getyOffset()), bounds.width, bounds.height);
     }
 
     public void animationShootRight(int time, Graphics g) {
         g.drawImage(Assets.shootRight[time % 3], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+        g.setColor(Color.red);
+        g.fillRect((int) (x + bounds.x - handler.getGameCamera().getxOffset()),
+                   (int) (y + bounds.y - handler.getGameCamera().getyOffset()), bounds.width, bounds.height);
     }
 
     public void animationShootLeft(int time, Graphics g) {
         g.drawImage(Assets.shootLeft[time % 3], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+        g.setColor(Color.red);
+        g.fillRect((int) (x + bounds.x - handler.getGameCamera().getxOffset()),
+                   (int) (y + bounds.y - handler.getGameCamera().getyOffset()), bounds.width, bounds.height);
     }
 }
