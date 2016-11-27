@@ -36,7 +36,7 @@ public class Map {
         
         for(int y = 0; y < height; y++){
             for (int x = 0; x < width; x++){
-                getTile(x, y).render(g, x*Tile.TILEWIDTH, y*Tile.TILEHEIGHT);
+                getTile(x, y).render(g, (int) (x * Tile.TILEWIDTH - game.getGameCamera().getxOffset()), (int) (y * Tile.TILEHEIGHT - game.getGameCamera().getxOffset()));
             }
         }
         

@@ -7,6 +7,7 @@ import state.MenuState;
 import state.State;
 import graphics.Assets;
 import display.Display;
+import graphics.GameCamera;
 import graphics.ImageLoader;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -24,7 +25,7 @@ public class Game implements Runnable {
     private Display display;
 
     // Global parameter called width, height , and title
-    public int width, height;
+    private int width, height;
     public String title;
 
     //Create new thread called thread
@@ -42,6 +43,9 @@ public class Game implements Runnable {
 
     // User Input
     private KeyManager keyManager;
+    
+    //Game Camera
+    private GameCamera gameCamera;
 
     private BufferedImage bg;
 //    private SpriteSheet sheet;
@@ -69,6 +73,8 @@ public class Game implements Runnable {
         // loads this image
          bg = ImageLoader.loadImage("/BG.png");
         Assets.init();
+        
+        gameCamera = new GameCamera(this, 0, 0);
 
         gameState = new GameState(this);
         menuState = new MenuState(this);
@@ -169,12 +175,27 @@ public class Game implements Runnable {
 
     }
     
+    public GameCamera getGameCamera(){
+        
+        return gameCamera;
+    }
+    
     // return keyManager object so other classes can use it
     public KeyManager getKeyManager(){
         
         return keyManager;
         
     }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+    
+    
 
     // Start new thread
     public synchronized void start() {

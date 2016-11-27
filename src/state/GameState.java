@@ -25,6 +25,7 @@ public class GameState extends State{
         super(game);
         player = new Player(game, 100, 450);
         map = new Map(game, "res/Maps/map1.txt");
+        
     }
 
     

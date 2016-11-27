@@ -33,6 +33,8 @@ public class Player extends Creature {
 
         getInput();
         move();
+        // center on this player entity
+        game.getGameCamera().centerOnEntity(this);
 
     }
 
@@ -57,7 +59,8 @@ public class Player extends Creature {
 
     @Override
     public void render(Graphics g) {
-        if (game.getKeyManager().up || game.getKeyManager().right) {
+       // g.drawImage(Assets.idleRight,(int) (x - game.getGameCamera().getxOffset()), (int) (y - game.getGameCamera().getyOffset()), width, height, null);
+        if (game.getKeyManager().up ||game.getKeyManager().right) {
             animationRunRight(forward, g);
             isRight = true;
         } else if (game.getKeyManager().down || game.getKeyManager().left) {
@@ -92,7 +95,7 @@ public class Player extends Creature {
     }
 
     public void animationRunRight(int state, Graphics g) {
-        g.drawImage(Assets.runRight[state % 5], (int) x, (int) y, width, height, null);
+        g.drawImage(Assets.runRight[state % 5], (int) (x - game.getGameCamera().getxOffset()), (int) (y - game.getGameCamera().getyOffset()), width, height, null);
     }
 
     public void animationAtackRight(int state, Graphics g) {
@@ -100,7 +103,7 @@ public class Player extends Creature {
     }
 
     public void animationRunLeft(int state, Graphics g) {
-        g.drawImage(Assets.runLeft[state % 5], (int) x, (int) y, width, height, null);
+        g.drawImage(Assets.runLeft[state % 5], (int) (x - game.getGameCamera().getxOffset()), (int) (y - game.getGameCamera().getyOffset()), width, height, null);
     }
 
     public void animationAtackLeft(int state, Graphics g) {
