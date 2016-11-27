@@ -18,4 +18,10 @@ public class DirtTile extends Tile{
         super(Assets.dirt2, id);
     }
     
+     // if it's solid,player can not walk on it
+    @Override
+    public boolean isSolid(){
+        return true;
+    }
+    
 }

@@ -20,5 +20,11 @@ public class GrassTile extends Tile{
         
     }
     
+     // if it's solid,player can not walk on it
+    @Override
+    public boolean isSolid(){
+        return true;
+    }
+    
     }
     

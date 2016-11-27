@@ -8,6 +8,7 @@ package entity.creature;
 import entity.Entity;
 import powerbattle.Game;
 import powerbattle.Handler;
+import tiles.Tile;
 
 /**
  *
@@ -40,13 +41,72 @@ public abstract class Creature extends Entity {
 
     }
 
-    public void move() {
-        x += xMove;
-        y += yMove;
-        if (y > 550) {
+    public void move(){
+         if (y > 550) {
             y = 550;
         }
+        moveX();
+        moveY();
     }
+    
+    //move collision
+    public void moveX(){
+        
+        //if greater than 0, moving right
+        if(xMove > 0){
+            
+            int tx = (int) (x + xMove + bounds.x + bounds.width) / Tile.TILEWIDTH;
+            // if its not solid then move
+            if(!collisionWithTile(tx, (int) (y + bounds.y) / Tile.TILEHEIGHT) && 
+                    !collisionWithTile(tx, (int) (y + bounds.y +bounds.height) / Tile.TILEHEIGHT)){
+                x += xMove;
+            }
+            
+        } else if(xMove < 0){ // if less than 0, moving left
+           int tx = (int) (x + xMove + bounds.x) / Tile.TILEWIDTH;
+            // if its not solid then move
+            if(!collisionWithTile(tx, (int) (y + bounds.y) / Tile.TILEHEIGHT) && 
+                    !collisionWithTile(tx, (int) (y + bounds.y +bounds.height) / Tile.TILEHEIGHT)){
+                x += xMove;
+            }
+        }
+
+    }
+    
+    // for collision
+    public void moveY(){
+//          if (y > 550) {
+//            y = 550;
+//        }
+       // y += yMove;
+        // Moving up
+        if(yMove < 0) {
+            
+            int ty = (int) (y + yMove + bounds.y) / Tile.TILEHEIGHT;
+            
+            if(!collisionWithTile((int) (x + bounds.x) / Tile.TILEWIDTH, ty) &&
+                !collisionWithTile((int) (x + bounds.x + bounds.width) / Tile.TILEWIDTH, ty)    ){
+                y += yMove;
+            }
+            
+        } else if(yMove > 0){// Moving Down
+            int ty = (int) (y + yMove + bounds.y + bounds.height) / Tile.TILEHEIGHT;
+            
+            if(!collisionWithTile((int) (x + bounds.x) / Tile.TILEWIDTH, ty) &&
+                !collisionWithTile((int) (x + bounds.x + bounds.width) / Tile.TILEWIDTH, ty)    ){
+                y += yMove;
+            }
+            
+        }
+
+    }
+    
+    // takse x and y coordinate of the tile and check if it's solid or not
+    protected boolean collisionWithTile(int x, int y){
+        
+        return handler.getMap().getTile(x, y).isSolid();
+    }
+
 
     //GETTERS and SETTERS
     public float getxMove() {

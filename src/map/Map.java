@@ -56,6 +56,11 @@ public class Map {
     }
     
     public Tile getTile(int x, int y){
+        
+        if((x < 0) || (y < 0) || (x >= width) || (y >= height)){
+            return Tile.emptyTile;
+        }
+        
         // load tiles at index
         Tile t = Tile.tiles[tiles[x][y]];
         

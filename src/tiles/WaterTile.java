@@ -18,10 +18,5 @@ public class WaterTile extends Tile{
         super(Assets.water1,id);
     }
     
-    // if it's solid,player can not walk on it
-    @Override
-    public boolean isSolid(){
-        return true;
-    }
     
 }
