@@ -17,9 +17,10 @@ public class Tile {
     //Static variables
         //stores one instance of every single tile
         public static Tile[] tiles =  new Tile[256];
-        public static Tile grassTile = new GrassTile(0);
-        public static Tile dirtTile = new DirtTile(1);
-        public static Tile waterTile = new WaterTile(2);
+        public static Tile emptyTile = new EmptyTile(0);
+        public static Tile grassTile = new GrassTile(1);
+        public static Tile dirtTile = new DirtTile(2);
+        public static Tile waterTile = new WaterTile(3);
         
         //Class
     

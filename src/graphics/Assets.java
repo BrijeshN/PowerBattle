@@ -18,7 +18,7 @@ public class Assets {
 
     public static BufferedImage run[], melee[];
 
-    public static BufferedImage dead, idle, jump, shoot;
+    public static BufferedImage dead, idle, jump, shoot, empty;
     public static BufferedImage dirt1, dirt2, water1, water2;
 
     public static void init() {
@@ -42,6 +42,8 @@ public class Assets {
         dirt1 = sheet2.crop(0, 0, w, h);
         dirt2 = sheet2.crop(w, 0, w, h);
         water1 = sheet2.crop(w * 17, 0, w, h);
+        
+        empty = sheet.crop(width * 5, height * 3, width, height);
 
     }
 
