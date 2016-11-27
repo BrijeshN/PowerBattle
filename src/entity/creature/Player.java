@@ -25,7 +25,7 @@ public class Player extends Creature {
 
     public Player(Handler handler, float x, float y) {
         super(handler, x, y, Creature.DEFAULT_CREATURE_WIDTH, Creature.DEFAULT_CREATURE_HEIGHT);
-        
+
         startTime = System.currentTimeMillis();
     }
 
@@ -60,8 +60,8 @@ public class Player extends Creature {
 
     @Override
     public void render(Graphics g) {
-       // g.drawImage(Assets.idleRight,(int) (x - game.getGameCamera().getxOffset()), (int) (y - game.getGameCamera().getyOffset()), width, height, null);
-        if (handler.getKeyManager().up ||handler.getKeyManager().right) {
+        // g.drawImage(Assets.idleRight,(int) (x - game.getGameCamera().getxOffset()), (int) (y - game.getGameCamera().getyOffset()), width, height, null);
+        if (handler.getKeyManager().up || handler.getKeyManager().right) {
             animationRunRight(forward, g);
             isRight = true;
         } else if (handler.getKeyManager().down || handler.getKeyManager().left) {
@@ -75,14 +75,14 @@ public class Player extends Creature {
             }
         } else if (handler.getKeyManager().shoot) {
             if (isRight) {
-                g.drawImage(Assets.shootRight, (int) x, (int) y, width, height, null);
+                g.drawImage(Assets.shootRight, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
             } else {
-                g.drawImage(Assets.shootLeft, (int) x, (int) y, width, height, null);
+                g.drawImage(Assets.shootLeft, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
             }
         } else if (isRight) {
-            g.drawImage(Assets.idleRight, (int) x, (int) y, width, height, null);
+            g.drawImage(Assets.idleRight, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
         } else {
-            g.drawImage(Assets.idleLeft, (int) x, (int) y, width, height, null);
+            g.drawImage(Assets.idleLeft, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
         }
 
         endTime = System.currentTimeMillis();
@@ -100,7 +100,7 @@ public class Player extends Creature {
     }
 
     public void animationAtackRight(int state, Graphics g) {
-        g.drawImage(Assets.meleeRight[state % 4], (int) x, (int) y, width, height, null);
+        g.drawImage(Assets.meleeRight[state % 4], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
     }
 
     public void animationRunLeft(int state, Graphics g) {
@@ -108,6 +108,6 @@ public class Player extends Creature {
     }
 
     public void animationAtackLeft(int state, Graphics g) {
-        g.drawImage(Assets.meleeLeft[state % 4], (int) x, (int) y, width, height, null);
+        g.drawImage(Assets.meleeLeft[state % 4], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
     }
 }
