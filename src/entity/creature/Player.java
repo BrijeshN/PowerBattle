@@ -75,9 +75,9 @@ public class Player extends Creature {
             }
         } else if (handler.getKeyManager().shoot) {
             if (isRight) {
-                g.drawImage(Assets.shootRight, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+                animationShootRight(forward, g);
             } else {
-                g.drawImage(Assets.shootLeft, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+                animationShootLeft(forward, g);
             }
         } else if (isRight) {
             g.drawImage(Assets.idleRight, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
@@ -109,5 +109,13 @@ public class Player extends Creature {
 
     public void animationAtackLeft(int state, Graphics g) {
         g.drawImage(Assets.meleeLeft[state % 4], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+    }
+
+    public void animationShootRight(int state, Graphics g) {
+        g.drawImage(Assets.shootRight[state % 3], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+    }
+
+    public void animationShootLeft(int state, Graphics g) {
+        g.drawImage(Assets.shootLeft[state % 3], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
     }
 }

@@ -16,9 +16,9 @@ public class Assets {
     private static final int w = 130;
     private static final int h = 129;
 
-    public static BufferedImage runRight[], meleeRight[], runLeft[], meleeLeft[];
+    public static BufferedImage runRight[], meleeRight[], runLeft[], meleeLeft[], shootLeft[], shootRight[];
 
-    public static BufferedImage dead, idleRight, idleLeft, jump, shootRight,shootLeft, empty;
+    public static BufferedImage dead, idleRight, idleLeft, jump, empty;
     public static BufferedImage dirt1, dirt2, water1, water2;
 
     public static void init() {
@@ -26,6 +26,8 @@ public class Assets {
         meleeRight = new BufferedImage[4];
         runLeft = new BufferedImage[5];
         meleeLeft = new BufferedImage[4];
+        shootLeft = new BufferedImage[3];
+        shootRight = new BufferedImage[3];
 
         SpriteSheet playerRight = new SpriteSheet(ImageLoader.loadImage("/Character/PlayerSprite.png"));
         SpriteSheet playerLeft = new SpriteSheet(ImageLoader.loadImage("/CharacterLeft/PlayerSpriteLeft.png"));
@@ -45,15 +47,18 @@ public class Assets {
         }
 
         jump = playerRight.crop(0, height * 2, width, height);
-        
-        shootRight = playerRight.crop(width * 5, 0, width, height);
-        shootLeft = playerLeft.crop(width * 5, 0, width, height);
-                
+        for (int i = 0; i < 3; i++) {
+            shootRight[i] = playerRight.crop(width * 5, height * i, width, height);
+        }
+        for (int i = 0; i < 3; i++) {
+            shootLeft[i] = playerLeft.crop(width * 5, height * i, width, height);
+        }
+
         dead = playerRight.crop(0, 0, width, height);
-        
+
         idleRight = playerRight.crop(0, height, width, height);
         idleLeft = playerLeft.crop(0, height, width, height);
-        
+
         dirt1 = tile.crop(0, 0, w, h);
         dirt2 = tile.crop(w, 0, w, h);
         water1 = tile.crop(w * 17, 0, w, h);
