@@ -12,43 +12,42 @@ import java.awt.event.KeyListener;
  *
  * @author Brijesh
  */
-public class KeyManager implements KeyListener{
-    
-    private boolean[] keys;
-    public boolean up, down, left, right;
+public class KeyManager implements KeyListener {
 
-    public KeyManager(){
-        
+    private boolean[] keys;
+    public boolean up, down, left, right, attack, shoot;
+
+    public KeyManager() {
+
         keys = new boolean[256];
-        
+
     }
-    
-    public void update(){
-        
+
+    public void update() {
+
         up = keys[KeyEvent.VK_W];
         down = keys[KeyEvent.VK_S];
         left = keys[KeyEvent.VK_A];
         right = keys[KeyEvent.VK_D];
+        attack = keys[KeyEvent.VK_J];
+        shoot = keys[KeyEvent.VK_K];
 
     }
-    
+
     @Override
     public void keyTyped(KeyEvent e) {
-       
+
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
         keys[e.getKeyCode()] = true;
-        System.out.println("Pressed!");
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-                keys[e.getKeyCode()] = false;
+        keys[e.getKeyCode()] = false;
 
     }
-    
-    
-    
+
 }
