@@ -11,8 +11,14 @@ import graphics.GameCamera;
 import graphics.ImageLoader;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import userInput.KeyManager;
 
 /**
@@ -43,10 +49,11 @@ public class Game implements Runnable {
 
     // User Input
     private KeyManager keyManager;
-    
+
     //Game Camera
     private GameCamera gameCamera;
-    
+    int time = 0;
+
     // Handler
     private Handler handler;
 
@@ -67,7 +74,6 @@ public class Game implements Runnable {
     // Run once, initilize graphics for the game.
     // Contains game loop, and updates and draw everything
     public void init() {
-
         //Initilize the display, so that it runs on the thread
         // Create display  on the screen
         display = new Display(title, width, height);
@@ -75,9 +81,9 @@ public class Game implements Runnable {
         display.getFrame().addKeyListener(keyManager);
 
         // loads this image
-         bg = ImageLoader.loadImage("/BG.png");
+        bg = ImageLoader.loadImage("/BG.png");
         Assets.init();
-        
+
         gameCamera = new GameCamera(this, 0, 0);
         handler = new Handler(this);
 
@@ -93,13 +99,13 @@ public class Game implements Runnable {
         if (State.getState() != null) {
 
             // update method from the State Class
-            State.getState().update();
+            State.getState().update(time);
         }
 
     }
 
     // Draw things to screen
-    private void render() {
+    private void render(int count) {
 
         // BuffereStrategy Tells the computer a way to draw things on the screen
         bs = display.getCanvas().getBufferStrategy();
@@ -114,17 +120,16 @@ public class Game implements Runnable {
         // Draw to canvas
         g = bs.getDrawGraphics();
 
-        
         // Before we draw clear the screen
         g.clearRect(0, 0, width, height);
-        
+
         g.drawImage(bg, 0, 0, null);
 
         // End Drawing
         if (State.getState() != null) {
 
             // update method from the State Class
-            State.getState().render(g);
+            State.getState().render(g, count);
         }
 
         // Tell JAVA that we are done drawing
@@ -136,7 +141,13 @@ public class Game implements Runnable {
 
     // Always need this method when you implement Runnable
     public void run() {
-
+        Timer timer1 = new Timer();
+        timer1.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                time++;
+            }
+        }, 0, 100);
         // Call the method called init, will be called only once
         init();
 
@@ -161,14 +172,14 @@ public class Game implements Runnable {
             // if delta is greter than 1 update and render to mantain fps of 60
             if (delta >= 1) {
                 update();
-                render();
+                render(time);
                 updates++;
                 delta--;
             }
 
             // if timer is runnig for more than 1 sec
             if (timer >= 1000000000) {
-               // System.out.println("Updates and Frames: " + updates);
+                // System.out.println("Updates and Frames: " + updates);
                 updates = 0;
                 timer = 0;
             }
@@ -179,17 +190,17 @@ public class Game implements Runnable {
         stop();
 
     }
-    
-    public GameCamera getGameCamera(){
-        
+
+    public GameCamera getGameCamera() {
+
         return gameCamera;
     }
-    
+
     // return keyManager object so other classes can use it
-    public KeyManager getKeyManager(){
-        
+    public KeyManager getKeyManager() {
+
         return keyManager;
-        
+
     }
 
     public int getWidth() {
@@ -199,8 +210,6 @@ public class Game implements Runnable {
     public int getHeight() {
         return height;
     }
-    
-    
 
     // Start new thread
     public synchronized void start() {

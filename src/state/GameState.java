@@ -16,38 +16,33 @@ import tiles.Tile;
 // Entity - anything that is not a tile
 // Item, enemy and player are entity
 // Entity wil contain all the entity
+public class GameState extends State {
 
-public class GameState extends State{
-    
     private Player player;
     private Map map;
 
-    public GameState(Handler handler){
+    public GameState(Handler handler) {
         super(handler);
         map = new Map(handler, "res/Maps/map1.txt");
         handler.setMap(map);
-        player = new Player(handler, 100, 450);
-        
-        
+        player = new Player(handler, 100, 550);
+
     }
 
-    
     @Override
-    public void update() {
+    public void update(int count) {
         map.update();
-        player.update();
-        
+        player.update(count);
+
     }
 
     @Override
-    public void render(Graphics g) {
+    public void render(Graphics g, int count) {
         map.render(g);
-        player.render(g);
+        player.render(g, count);
         //g.drawImage(Assets.run, 0, 0, null);
         //Tile.tiles[1].render(g, -10, 600);
-        
+
     }
-    
-    
-    
+
 }

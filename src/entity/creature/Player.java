@@ -7,8 +7,7 @@ package entity.creature;
 
 import graphics.Assets;
 import java.awt.Graphics;
-import powerbattle.Game;
-import static graphics.Assets.shootRight;
+import javax.swing.Timer;
 import powerbattle.Handler;
 
 /**
@@ -22,6 +21,8 @@ public class Player extends Creature {
     long startTime;
     long endTime;
     boolean isRight = true;
+    boolean jump, fall, flag = true;
+    Timer timer;
 
     public Player(Handler handler, float x, float y) {
         super(handler, x, y, Creature.DEFAULT_CREATURE_WIDTH, Creature.DEFAULT_CREATURE_HEIGHT);
@@ -30,92 +31,79 @@ public class Player extends Creature {
     }
 
     @Override
-    public void update() {
+    public void update(int time) {
 
-        getInput();
+        getInput(time);
         move();
         // center on this player entity
         handler.getGameCamera().centerOnEntity(this);
 
     }
 
-    private void getInput() {
-
+    private void getInput(int time) {
         xMove = 0;
         yMove = 0;
-
         if (handler.getKeyManager().up) {
-            yMove = -speed;
-        }
-        if (handler.getKeyManager().down) {
-            yMove = speed;
+            jump = true;
+            fall = false;
         }
         if (handler.getKeyManager().left) {
-            xMove = -speed;
+            xMove = -runSpeed;
         }
         if (handler.getKeyManager().right) {
-            xMove = speed;
+            xMove = runSpeed;
         }
+
     }
 
     @Override
-    public void render(Graphics g) {
-        // g.drawImage(Assets.idleRight,(int) (x - game.getGameCamera().getxOffset()), (int) (y - game.getGameCamera().getyOffset()), width, height, null);
+    public void render(Graphics g, int time) {
         if (handler.getKeyManager().up || handler.getKeyManager().right) {
-            animationRunRight(forward, g);
+            animationRunRight(time, g);
             isRight = true;
         } else if (handler.getKeyManager().down || handler.getKeyManager().left) {
-            animationRunLeft(forward, g);
+            animationRunLeft(time, g);
             isRight = false;
         } else if (handler.getKeyManager().attack) {
             if (isRight) {
-                animationAtackRight(forward, g);
+                animationAtackRight(time, g);
             } else {
-                animationAtackLeft(forward, g);
+                animationAtackLeft(time, g);
             }
         } else if (handler.getKeyManager().shoot) {
             if (isRight) {
-                animationShootRight(forward, g);
+                animationShootRight(time, g);
             } else {
-                animationShootLeft(forward, g);
+                animationShootLeft(time, g);
             }
         } else if (isRight) {
             g.drawImage(Assets.idleRight, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
         } else {
             g.drawImage(Assets.idleLeft, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
         }
-
-        endTime = System.currentTimeMillis();
-        if ((endTime - startTime) % 4 == 0) {
-            forward++;
-            backward--;
-            if (backward == -1) {
-                backward = 1000;
-            }
-        }
     }
 
-    public void animationRunRight(int state, Graphics g) {
-        g.drawImage(Assets.runRight[state % 5], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+    public void animationRunRight(int time, Graphics g) {
+        g.drawImage(Assets.runRight[time % 5], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
     }
 
-    public void animationAtackRight(int state, Graphics g) {
-        g.drawImage(Assets.meleeRight[state % 4], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+    public void animationAtackRight(int time, Graphics g) {
+        g.drawImage(Assets.meleeRight[time % 4], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
     }
 
-    public void animationRunLeft(int state, Graphics g) {
-        g.drawImage(Assets.runLeft[state % 5], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+    public void animationRunLeft(int time, Graphics g) {
+        g.drawImage(Assets.runLeft[time % 5], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
     }
 
-    public void animationAtackLeft(int state, Graphics g) {
-        g.drawImage(Assets.meleeLeft[state % 4], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+    public void animationAtackLeft(int time, Graphics g) {
+        g.drawImage(Assets.meleeLeft[time % 4], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
     }
 
-    public void animationShootRight(int state, Graphics g) {
-        g.drawImage(Assets.shootRight[state % 3], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+    public void animationShootRight(int time, Graphics g) {
+        g.drawImage(Assets.shootRight[time % 3], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
     }
 
-    public void animationShootLeft(int state, Graphics g) {
-        g.drawImage(Assets.shootLeft[state % 3], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+    public void animationShootLeft(int time, Graphics g) {
+        g.drawImage(Assets.shootLeft[time % 3], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
     }
 }

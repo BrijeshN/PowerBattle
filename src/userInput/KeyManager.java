@@ -26,7 +26,6 @@ public class KeyManager implements KeyListener {
     public void update() {
 
         up = keys[KeyEvent.VK_W];
-        down = keys[KeyEvent.VK_S];
         left = keys[KeyEvent.VK_A];
         right = keys[KeyEvent.VK_D];
         attack = keys[KeyEvent.VK_J];

@@ -22,11 +22,11 @@ public class MenuState extends State {
     }
     
     @Override
-    public void update() {
+    public void update(int count) {
     }
 
     @Override
-    public void render(Graphics g) {
+    public void render(Graphics g, int count) {
     }
     
 }

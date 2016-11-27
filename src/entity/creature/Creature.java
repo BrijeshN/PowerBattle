@@ -13,38 +13,42 @@ import powerbattle.Handler;
  *
  * @author Brijesh
  */
-public abstract class Creature extends Entity{
-    
+public abstract class Creature extends Entity {
+
     public static final int DEFAULT_HEALTH = 10;
-    public static final float DEFAULT_SPEED = 3.0f;
-    
+    public static final float RUN_SPEED = 3.0f;
+    public static final float JUMP_SPEED = 25.0f;
+
     //Set size of the character
     public static final int DEFAULT_CREATURE_WIDTH = 130;
     public static final int DEFAULT_CREATURE_HEIGHT = 111;
 
-    
     protected int health;
-    protected float speed;
-    
+    protected float runSpeed;
+    protected float jumpSpeed;
+
     //Movement
     protected float xMove, yMove;
-    
-    public Creature(Handler handler, float x, float y, int width, int height){
-        super(handler, x, y, DEFAULT_CREATURE_WIDTH,DEFAULT_CREATURE_HEIGHT );
+
+    public Creature(Handler handler, float x, float y, int width, int height) {
+        super(handler, x, y, DEFAULT_CREATURE_WIDTH, DEFAULT_CREATURE_HEIGHT);
         health = DEFAULT_HEALTH;
-        speed = DEFAULT_SPEED;
+        runSpeed = RUN_SPEED;
+        jumpSpeed = JUMP_SPEED;
         xMove = 0;
         yMove = 0;
-        
+
     }
 
-    public void move(){
+    public void move() {
         x += xMove;
         y += yMove;
+        if (y > 550) {
+            y = 550;
+        }
     }
-    
+
     //GETTERS and SETTERS
-    
     public float getxMove() {
         return xMove;
     }
@@ -70,11 +74,11 @@ public abstract class Creature extends Entity{
     }
 
     public float getSpeed() {
-        return speed;
+        return runSpeed;
     }
 
     public void setSpeed(float speed) {
-        this.speed = speed;
+        this.runSpeed = speed;
     }
-    
+
 }
