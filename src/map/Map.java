@@ -6,6 +6,7 @@
 package map;
 
 import java.awt.Graphics;
+import powerbattle.Game;
 import tiles.Tile;
 import util.Utils;
 
@@ -15,12 +16,13 @@ import util.Utils;
  */
 public class Map {
     
+    private Game game;
     private int width, height;
     private int[][] tiles;
     private int spawnX, spawnY;
     
-    public Map(String path){
-        
+    public Map(Game game, String path){
+        this.game = game;
         loadMap(path);
         
        

@@ -23,8 +23,8 @@ public class GameState extends State{
 
     public GameState(Game game){
         super(game);
-        player = new Player(game, 100, 498);
-        map = new Map("res/Maps/map1.txt");
+        player = new Player(game, 100, 450);
+        map = new Map(game, "res/Maps/map1.txt");
     }
 
     
