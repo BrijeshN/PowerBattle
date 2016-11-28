@@ -30,9 +30,9 @@ public class GameState extends State {
     }
 
     @Override
-    public void update(int count) {
+    public void update() {
         map.update();
-        player.update(count);
+        player.update();
 
     }
 

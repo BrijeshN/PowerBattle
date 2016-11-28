@@ -19,13 +19,13 @@ import tiles.Tile;
 public class Player extends Creature {
 
     int forward = 0;
-    int backward = 1000;
     boolean isRight = true;
-    boolean jump = false, fall = false, flag = true;
+    boolean jump = false, fall = false, flag = true, dead = false;
     float jumpspeed = 10; //Check how high the player can jump
     int jumpTimer = 0; //Make the player can jump again using this timer
-    int holdTimer = 0;
     Timer timer;
+    int count = 0;
+    boolean deadAni = false;
 
     public Player(Handler handler, float x, float y) {
         super(handler, x, y, Creature.DEFAULT_CREATURE_WIDTH, Creature.DEFAULT_CREATURE_HEIGHT);
@@ -37,18 +37,35 @@ public class Player extends Creature {
     }
 
     @Override
-    public void update(int time) {
+    public void update() {
 
-        getInput(time);
+        getInput();
         move();
         // center on this player entity
         handler.getGameCamera().centerOnEntity(this);
 
     }
 
-    private void getInput(int time) {
+    public void stop() {
+        xMove = yMove = 0;
+        fall = jump = false;
+    }
+
+    private void getInput() {
+        if (handler.getKeyManager().restart) {
+            dead = false;
+            deadAni = false;
+            y = 550;
+            x = 100;
+        }
+
+        if (y > 680) {
+            dead = true;
+            stop();
+            return;
+        }
+
         xMove = 0;
-        System.out.println(yMove);
         if (handler.getKeyManager().up) {
             if (!jump && !fall) {
                 yMove = -jumpspeed;
@@ -87,18 +104,22 @@ public class Player extends Creature {
 
     @Override
     public void render(Graphics g, int time) {
-        if (jump || fall) {
-            if (isRight) {
-                animationJumpRight(time, g);
+        if (dead) {
+            if (!deadAni) {
+                if (isRight) {
+                    animationDeadRight(time, g);
+                } else {
+                    animationDeadLeft(time, g);
+                }
+            } else if (isRight) {
+                g.drawImage(Assets.deadRight[4], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
             } else {
-                animationJumpLeft(time, g);
+                g.drawImage(Assets.deadLeft[4], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
             }
-        } else if (handler.getKeyManager().right) {
-            animationRunRight(time, g);
-        } else if (handler.getKeyManager().left) {
-            animationRunLeft(time, g);
-            isRight = false;
-        } else if (handler.getKeyManager().attack) {
+            return;
+        }
+
+        if (handler.getKeyManager().attack) {
             if (isRight) {
                 animationAtackRight(time, g);
             } else {
@@ -110,16 +131,43 @@ public class Player extends Creature {
             } else {
                 animationShootLeft(time, g);
             }
+        }
 
-        } else if (isRight) {
+        if ((jump || fall) && !handler.getKeyManager().attack && !handler.getKeyManager().shoot) {
+            if (isRight) {
+                animationJumpRight(time, g);
+            } else {
+                animationJumpLeft(time, g);
+            }
+        } else if (handler.getKeyManager().right && !handler.getKeyManager().attack && !handler.getKeyManager().shoot) {
+            animationRunRight(time, g);
+        } else if (handler.getKeyManager().left && !handler.getKeyManager().attack && !handler.getKeyManager().shoot) {
+            animationRunLeft(time, g);
+            isRight = false;
+        } else if (isRight && !handler.getKeyManager().attack && !handler.getKeyManager().shoot) {
             g.drawImage(Assets.idleRight, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
-            g.setColor(Color.red);
-            g.fillRect((int) (x + bounds.x - handler.getGameCamera().getxOffset()),
-                    (int) (y + bounds.y - handler.getGameCamera().getyOffset()), bounds.width, bounds.height);
 
-        } else {
+        } else if (!handler.getKeyManager().attack && !handler.getKeyManager().shoot) {
             g.drawImage(Assets.idleLeft, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
 
+        }
+    }
+
+    public void animationDeadRight(int time, Graphics g) {
+        count++;
+        g.drawImage(Assets.deadRight[time % 5], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+        if (count == 5) {
+            deadAni = true;
+            count = 0;
+        }
+    }
+
+    public void animationDeadLeft(int time, Graphics g) {
+        count++;
+        g.drawImage(Assets.deadLeft[time % 5], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+        if (count == 5) {
+            deadAni = true;
+            count = 0;
         }
     }
 

@@ -22,7 +22,7 @@ public class MenuState extends State {
     }
     
     @Override
-    public void update(int count) {
+    public void update() {
     }
 
     @Override

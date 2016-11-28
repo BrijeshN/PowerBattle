@@ -17,9 +17,9 @@ public class Assets {
     private static final int h = 129;
 
     public static BufferedImage runRight[], meleeRight[], runLeft[], meleeLeft[], shootLeft[], shootRight[];
-    public static BufferedImage jumpRight[], jumpLeft[];
+    public static BufferedImage jumpRight[], jumpLeft[], deadLeft[], deadRight[];
 
-    public static BufferedImage dead, idleRight, idleLeft, jump, empty;
+    public static BufferedImage idleRight, idleLeft, empty;
     public static BufferedImage dirt1, dirt2, water1, water2;
 
     public static void init() {
@@ -31,6 +31,8 @@ public class Assets {
         shootRight = new BufferedImage[3];
         jumpLeft = new BufferedImage[5];
         jumpRight = new BufferedImage[5];
+        deadLeft = new BufferedImage[5];
+        deadRight = new BufferedImage[5];
 
         SpriteSheet playerRight = new SpriteSheet(ImageLoader.loadImage("/Character/PlayerSprite.png"));
         SpriteSheet playerLeft = new SpriteSheet(ImageLoader.loadImage("/CharacterLeft/PlayerSpriteLeft.png"));
@@ -49,7 +51,6 @@ public class Assets {
             meleeLeft[i] = playerLeft.crop(width * i, height * 3, width, height);
         }
 
-        jump = playerRight.crop(0, height * 2, width, height);
         for (int i = 0; i < 3; i++) {
             shootRight[i] = playerRight.crop(width * 5, height * i, width, height);
         }
@@ -58,13 +59,18 @@ public class Assets {
         }
 
         for (int i = 0; i < 5; i++) {
+            deadRight[i] = playerRight.crop(width * i, 0, width, height);
+        }
+        for (int i = 0; i < 5; i++) {
+            deadLeft[i] = playerLeft.crop(width * i, 0, width, height);
+        }
+
+        for (int i = 0; i < 5; i++) {
             jumpRight[i] = playerRight.crop(width * i, height * 2, width, height);
         }
         for (int i = 0; i < 5; i++) {
             jumpLeft[i] = playerLeft.crop(width * i, height * 2, width, height);
         }
-
-        dead = playerRight.crop(0, 0, width, height);
 
         idleRight = playerRight.crop(0, height, width, height);
         idleLeft = playerLeft.crop(0, height, width, height);

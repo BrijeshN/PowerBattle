@@ -55,7 +55,6 @@ public class Game implements Runnable {
     int time = 0;
 
     int runTime = 0;
-    int jumpTime = 0;
 
     // Handler
     private Handler handler;
@@ -102,7 +101,7 @@ public class Game implements Runnable {
         if (State.getState() != null) {
 
             // update method from the State Class
-            State.getState().update(jumpTime);
+            State.getState().update();
         }
 
     }
@@ -152,14 +151,6 @@ public class Game implements Runnable {
             }
         }, 0, 100);
 
-        Timer timer2 = new Timer();
-        timer2.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                jumpTime++;
-            }
-        }, 0, 400);
-        
         // Call the method called init, will be called only once
         init();
 
