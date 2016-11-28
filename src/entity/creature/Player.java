@@ -24,8 +24,8 @@ public class Player extends Creature {
     float jumpspeed = 10; //Check how high the player can jump
     int jumpTimer = 0; //Make the player can jump again using this timer
     Timer timer;
-    int count = 0;
-    boolean deadAni = false;
+    int preTime;
+    boolean deadAni = false, first = false;
 
     public Player(Handler handler, float x, float y) {
         super(handler, x, y, Creature.DEFAULT_CREATURE_WIDTH, Creature.DEFAULT_CREATURE_HEIGHT);
@@ -53,6 +53,8 @@ public class Player extends Creature {
 
     private void getInput() {
         if (handler.getKeyManager().restart) {
+            first = false;
+            isRight = true;
             dead = false;
             deadAni = false;
             y = 550;
@@ -105,6 +107,10 @@ public class Player extends Creature {
     @Override
     public void render(Graphics g, int time) {
         if (dead) {
+            if (!first) {
+                first = true;
+                preTime = time;
+            }
             if (!deadAni) {
                 if (isRight) {
                     animationDeadRight(time, g);
@@ -154,20 +160,22 @@ public class Player extends Creature {
     }
 
     public void animationDeadRight(int time, Graphics g) {
-        count++;
-        g.drawImage(Assets.deadRight[time % 5], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
-        if (count == 5) {
+
+        if (time / 2 - preTime / 2 < 5) {
+            g.drawImage(Assets.deadRight[time / 2 - preTime / 2], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+        }else{
             deadAni = true;
-            count = 0;
+            g.drawImage(Assets.deadRight[4], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
         }
     }
 
     public void animationDeadLeft(int time, Graphics g) {
-        count++;
-        g.drawImage(Assets.deadLeft[time % 5], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
-        if (count == 5) {
+        if (time / 2 - preTime / 2 < 5) {
+            System.out.println(time / 2 - preTime / 2 );
+            g.drawImage(Assets.deadLeft[time / 2 - preTime / 2], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+        }else{
             deadAni = true;
-            count = 0;
+            g.drawImage(Assets.deadLeft[4], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
         }
     }
 
