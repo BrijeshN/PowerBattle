@@ -66,7 +66,7 @@ public class Map {
         
         // if no tile specified, load this default tile
         if(t == null){
-            return Tile.dirtTile;
+            return Tile.emptyTile;
         }
         return t;
     }
