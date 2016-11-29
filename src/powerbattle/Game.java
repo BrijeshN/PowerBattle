@@ -9,16 +9,12 @@ import graphics.Assets;
 import display.Display;
 import graphics.GameCamera;
 import graphics.ImageLoader;
-import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import userInput.KeyManager;
 
 /**

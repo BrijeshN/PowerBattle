@@ -5,13 +5,12 @@
  */
 package state;
 
+import entity.creature.Enemy;
 import entity.creature.Player;
-import graphics.Assets;
 import java.awt.Graphics;
+import java.util.ArrayList;
 import map.Map;
-import powerbattle.Game;
 import powerbattle.Handler;
-import tiles.Tile;
 
 // Entity - anything that is not a tile
 // Item, enemy and player are entity
@@ -20,19 +19,39 @@ public class GameState extends State {
 
     private Player player;
     private Map map;
+    private Enemy[] enemy;
+    final int ENEMYNUM = 4;
+    public static final int[][] ENEMYPOS = {{290, 560}, {500, 560}, {664, 417}, {980, 560}};
+
+    public ArrayList<Enemy> enemis;
 
     public GameState(Handler handler) {
         super(handler);
         map = new Map(handler, "res/Maps/map1.txt");
         handler.setMap(map);
-        player = new Player(handler, 100, 550);
+        enemis = new ArrayList<>();
+        enemy = new Enemy[ENEMYNUM];
+
+        player = new Player(handler, 100, 560);
+
+        for (int i = 0; i < ENEMYNUM; i++) {
+            enemy[i] = new Enemy(handler, ENEMYPOS[i][0], ENEMYPOS[i][1], i);
+        }
+
+        for (Enemy e : enemy) {
+            enemis.add(e);
+        }
 
     }
 
     @Override
     public void update() {
         map.update();
-        player.update();
+
+        for (Enemy e : enemy) {
+            e.update(player);
+        }
+        player.update(enemis);
 
     }
 
@@ -40,6 +59,9 @@ public class GameState extends State {
     public void render(Graphics g, int count) {
         map.render(g);
         player.render(g, count);
+        for (Enemy e : enemy) {
+            e.render(g, count);
+        }
         //g.drawImage(Assets.run, 0, 0, null);
         //Tile.tiles[1].render(g, -10, 600);
 

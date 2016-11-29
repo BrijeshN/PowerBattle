@@ -6,8 +6,8 @@
 package entity.creature;
 
 import graphics.Assets;
-import java.awt.Color;
 import java.awt.Graphics;
+import java.util.ArrayList;
 import javax.swing.Timer;
 import powerbattle.Handler;
 import tiles.Tile;
@@ -25,7 +25,7 @@ public class Player extends Creature {
     int jumpTimer = 0; //Make the player can jump again using this timer
     Timer timer;
     int preTime;
-    boolean deadAni = false, first = false;
+    boolean deadAni = false, first = false, hit = false;
 
     public Player(Handler handler, float x, float y) {
         super(handler, x, y, Creature.DEFAULT_CREATURE_WIDTH, Creature.DEFAULT_CREATURE_HEIGHT);
@@ -36,33 +36,46 @@ public class Player extends Creature {
         bounds.height = 50;
     }
 
-    @Override
-    public void update() {
+    public void update(ArrayList<Enemy> enemies) {
 
-        getInput();
+        getInput(enemies);
         move();
         // center on this player entity
         handler.getGameCamera().centerOnEntity(this);
 
+        //System.out.println(x);//358 445
     }
 
     public void stop() {
-        xMove = yMove = 0;
+        xMove = 0;
         fall = jump = false;
     }
 
-    private void getInput() {
+    private void getInput(ArrayList<Enemy> enemis) {
+
+        System.out.println(x + " " + y);
         if (handler.getKeyManager().restart) {
             first = false;
             isRight = true;
             dead = false;
             deadAni = false;
-            y = 550;
+            y = 560;
             x = 100;
+
+            for (Enemy e : enemis) {
+                e.restart = true;
+            }
         }
 
         if (y > 680) {
             dead = true;
+            yMove = 0;
+            stop();
+            return;
+        }
+
+        if (dead) {
+            yMove = jumpspeed;
             stop();
             return;
         }
@@ -102,6 +115,26 @@ public class Player extends Creature {
             fall = false;
         }
 
+        hit = false;
+        if (handler.getKeyManager().attack) {
+            if (isRight) {
+                for (Enemy e : enemis) {
+                    if (x > e.getX() - 75 && x < e.getX() + 15 && y > e.getY() - 60 && y < e.getY() + 60) {
+                        hit = true;
+                        e.dead = true;
+                    }
+                }
+            } else {
+                for (Enemy e : enemis) {
+                    if (x > e.getX() - 15 && x < e.getX() + 75 && y > e.getY() - 60 && y < e.getY() + 60) {
+                        hit = true;
+                        e.dead = true;
+                    }
+                }
+            }
+        }
+
+        //System.out.println(y);
     }
 
     @Override
@@ -151,10 +184,9 @@ public class Player extends Creature {
             animationRunLeft(time, g);
             isRight = false;
         } else if (isRight && !handler.getKeyManager().attack && !handler.getKeyManager().shoot) {
-            g.drawImage(Assets.idleRight, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
-
+            animationIdleRight(time / 3, g);
         } else if (!handler.getKeyManager().attack && !handler.getKeyManager().shoot) {
-            g.drawImage(Assets.idleLeft, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+            animationIdleLeft(time / 3, g);
 
         }
     }
@@ -163,7 +195,7 @@ public class Player extends Creature {
 
         if (time / 2 - preTime / 2 < 5) {
             g.drawImage(Assets.deadRight[time / 2 - preTime / 2], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
-        }else{
+        } else {
             deadAni = true;
             g.drawImage(Assets.deadRight[4], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
         }
@@ -171,12 +203,19 @@ public class Player extends Creature {
 
     public void animationDeadLeft(int time, Graphics g) {
         if (time / 2 - preTime / 2 < 5) {
-            System.out.println(time / 2 - preTime / 2 );
             g.drawImage(Assets.deadLeft[time / 2 - preTime / 2], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
-        }else{
+        } else {
             deadAni = true;
             g.drawImage(Assets.deadLeft[4], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
         }
+    }
+
+    public void animationIdleRight(int time, Graphics g) {
+        g.drawImage(Assets.idleRight[time % 5], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+    }
+
+    public void animationIdleLeft(int time, Graphics g) {
+        g.drawImage(Assets.idleLeft[time % 5], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
     }
 
     public void animationJumpRight(int time, Graphics g) {

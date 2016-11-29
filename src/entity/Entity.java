@@ -35,8 +35,6 @@ public abstract class Entity {
         
     }
     
-    public abstract void update();
-    
     public abstract void render(Graphics g,int time);
 
     public float getX() {

@@ -18,7 +18,6 @@ public abstract class Creature extends Entity {
 
     public static final int DEFAULT_HEALTH = 10;
     public static final float RUN_SPEED = 3.0f;
-    public static final float JUMP_SPEED = 25.0f;
 
     //Set size of the character
     public static final int DEFAULT_CREATURE_WIDTH = 130;
@@ -26,7 +25,6 @@ public abstract class Creature extends Entity {
 
     protected int health;
     protected float runSpeed;
-    protected float jumpSpeed;
 
     //Movement
     protected float xMove, yMove;
@@ -35,7 +33,6 @@ public abstract class Creature extends Entity {
         super(handler, x, y, DEFAULT_CREATURE_WIDTH, DEFAULT_CREATURE_HEIGHT);
         health = DEFAULT_HEALTH;
         runSpeed = RUN_SPEED;
-        jumpSpeed = JUMP_SPEED;
         xMove = 0;
         yMove = 0;
 
