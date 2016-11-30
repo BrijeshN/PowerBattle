@@ -48,7 +48,6 @@ public class Game implements Runnable {
 
     //Game Camera
     private GameCamera gameCamera;
-    int time = 0;
 
     int runTime = 0;
 
@@ -103,7 +102,7 @@ public class Game implements Runnable {
     }
 
     // Draw things to screen
-    private void render(int count) {
+    private void render() {
 
         // BuffereStrategy Tells the computer a way to draw things on the screen
         bs = display.getCanvas().getBufferStrategy();
@@ -115,7 +114,7 @@ public class Game implements Runnable {
             return;
         }
 
-        // Draw to canvas
+        // Draw to canvass
         g = bs.getDrawGraphics();
 
         // Before we draw clear the screen
@@ -138,6 +137,7 @@ public class Game implements Runnable {
     }
 
     // Always need this method when you implement Runnable
+    @Override
     public void run() {
         Timer timer1 = new Timer();
         timer1.schedule(new TimerTask() {
@@ -171,7 +171,7 @@ public class Game implements Runnable {
             // if delta is greter than 1 update and render to mantain fps of 60
             if (delta >= 1) {
                 update();
-                render(time);
+                render();
                 updates++;
                 delta--;
             }
