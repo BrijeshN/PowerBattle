@@ -29,7 +29,7 @@ public abstract class Creature extends Entity {
     //Movement
     protected float xMove, yMove;
 
-    public Creature(Handler handler, float x, float y, int width, int height) {
+    public Creature(Handler handler, float x, float y) {
         super(handler, x, y, DEFAULT_CREATURE_WIDTH, DEFAULT_CREATURE_HEIGHT);
         health = DEFAULT_HEALTH;
         runSpeed = RUN_SPEED;

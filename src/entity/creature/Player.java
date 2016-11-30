@@ -5,6 +5,7 @@
  */
 package entity.creature;
 
+import entity.Bullet;
 import graphics.Assets;
 import java.awt.Graphics;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import tiles.Tile;
  */
 public class Player extends Creature {
 
+    final float BULLETSPEED = 5f;
     int forward = 0;
     boolean isRight = true;
     boolean jump = false, fall = false, flag = true, dead = false;
@@ -25,10 +27,11 @@ public class Player extends Creature {
     int jumpTimer = 0; //Make the player can jump again using this timer
     Timer timer;
     int preTime, time;
-    boolean deadAni = false, first = false, hit = false;
+    boolean deadAni = false, first = false, hit = false, bulletShoot = false;
+    ArrayList<Bullet> bullets = new ArrayList<>();
 
     public Player(Handler handler, float x, float y) {
-        super(handler, x, y, Creature.DEFAULT_CREATURE_WIDTH, Creature.DEFAULT_CREATURE_HEIGHT);
+        super(handler, x, y);
 
         bounds.x = 32;
         bounds.y = 32;
@@ -52,7 +55,6 @@ public class Player extends Creature {
 
     private void getInput(ArrayList<Enemy> enemis) {
 
-        System.out.println(x + " " + y);
         if (handler.getKeyManager().restart) {
             first = false;
             isRight = true;
@@ -115,6 +117,17 @@ public class Player extends Creature {
         }
 
         hit = false;
+
+        if (handler.getKeyManager().shoot) {
+            if (!bulletShoot) {
+                Bullet bullet = new Bullet(handler, x, y);
+                bullets.add(bullet);
+                bulletShoot = true;
+            }
+        } else {
+            bulletShoot = false;
+        }
+
         if (handler.getKeyManager().attack) {
             if (isRight) {
                 for (Enemy e : enemis) {
@@ -134,13 +147,29 @@ public class Player extends Creature {
                 }
             }
         }
-
-        //System.out.println(y);
+        if (bullets.size() > 0) {
+            for (Bullet b : bullets) {
+                b.update();
+                for (Enemy e : enemis) {
+                    if (b.getX() > e.getX() - 75 && b.getX() < e.getX() + 15 && b.getY() > e.getY() - 60 && b.getY() < e.getY() + 60) {
+                        e.dead = true;
+                        e.deadTime = time;
+                    }
+                }
+            }
+        }
     }
 
     @Override
     public void render(Graphics g, int time) {
         this.time = time;
+
+        if (bullets.size() > 0) {
+            for (Bullet b : bullets) {
+                b.render(g, time);
+            }
+        }
+
         if (dead) {
             if (!first) {
                 first = true;
@@ -161,6 +190,7 @@ public class Player extends Creature {
         }
 
         if (handler.getKeyManager().attack) {
+
             if (isRight) {
                 animationAtackRight(time, g);
             } else {
@@ -191,6 +221,14 @@ public class Player extends Creature {
             animationIdleLeft(time / 3, g);
 
         }
+
+//        for (Bullet b : bullets) {
+//            if (b.getX() - x > 300) {
+//                bullets.remove(b);
+//            }
+//        }
+//
+//        System.out.println(bullets.size());
     }
 
     public void animationDeadRight(int time, Graphics g) {

@@ -22,6 +22,7 @@ public class Assets {
 
     public static BufferedImage idleRight[], idleLeft[], empty;
     public static BufferedImage dirt1, dirt2, water1, water2;
+    public static BufferedImage bullet;
 
     public static BufferedImage zombieIdleRight[], zombieDeadRight[];
     public static BufferedImage zombieIdleLeft[], zombieDeadLeft[];
@@ -32,7 +33,7 @@ public class Assets {
         initTile();
         initPlayerImages();
         initEnemyImages();
-
+        bullet = ImageLoader.loadImage("/BulletSprite.png");
     }
 
     public static void initEnemyImages() {

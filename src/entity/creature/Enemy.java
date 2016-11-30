@@ -24,7 +24,7 @@ public class Enemy extends Creature {
     int id, deadTime = 0;
 
     public Enemy(Handler handler, float x, float y, int id) {
-        super(handler, x, y, Creature.DEFAULT_CREATURE_WIDTH, Creature.DEFAULT_CREATURE_HEIGHT);
+        super(handler, x, y);
         this.id = id;
 
         bounds.x = 32;
