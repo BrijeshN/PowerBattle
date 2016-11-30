@@ -120,7 +120,7 @@ public class Player extends Creature {
 
         if (handler.getKeyManager().shoot) {
             if (!bulletShoot) {
-                Bullet bullet = new Bullet(handler, x, y);
+                Bullet bullet = new Bullet(handler, x, y, isRight);
                 bullets.add(bullet);
                 bulletShoot = true;
             }
@@ -160,13 +160,12 @@ public class Player extends Creature {
         }
     }
 
-    @Override
     public void render(Graphics g, int time) {
         this.time = time;
 
         if (bullets.size() > 0) {
             for (Bullet b : bullets) {
-                b.render(g, time);
+                b.render(g, time, x, bullets);
             }
         }
 

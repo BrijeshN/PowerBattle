@@ -7,26 +7,42 @@ package entity;
 
 import graphics.Assets;
 import java.awt.Graphics;
+import java.util.ArrayList;
 import powerbattle.Handler;
 
 public class Bullet extends Entity {
 
-    public static final int DEFAULT_BULLET_WIDTH = 130;
-    public static final int DEFAULT_BULLET_HEIGHT = 111;
+    public static final int DEFAULT_BULLET_WIDTH = 50;
+    public static final int DEFAULT_BULLET_HEIGHT = 100;
 
     public static final int DEFAULT_BULLET_SPEED = 8;
 
-    public Bullet(Handler handler, float x, float y) {
+    boolean remove = false, isRight = false, first = false;
+
+    public Bullet(Handler handler, float x, float y, boolean isRight) {
         super(handler, x, y, DEFAULT_BULLET_WIDTH, DEFAULT_BULLET_HEIGHT);
+        this.isRight = isRight;
     }
 
-    @Override
-    public void render(Graphics g, int time) {
-        g.drawImage(Assets.bullet, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+    public void render(Graphics g, int time, float playerPos, ArrayList<Bullet> bullets) {
+//        if (Math.abs(x - playerPos) < 100) {
+//            remove = true;
+//        }
+        if (isRight) {
+            g.drawImage(Assets.bullet, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+        } else {
+            g.drawImage(Assets.bulletLeft, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+        }
     }
 
     public void update() {
-        x += DEFAULT_BULLET_SPEED;
+
+        if (isRight) {
+            x += DEFAULT_BULLET_SPEED;
+        } else {
+            x -= DEFAULT_BULLET_SPEED;
+        }
+
     }
 
 }

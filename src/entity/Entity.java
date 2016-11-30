@@ -34,8 +34,6 @@ public abstract class Entity {
         bounds = new Rectangle(0, 0, width, height);
         
     }
-    
-    public abstract void render(Graphics g,int time);
 
     public float getX() {
         return x;

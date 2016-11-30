@@ -184,7 +184,6 @@ public class Enemy extends Creature {
         xMove = yMove = 0;
     }
 
-    @Override
     public void render(Graphics g, int time) {
         this.time = time;
         if(notDraw){
