@@ -18,6 +18,7 @@ public class Bullet extends Entity {
     public static final int DEFAULT_BULLET_SPEED = 8;
 
     boolean remove = false, isRight = false, first = false;
+    boolean restart = false;
 
     public Bullet(Handler handler, float x, float y, boolean isRight) {
         super(handler, x, y, DEFAULT_BULLET_WIDTH, DEFAULT_BULLET_HEIGHT);

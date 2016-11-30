@@ -26,6 +26,7 @@ public class Enemy extends Creature {
     public Enemy(Handler handler, float x, float y, int id) {
         super(handler, x, y);
         this.id = id;
+        health = 100;
 
         bounds.x = 32;
         bounds.y = 32;
@@ -55,6 +56,11 @@ public class Enemy extends Creature {
             resetPos();
             attack = dead = notDraw = deadAni = first = restart = false;
             action = IDLE;
+            health = 100;
+        }
+        
+        if(health < 0){
+            dead = true;
         }
 
         if (dead) {

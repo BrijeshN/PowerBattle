@@ -20,6 +20,7 @@ import tiles.Tile;
 public class Player extends Creature {
 
     final float BULLETSPEED = 5f;
+    final int ATTACKDAMAGE = 30;
     int forward = 0;
     boolean isRight = true;
     boolean jump = false, fall = false, flag = true, dead = false;
@@ -62,6 +63,8 @@ public class Player extends Creature {
             deadAni = false;
             y = 560;
             x = 100;
+
+            bullets.clear();
 
             for (Enemy e : enemis) {
                 e.restart = true;
@@ -133,7 +136,7 @@ public class Player extends Creature {
                 for (Enemy e : enemis) {
                     if (x > e.getX() - 75 && x < e.getX() + 15 && y > e.getY() - 60 && y < e.getY() + 60) {
                         hit = true;
-                        e.dead = true;
+                        e.health -= ATTACKDAMAGE;
                         e.deadTime = time;
                     }
                 }
@@ -141,7 +144,7 @@ public class Player extends Creature {
                 for (Enemy e : enemis) {
                     if (x > e.getX() - 15 && x < e.getX() + 75 && y > e.getY() - 60 && y < e.getY() + 60) {
                         hit = true;
-                        e.dead = true;
+                        e.health -= ATTACKDAMAGE;
                         e.deadTime = time;
                     }
                 }
@@ -150,12 +153,27 @@ public class Player extends Creature {
         if (bullets.size() > 0) {
             for (Bullet b : bullets) {
                 b.update();
-                for (Enemy e : enemis) {
-                    if (b.getX() > e.getX() - 75 && b.getX() < e.getX() + 15 && b.getY() > e.getY() - 60 && b.getY() < e.getY() + 60) {
-                        e.dead = true;
-                        e.deadTime = time;
+                if (isRight) {
+                    for (Enemy e : enemis) {
+                        if (b.getX() > e.getX() - 35 && b.getY() > e.getY() - 60 && b.getY() < e.getY() + 60) {
+                            e.dead = true;
+                            e.deadTime = time;
+                        }
+                    }
+                } else {
+                    for (Enemy e : enemis) {
+                        if (b.getX() > e.getX()-15 && b.getY() > e.getY() - 60 && b.getY() < e.getY() + 60) {
+                            e.dead = true;
+                            e.deadTime = time;
+                        }
                     }
                 }
+            }
+        }
+
+        for (int i = 0; i < bullets.size(); i++) {
+            if (Math.abs(bullets.get(i).getX() - x) > 200) {
+                bullets.remove(i);
             }
         }
     }
