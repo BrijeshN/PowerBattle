@@ -22,13 +22,13 @@ public class Player extends Creature {
     final float BULLETSPEED = 5f;
     final int ATTACKDAMAGE = 30;
     int forward = 0;
-    boolean isRight = true;
-    boolean jump = false, fall = false, flag = true, dead = false;
+    boolean isRight = true, shootAni = false, firstShoot = false;
+    boolean jump = false, fall = false, flag = true, dead = false, attackAni = false;
     float jumpspeed = 10; //Check how high the player can jump
     int jumpTimer = 0; //Make the player can jump again using this timer
     Timer timer;
     int preTime, time;
-    boolean deadAni = false, first = false, hit = false, bulletShoot = false;
+    boolean deadAni = false, first = false, hit = false, bulletShoot = false, firstHit = false;
     ArrayList<Bullet> bullets = new ArrayList<>();
 
     public Player(Handler handler, float x, float y) {
@@ -131,19 +131,33 @@ public class Player extends Creature {
             bulletShoot = false;
         }
 
+        if (!handler.getKeyManager().attack) {
+            for (Enemy e : enemis) {
+                e.hitByPlayer = false;
+            }
+            first = false;
+            attackAni = false;
+        }
+        if (!handler.getKeyManager().shoot) {
+            firstShoot = false;
+            shootAni = false;
+        }
+
         if (handler.getKeyManager().attack) {
             if (isRight) {
                 for (Enemy e : enemis) {
                     if (x > e.getX() - 75 && x < e.getX() + 15 && y > e.getY() - 60 && y < e.getY() + 60) {
-                        hit = true;
-                        e.health -= ATTACKDAMAGE;
-                        e.deadTime = time;
+                        if (!e.hitByPlayer) {
+                            e.hitByPlayer = true;
+                            e.health -= ATTACKDAMAGE;
+                            e.deadTime = time;
+                        }
                     }
                 }
             } else {
                 for (Enemy e : enemis) {
                     if (x > e.getX() - 15 && x < e.getX() + 75 && y > e.getY() - 60 && y < e.getY() + 60) {
-                        hit = true;
+                        e.hitByPlayer = true;
                         e.health -= ATTACKDAMAGE;
                         e.deadTime = time;
                     }
@@ -162,7 +176,7 @@ public class Player extends Creature {
                     }
                 } else {
                     for (Enemy e : enemis) {
-                        if (b.getX() > e.getX()-15 && b.getY() > e.getY() - 60 && b.getY() < e.getY() + 60) {
+                        if (b.getX() > e.getX() - 15 && b.getY() > e.getY() - 60 && b.getY() < e.getY() + 60) {
                             e.dead = true;
                             e.deadTime = time;
                         }
@@ -207,17 +221,56 @@ public class Player extends Creature {
         }
 
         if (handler.getKeyManager().attack) {
-
-            if (isRight) {
-                animationAtackRight(time, g);
+            if (!first) {
+                first = true;
+                preTime = time;
+            }
+            if (!attackAni) {
+                if (isRight) {
+                    animationAttackRight(time, g);
+                } else {
+                    animationAttackLeft(time, g);
+                }
+            } else if (jump || fall) {
+                if (isRight) {
+                    animationJumpRight(time, g);
+                } else {
+                    animationJumpLeft(time, g);
+                }
+            } else if (isRight && handler.getKeyManager().right) {
+                animationRunRight(time, g);
+            } else if (!isRight && handler.getKeyManager().left) {
+                animationRunLeft(time, g);
+            } else if (isRight) {
+                animationIdleRight(time / 3, g);
             } else {
-                animationAtackLeft(time, g);
+                animationIdleLeft(time / 3, g);
             }
         } else if (handler.getKeyManager().shoot) {
-            if (isRight) {
-                animationShootRight(time, g);
+            if (!firstShoot) {
+                firstShoot = true;
+                preTime = time;
+            }
+            if (!shootAni) {
+                if (isRight) {
+                    animationShootRight(time, g);
+                } else {
+                    animationShootLeft(time, g);
+                }
+            } else if (jump || fall) {
+                if (isRight) {
+                    animationJumpRight(time, g);
+                } else {
+                    animationJumpLeft(time, g);
+                }
+            } else if (isRight && handler.getKeyManager().right) {
+                animationRunRight(time, g);
+            } else if (!isRight && handler.getKeyManager().left) {
+                animationRunLeft(time, g);
+            } else if (isRight) {
+                animationIdleRight(time / 3, g);
             } else {
-                animationShootLeft(time, g);
+                animationIdleLeft(time / 3, g);
             }
         }
 
@@ -239,13 +292,6 @@ public class Player extends Creature {
 
         }
 
-//        for (Bullet b : bullets) {
-//            if (b.getX() - x > 300) {
-//                bullets.remove(b);
-//            }
-//        }
-//
-//        System.out.println(bullets.size());
     }
 
     public void animationDeadRight(int time, Graphics g) {
@@ -288,8 +334,13 @@ public class Player extends Creature {
 
     }
 
-    public void animationAtackRight(int time, Graphics g) {
-        g.drawImage(Assets.meleeRight[time % 4], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+    public void animationAttackRight(int time, Graphics g) {
+        if (time * 3 - preTime * 3 < 4) {
+            g.drawImage(Assets.meleeRight[time * 3 - preTime * 3], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+        } else {
+            attackAni = true;
+            g.drawImage(Assets.meleeRight[3], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+        }
 
     }
 
@@ -298,18 +349,30 @@ public class Player extends Creature {
 
     }
 
-    public void animationAtackLeft(int time, Graphics g) {
-        g.drawImage(Assets.meleeLeft[time % 4], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
-
+    public void animationAttackLeft(int time, Graphics g) {
+        if (time * 3 - preTime * 3 < 4) {
+            g.drawImage(Assets.meleeLeft[time * 3 - preTime * 3], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+        } else {
+            attackAni = true;
+            g.drawImage(Assets.meleeLeft[3], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+        }
     }
 
     public void animationShootRight(int time, Graphics g) {
-        g.drawImage(Assets.shootRight[time % 3], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
-
+        if (time - preTime < 3) {
+            g.drawImage(Assets.shootRight[time - preTime], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+        } else {
+            shootAni = true;
+            g.drawImage(Assets.shootRight[2], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+        }
     }
 
     public void animationShootLeft(int time, Graphics g) {
-        g.drawImage(Assets.shootLeft[time % 3], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
-
+        if (time - preTime < 3) {
+            g.drawImage(Assets.shootLeft[time - preTime], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+        } else {
+            shootAni = true;
+            g.drawImage(Assets.shootLeft[2], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+        }
     }
 }

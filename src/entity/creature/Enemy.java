@@ -14,7 +14,7 @@ import state.GameState;
 public class Enemy extends Creature {
 
     boolean dead = false, deadAni = false, first = false, restart = false;
-    boolean isRight = false, attack = false, hit = false;
+    boolean isRight = false, attack = false, hit = false, hitByPlayer = false;
     int preTime, action = 0;
     final int IDLE = 0, MOVELEFT = 1, MOVERIGHT = 2;
     final float MOVESPEED = 1.0f, JUMPSPEED = 10f;
