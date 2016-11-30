@@ -20,8 +20,8 @@ public class Enemy extends Creature {
     final float MOVESPEED = 1.0f, JUMPSPEED = 10f;
     Random r = new Random();
     int time = 0;
-    boolean firstCall = true;
-    int id;
+    boolean firstCall = true, notDraw = false;
+    int id, deadTime = 0;
 
     public Enemy(Handler handler, float x, float y, int id) {
         super(handler, x, y, Creature.DEFAULT_CREATURE_WIDTH, Creature.DEFAULT_CREATURE_HEIGHT);
@@ -53,11 +53,14 @@ public class Enemy extends Creature {
     public void update(Player player) {
         if (restart) {
             resetPos();
-            dead = deadAni = first = restart = false;
+            attack = dead = notDraw = deadAni = first = restart = false;
             action = IDLE;
         }
 
         if (dead) {
+            if (time / 10 - deadTime / 10 == 3) {
+                notDraw = true;
+            }
             attack = false;
             return;
         }
@@ -184,6 +187,9 @@ public class Enemy extends Creature {
     @Override
     public void render(Graphics g, int time) {
         this.time = time;
+        if(notDraw){
+            return;
+        }
         if (dead) {
             stop();
             if (!first) {

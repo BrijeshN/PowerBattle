@@ -24,7 +24,7 @@ public class Player extends Creature {
     float jumpspeed = 10; //Check how high the player can jump
     int jumpTimer = 0; //Make the player can jump again using this timer
     Timer timer;
-    int preTime;
+    int preTime, time;
     boolean deadAni = false, first = false, hit = false;
 
     public Player(Handler handler, float x, float y) {
@@ -43,7 +43,6 @@ public class Player extends Creature {
         // center on this player entity
         handler.getGameCamera().centerOnEntity(this);
 
-        //System.out.println(x);//358 445
     }
 
     public void stop() {
@@ -122,6 +121,7 @@ public class Player extends Creature {
                     if (x > e.getX() - 75 && x < e.getX() + 15 && y > e.getY() - 60 && y < e.getY() + 60) {
                         hit = true;
                         e.dead = true;
+                        e.deadTime = time;
                     }
                 }
             } else {
@@ -129,6 +129,7 @@ public class Player extends Creature {
                     if (x > e.getX() - 15 && x < e.getX() + 75 && y > e.getY() - 60 && y < e.getY() + 60) {
                         hit = true;
                         e.dead = true;
+                        e.deadTime = time;
                     }
                 }
             }
@@ -139,6 +140,7 @@ public class Player extends Creature {
 
     @Override
     public void render(Graphics g, int time) {
+        this.time = time;
         if (dead) {
             if (!first) {
                 first = true;
