@@ -24,7 +24,7 @@ public class Player extends Creature {
     public static final int DEFAULT_CREATURE_HEIGHT = 111;
 
     final float BULLETSPEED = 5f;
-    final int ATTACKDAMAGE = 30;
+    final int ATTACKDAMAGE = 30, DIEHEIGHT = 1280;
     int forward = 0;
     boolean isRight = true, shootAni = false, firstShoot = false, normalBulletShoot = false;
     boolean jump = false, fall = false, flag = true, dead = false, attackAni = false;
@@ -66,7 +66,7 @@ public class Player extends Creature {
             isRight = true;
             dead = false;
             deadAni = false;
-            y = 1140;
+            y = 1080;
             x = 100;
 
             bullets.clear();
@@ -77,7 +77,7 @@ public class Player extends Creature {
             }
         }
 
-        if (y > 680) {
+        if (y > DIEHEIGHT) {
             dead = true;
             yMove = 0;
             stop();

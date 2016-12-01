@@ -21,7 +21,7 @@ public class GameState extends State {
     private Map map;
     private Enemy[] enemy;
     final int ENEMYNUM = 4;
-    public static final int[][] ENEMYPOS = {{290, 560}, {500, 560}, {664, 417}, {980, 560}};
+    public static final int[][] ENEMYPOS = {{290, 1080}, {500, 1080}, {664, 1080}, {980, 1080}};
 
     public ArrayList<Enemy> enemis;
 
@@ -32,7 +32,7 @@ public class GameState extends State {
         enemis = new ArrayList<>();
         enemy = new Enemy[ENEMYNUM];
 
-        player = new Player(handler, 100, 560);
+        player = new Player(handler, 100, 1080);
 
         for (int i = 0; i < ENEMYNUM; i++) {
             enemy[i] = new Enemy(handler, ENEMYPOS[i][0], ENEMYPOS[i][1], i);
