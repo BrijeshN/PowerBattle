@@ -14,14 +14,22 @@ public class Assets {
     private static final int HEIGHT = 111;
     private static final int ZOMBIEHIGHT = 100;
 
-    private static final int w = 130;
-    private static final int h = 129;
+    private static final int w = 128;
+    private static final int h = 128;
 
     public static BufferedImage runRight[], meleeRight[], runLeft[], meleeLeft[], shootLeft[], shootRight[];
     public static BufferedImage jumpRight[], jumpLeft[], deadLeft[], deadRight[];
 
-    public static BufferedImage idleRight[], idleLeft[], empty;
-    public static BufferedImage dirt1, dirt2, water1, water2;
+    public static BufferedImage idleRight[], idleLeft[];
+    
+    public static BufferedImage empty, invisibleWall;
+
+    
+    public static BufferedImage grass1, grass2, grass3;
+    public static BufferedImage dirt1, dirt2, dirt3, dirt4, dirt5, dirt6, dirt7, dirt8;
+    public static BufferedImage floatDirt1, floatDirt2, floatDirt3;
+    public static BufferedImage water1, water2;
+
     public static BufferedImage bullet, bulletLeft;
     public static BufferedImage normalBullet, normalBulletLeft;
 
@@ -94,10 +102,15 @@ public class Assets {
     }
 
     public static void initTile() {
-        SpriteSheet tile = new SpriteSheet(ImageLoader.loadImage("/Map/png/Tiles/TileSprite.png"));
-        dirt1 = tile.crop(0, 0, w, h);
-        dirt2 = tile.crop(w, 0, w, h);
-        water1 = tile.crop(w * 17, 0, w, h);
+        SpriteSheet tile = new SpriteSheet(ImageLoader.loadImage("/Map/mapSprite.png"));
+        grass1 = tile.crop(0, 0, w, h);
+        grass2 = tile.crop(w * 2, h * 2, w, h);
+        grass3 = tile.crop(w * 3, h * 2, w, h);
+        floatDirt1 = tile.crop(0, h, w, h);
+        floatDirt2 = tile.crop(w, h, w, h);
+        floatDirt3 = tile.crop(w * 2, h, w, h);
+
+  
     }
 
     public static void initPlayerImages() {
@@ -159,6 +172,7 @@ public class Assets {
         }
 
         empty = playerRight.crop(WIDTH * 5, HEIGHT * 3, WIDTH, HEIGHT);
+        invisibleWall = playerRight.crop(WIDTH * 5, HEIGHT * 3, WIDTH, HEIGHT);
     }
 
 }
