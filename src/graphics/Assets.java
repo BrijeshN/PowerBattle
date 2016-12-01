@@ -16,6 +16,10 @@ public class Assets {
 
     private static final int w = 128;
     private static final int h = 128;
+    
+    private static final int waterWidth = 128;
+    private static final int waterHeight = 99;
+
 
     public static BufferedImage runRight[], meleeRight[], runLeft[], meleeLeft[], shootLeft[], shootRight[];
     public static BufferedImage jumpRight[], jumpLeft[], deadLeft[], deadRight[];
@@ -28,7 +32,7 @@ public class Assets {
     public static BufferedImage grass1, grass2, grass3;
     public static BufferedImage dirt1, dirt2, dirt3, dirt4, dirt5, dirt6, dirt7, dirt8;
     public static BufferedImage floatDirt1, floatDirt2, floatDirt3;
-    public static BufferedImage water1, water2;
+    public static BufferedImage water1;
 
     public static BufferedImage bullet, bulletLeft;
     public static BufferedImage normalBullet, normalBulletLeft;
@@ -101,13 +105,15 @@ public class Assets {
 
     public static void initTile() {
         SpriteSheet tile = new SpriteSheet(ImageLoader.loadImage("/Map/mapSprite.png"));
+        SpriteSheet tile2 = new SpriteSheet(ImageLoader.loadImage("/Map/png/waterSprite.png"));
+
         grass1 = tile.crop(0, 0, w, h);
         grass2 = tile.crop(w * 2, h * 2, w, h);
         grass3 = tile.crop(w * 3, h * 2, w, h);
         floatDirt1 = tile.crop(0, h, w, h);
         floatDirt2 = tile.crop(w, h, w, h);
         floatDirt3 = tile.crop(w * 2, h, w, h);
-
+        water1 = tile2.crop(0, 0, waterWidth, waterHeight);
   
     }
 

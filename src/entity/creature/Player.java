@@ -66,7 +66,7 @@ public class Player extends Creature {
             isRight = true;
             dead = false;
             deadAni = false;
-            y = 560;
+            y = 1140;
             x = 100;
 
             bullets.clear();
