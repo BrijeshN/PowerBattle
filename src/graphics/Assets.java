@@ -23,6 +23,7 @@ public class Assets {
     public static BufferedImage idleRight[], idleLeft[], empty;
     public static BufferedImage dirt1, dirt2, water1, water2;
     public static BufferedImage bullet, bulletLeft;
+    public static BufferedImage normalBullet, normalBulletLeft;
 
     public static BufferedImage zombieIdleRight[], zombieDeadRight[];
     public static BufferedImage zombieIdleLeft[], zombieDeadLeft[];
@@ -30,6 +31,7 @@ public class Assets {
     public static BufferedImage zombieAttackLeft[], zombieAttackRight[];
 
     public static void init() {
+        initBullet();
         initTile();
         initPlayerImages();
         initEnemyImages();
@@ -82,6 +84,13 @@ public class Assets {
             zombieRunLeft[i] = zombieLeft.crop(WIDTH * (i + 35), 0, WIDTH, ZOMBIEHIGHT);
         }
 
+    }
+
+    public static void initBullet() {
+        bullet = ImageLoader.loadImage("/BulletSprite.png");
+        bulletLeft = ImageLoader.loadImage("/BulletLeftSprite.png");
+        normalBullet = ImageLoader.loadImage("/bullet.jpg");
+        normalBulletLeft = ImageLoader.loadImage("/bulletLeft.jpg");
     }
 
     public static void initTile() {
