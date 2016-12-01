@@ -6,17 +6,17 @@
 package tiles;
 
 import graphics.Assets;
-import java.awt.image.BufferedImage;
 
 /**
  *
  * @author Brijesh
  */
-public class GrassTile extends Tile{
+public class FirstFloatTile extends Tile {
     
-    public GrassTile(int id) {
+    
+     public FirstFloatTile(int id) {
         
-        super(Assets.dirt1, id);
+        super(Assets.floatDirt1, id);
         
     }
     
@@ -26,5 +26,4 @@ public class GrassTile extends Tile{
         return true;
     }
     
-    }
-    
+}

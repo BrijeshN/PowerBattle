@@ -18,9 +18,14 @@ public class Tile {
         //stores one instance of every single tile
         public static Tile[] tiles =  new Tile[256];
         public static Tile emptyTile = new EmptyTile(0);
-        public static Tile grassTile = new GrassTile(1);
-        public static Tile dirtTile = new DirtTile(2);
-        public static Tile waterTile = new WaterTile(3);
+        public static Tile wallTile = new WallTile(1);
+        public static Tile grassTile1 = new FirstGrassTile(2);
+        public static Tile grassTile2 = new SecondGrassTile(3);
+        public static Tile grassTile3 = new ThirdGrassTile(4);
+        public static Tile floatTile1 = new FirstFloatTile(5);
+        public static Tile floatTile2 = new SecondFloatTile(6);
+        public static Tile floatTile3 = new ThirdFloatTile(7);  
+        
         
         //Class
     

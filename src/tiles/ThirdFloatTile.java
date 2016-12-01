@@ -6,16 +6,17 @@
 package tiles;
 
 import graphics.Assets;
-import java.awt.image.BufferedImage;
 
 /**
  *
  * @author Brijesh
  */
-public class DirtTile extends Tile{
+public class ThirdFloatTile extends Tile {
     
-    public DirtTile(int id) {
-        super(Assets.dirt2, id);
+    public ThirdFloatTile(int id) {
+        
+        super(Assets.floatDirt3, id);
+        
     }
     
      // if it's solid,player can not walk on it
