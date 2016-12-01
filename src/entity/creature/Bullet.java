@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package entity;
+package entity.creature;
 
+import entity.Entity;
 import graphics.Assets;
 import java.awt.Graphics;
 import java.util.ArrayList;
@@ -25,12 +26,10 @@ public class Bullet extends Entity {
         this.isRight = isRight;
     }
 
-    public void render(Graphics g, int time, float playerPos, ArrayList<Bullet> bullets) {
-//        if (Math.abs(x - playerPos) < 100) {
-//            remove = true;
-//        }
+    public void render(Graphics g, int time) {
+
         if (isRight) {
-            g.drawImage(Assets.bullet, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+            g.drawImage(Assets.bullet, (int) (x - handler.getGameCamera().getxOffset() + 100), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
         } else {
             g.drawImage(Assets.bulletLeft, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
         }
