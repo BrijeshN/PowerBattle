@@ -13,6 +13,10 @@ import state.GameState;
 
 public class Enemy extends Creature {
 
+    //Set size of the character
+    public static final int DEFAULT_CREATURE_WIDTH = 130;
+    public static final int DEFAULT_CREATURE_HEIGHT = 111;
+
     boolean dead = false, deadAni = false, first = false, restart = false;
     boolean isRight = false, attack = false, hit = false, hitByPlayer = false;
     int preTime, action = 0;
@@ -24,7 +28,7 @@ public class Enemy extends Creature {
     int id, deadTime = 0;
 
     public Enemy(Handler handler, float x, float y, int id) {
-        super(handler, x, y);
+        super(handler, x, y, DEFAULT_CREATURE_WIDTH, DEFAULT_CREATURE_HEIGHT);
         this.id = id;
         health = 100;
 
@@ -58,8 +62,8 @@ public class Enemy extends Creature {
             action = IDLE;
             health = 100;
         }
-        
-        if(health < 0){
+
+        if (health < 0) {
             dead = true;
         }
 
@@ -192,7 +196,7 @@ public class Enemy extends Creature {
 
     public void render(Graphics g, int time) {
         this.time = time;
-        if(notDraw){
+        if (notDraw) {
             return;
         }
         if (dead) {
