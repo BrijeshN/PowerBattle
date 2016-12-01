@@ -5,12 +5,12 @@
  */
 package entity.creature;
 
-import entity.NormalBullet;
 import graphics.Assets;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import javax.swing.Timer;
 import powerbattle.Handler;
+import state.GameState;
 import tiles.Tile;
 
 /**
@@ -24,7 +24,7 @@ public class Player extends Creature {
     public static final int DEFAULT_CREATURE_HEIGHT = 111;
 
     final float BULLETSPEED = 5f;
-    final int ATTACKDAMAGE = 30, DIEHEIGHT = 1280;
+    final int ATTACKDAMAGE = 30, DIEHEIGHT = 1200;
     int forward = 0;
     boolean isRight = true, shootAni = false, firstShoot = false, normalBulletShoot = false;
     boolean jump = false, fall = false, flag = true, dead = false, attackAni = false;
@@ -33,7 +33,7 @@ public class Player extends Creature {
     Timer timer;
     int preTime, time;
     boolean deadAni = false, first = false, hit = false, bulletShoot = false, firstHit = false;
-    ArrayList<Bullet> bullets = new ArrayList<>();
+    ArrayList<MagicalBullet> bullets = new ArrayList<>();
     ArrayList<NormalBullet> normalBullets = new ArrayList<>();
 
     public Player(Handler handler, float x, float y) {
@@ -66,8 +66,8 @@ public class Player extends Creature {
             isRight = true;
             dead = false;
             deadAni = false;
-            y = 1080;
-            x = 100;
+            y = GameState.PLAYER_SPAWN_Y_POSITION;
+            x = GameState.PLAYER_SPAWN_X_POSITION;
 
             bullets.clear();
             normalBullets.clear();
@@ -129,7 +129,7 @@ public class Player extends Creature {
 
         if (handler.getKeyManager().magicalShoot) {
             if (!bulletShoot) {
-                Bullet bullet = new Bullet(handler, x, y, isRight);
+                MagicalBullet bullet = new MagicalBullet(handler, x, y, isRight);
                 bullets.add(bullet);
                 bulletShoot = true;
             }
@@ -139,7 +139,6 @@ public class Player extends Creature {
 
         if (handler.getKeyManager().normalShoot && !handler.getKeyManager().magicalShoot) {
             if (!normalBulletShoot) {
-                System.out.println(x);
                 NormalBullet normalBullet = new NormalBullet(handler, x, y, isRight);
                 normalBullets.add(normalBullet);
                 normalBulletShoot = true;
@@ -182,63 +181,51 @@ public class Player extends Creature {
                 }
             }
         }
-        for (Bullet b : bullets) {
+        for (MagicalBullet b : bullets) {
             b.update();
-            if (isRight) {
-                for (Enemy e : enemis) {
-                    if (Math.abs(b.getX() - e.getX()) < 100 && b.getY() > e.getY() - 60 && b.getY() < e.getY() + 60) {
-                        e.dead = true;
-                        e.deadTime = time;
-                    }
-                }
-            } else {
-                for (Enemy e : enemis) {
-                    if (Math.abs(b.getX() - e.getX()) < 35 && b.getY() > e.getY() - 60 && b.getY() < e.getY() + 60) {
-                        e.dead = true;
-                        e.deadTime = time;
-                    }
+
+            for (Enemy e : enemis) {
+                if (Math.abs(b.getX() - e.getX()) < 105 && b.getY() > e.getY() - 60 && b.getY() < e.getY() + 60) {
+                    e.dead = true;
+                    e.deadTime = time;
                 }
             }
+
         }
 
         for (NormalBullet b : normalBullets) {
             b.update();
-            if (isRight) {
-                for (Enemy e : enemis) {
-                    if (Math.abs(b.getX() -e.getX()) > 35 && b.getY() > e.getY() - 60 && b.getY() < e.getY() + 60) {
-                        e.dead = true;
-                        e.deadTime = time;
-                    }
-                }
-            } else {
-                for (Enemy e : enemis) {
-                    if (b.getX() > e.getX() - 15 && b.getY() > e.getY() - 60 && b.getY() < e.getY() + 60) {
-                        e.dead = true;
-                        e.deadTime = time;
-                    }
+
+            for (Enemy e : enemis) {
+                if (Math.abs(b.getX() - e.getX()) < 75 && b.getY() > e.getY() - 60 && b.getY() < e.getY() + 60) {
+                    e.dead = true;
+                    e.deadTime = time;
                 }
             }
+
         }
 
         for (int i = 0; i < bullets.size(); i++) {
-            if (Math.abs(bullets.get(i).getX() - x) > 300) {
+            int tx = (int) (bullets.get(i).getX() + bullets.get(i).xMove) / Tile.TILEWIDTH;
+            if (bullets.get(i).distance > 200 || collisionWithTile(tx, (int) (bullets.get(i).getY()) / Tile.TILEHEIGHT)
+                    || collisionWithTile(tx, (int) (bullets.get(i).getY() + bullets.get(i).bounds.height))) {
                 bullets.remove(i);
             }
         }
 
-//        for (int i = 0; i < normalBullets.size(); i++) {
-//           int tx = (int) (normalBullets.get(i).getX() + normalBullets.get(i).xMove + normalBullets.get(i).bounds.x + normalBullets.get(i).bounds.width) / Tile.TILEWIDTH;
-//            if (Math.abs(normalBullets.get(i).getX() - x) > 200 || collisionWithTile(tx, (int) (normalBullets.get(i).getY() + normalBullets.get(i).bounds.y) / Tile.TILEHEIGHT)
-//                    || collisionWithTile(tx, (int) (normalBullets.get(i).getY() + normalBullets.get(i).bounds.y +normalBullets.get(i).bounds.height))) {
-//                normalBullets.remove(i);
-//            }
-//        }
+        for (int i = 0; i < normalBullets.size(); i++) {
+            int tx = (int) (normalBullets.get(i).getX() + normalBullets.get(i).xMove) / Tile.TILEWIDTH;
+            if (normalBullets.get(i).distance > 200 || collisionWithTile(tx, (int) (normalBullets.get(i).getY()) / Tile.TILEHEIGHT)
+                    || collisionWithTile(tx, (int) (normalBullets.get(i).getY() + normalBullets.get(i).bounds.height))) {
+                normalBullets.remove(i);
+            }
+        }
     }
 
     public void render(Graphics g, int time) {
         this.time = time;
 
-        for (Bullet b : bullets) {
+        for (MagicalBullet b : bullets) {
             b.render(g, time);
         }
 
