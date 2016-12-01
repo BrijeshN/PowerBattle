@@ -22,6 +22,8 @@ public class GameState extends State {
     private Enemy[] enemy;
     final int ENEMYNUM = 4;
     public static final int[][] ENEMYPOS = {{290, 1080}, {500, 1080}, {664, 1080}, {980, 1080}};
+    public static final int PLAYER_SPAWN_X_POSITION = 150;
+    public static final int PLAYER_SPAWN_Y_POSITION = 1080;
 
     public ArrayList<Enemy> enemis;
 
@@ -32,7 +34,7 @@ public class GameState extends State {
         enemis = new ArrayList<>();
         enemy = new Enemy[ENEMYNUM];
 
-        player = new Player(handler, 100, 1080);
+        player = new Player(handler, PLAYER_SPAWN_X_POSITION, PLAYER_SPAWN_Y_POSITION);
 
         for (int i = 0; i < ENEMYNUM; i++) {
             enemy[i] = new Enemy(handler, ENEMYPOS[i][0], ENEMYPOS[i][1], i);

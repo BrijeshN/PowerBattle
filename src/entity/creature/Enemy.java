@@ -82,7 +82,7 @@ public class Enemy extends Creature {
                 firstCall = false;
                 getAction();
                 if (r.nextInt(3) != 1) {
-                    attack = true;
+                    attack = false;
                 } else {
                     attack = false;
                 }

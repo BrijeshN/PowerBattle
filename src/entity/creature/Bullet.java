@@ -5,43 +5,51 @@
  */
 package entity.creature;
 
-import entity.Entity;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 import graphics.Assets;
 import java.awt.Graphics;
-import java.util.ArrayList;
 import powerbattle.Handler;
 
-public class Bullet extends Entity {
+public class Bullet extends Creature {
 
-    public static final int DEFAULT_BULLET_WIDTH = 50;
-    public static final int DEFAULT_BULLET_HEIGHT = 100;
-
-    public static final int DEFAULT_BULLET_SPEED = 8;
+    public int bulletSpeed = 8, distance = 0;
 
     boolean remove = false, isRight = false, first = false;
-    boolean restart = false;
+    boolean restart = false, isNormal = false;
 
-    public Bullet(Handler handler, float x, float y, boolean isRight) {
-        super(handler, x, y, DEFAULT_BULLET_WIDTH, DEFAULT_BULLET_HEIGHT);
-        this.isRight = isRight;
+    public Bullet(Handler handler, float x, float y, int width, int height, boolean isNormal) {
+        super(handler, x, y, width, height);
+        bounds.height = 10;
+        this.isNormal = isNormal;
     }
 
     public void render(Graphics g, int time) {
-
-        if (isRight) {
-            g.drawImage(Assets.bullet, (int) (x - handler.getGameCamera().getxOffset() + 100), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+        if (!isNormal) {
+            if (isRight) {
+                g.drawImage(Assets.bullet, (int) (x - handler.getGameCamera().getxOffset() + 100), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+            } else {
+                g.drawImage(Assets.bulletLeft, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+            }
+        } else if (isRight) {
+            g.drawImage(Assets.normalBullet, (int) (x - handler.getGameCamera().getxOffset() + 100), (int) (y - handler.getGameCamera().getyOffset() + 50), width, height, null);
         } else {
-            g.drawImage(Assets.bulletLeft, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+            g.drawImage(Assets.normalBulletLeft, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset() + 50), width, height, null);
         }
     }
 
     public void update() {
 
         if (isRight) {
-            x += DEFAULT_BULLET_SPEED;
+            xMove = bulletSpeed;
         } else {
-            x -= DEFAULT_BULLET_SPEED;
+            xMove = -bulletSpeed;
         }
+        distance += bulletSpeed;
+        move();
 
     }
 
