@@ -23,7 +23,6 @@ public class Bullet extends Creature {
 
     public Bullet(Handler handler, float x, float y, int width, int height, boolean isNormal) {
         super(handler, x, y, width, height);
-        bounds.height = 10;
         this.isNormal = isNormal;
     }
 

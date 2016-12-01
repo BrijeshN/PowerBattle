@@ -25,6 +25,7 @@ public abstract class Creature extends Entity {
 
     protected int health;
     protected float runSpeed;
+    boolean hitWall = false;
 
     //Movement
     protected float xMove, yMove;
@@ -49,11 +50,14 @@ public abstract class Creature extends Entity {
         //if greater than 0, moving right
         if (xMove > 0) {
 
-            int tx = (int) (x + xMove+ bounds.x + bounds.width) / Tile.TILEWIDTH;
+            int tx = (int) (x + xMove + bounds.x + bounds.width) / Tile.TILEWIDTH;
             // if its not solid then move
             if (!collisionWithTile(tx, (int) (y + bounds.y) / Tile.TILEHEIGHT)
                     && !collisionWithTile(tx, (int) (y + bounds.y + bounds.height) / Tile.TILEHEIGHT)) {
                 x += xMove;
+                hitWall = false;
+            } else {
+                hitWall = true;
             }
 
         } else if (xMove < 0) { // if less than 0, moving left
@@ -62,6 +66,9 @@ public abstract class Creature extends Entity {
             if (!collisionWithTile(tx, (int) (y + bounds.y) / Tile.TILEHEIGHT)
                     && !collisionWithTile(tx, (int) (y + bounds.y + bounds.height) / Tile.TILEHEIGHT)) {
                 x += xMove;
+                hitWall = false;
+            } else {
+                hitWall = true;
             }
         }
 

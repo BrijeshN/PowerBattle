@@ -16,6 +16,7 @@ public class KeyManager implements KeyListener {
 
     private boolean[] keys;
     public boolean up, down, left, right, attack, magicalShoot, restart, normalShoot;
+    public boolean cheatMode, cheatModeOff;
 
     public KeyManager() {
 
@@ -33,12 +34,13 @@ public class KeyManager implements KeyListener {
         magicalShoot = keys[KeyEvent.VK_L];
         restart = keys[KeyEvent.VK_R];
         normalShoot = keys[KeyEvent.VK_K];
+        cheatMode = keys[KeyEvent.VK_C];
+        cheatModeOff = keys[KeyEvent.VK_V];
 
     }
 
     @Override
     public void keyTyped(KeyEvent e) {
-
     }
 
     @Override

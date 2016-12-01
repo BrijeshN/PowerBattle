@@ -24,7 +24,7 @@ public class Player extends Creature {
     public static final int DEFAULT_CREATURE_HEIGHT = 111;
 
     final float BULLETSPEED = 5f;
-    final int ATTACKDAMAGE = 30, DIEHEIGHT = 1200;
+    final int ATTACKDAMAGE = 60, DIEHEIGHT = 1200;
     int forward = 0;
     boolean isRight = true, shootAni = false, firstShoot = false, normalBulletShoot = false;
     boolean jump = false, fall = false, flag = true, dead = false, attackAni = false;
@@ -60,6 +60,14 @@ public class Player extends Creature {
     }
 
     private void getInput(ArrayList<Enemy> enemis) {
+
+        if (handler.getKeyManager().cheatMode) {
+            jumpspeed = 15;
+            runSpeed = 6.0f;
+        } else if (handler.getKeyManager().cheatModeOff) {
+            jumpspeed = 10;
+            runSpeed = 3.0f;
+        }
 
         if (handler.getKeyManager().restart) {
             first = false;
@@ -206,17 +214,13 @@ public class Player extends Creature {
         }
 
         for (int i = 0; i < bullets.size(); i++) {
-            int tx = (int) (bullets.get(i).getX() + bullets.get(i).xMove) / Tile.TILEWIDTH;
-            if (bullets.get(i).distance > 200 || collisionWithTile(tx, (int) (bullets.get(i).getY()) / Tile.TILEHEIGHT)
-                    || collisionWithTile(tx, (int) (bullets.get(i).getY() + bullets.get(i).bounds.height))) {
+            if (bullets.get(i).distance > 200 || bullets.get(i).hitWall) {
                 bullets.remove(i);
             }
         }
 
         for (int i = 0; i < normalBullets.size(); i++) {
-            int tx = (int) (normalBullets.get(i).getX() + normalBullets.get(i).xMove) / Tile.TILEWIDTH;
-            if (normalBullets.get(i).distance > 200 || collisionWithTile(tx, (int) (normalBullets.get(i).getY()) / Tile.TILEHEIGHT)
-                    || collisionWithTile(tx, (int) (normalBullets.get(i).getY() + normalBullets.get(i).bounds.height))) {
+            if (normalBullets.get(i).distance > 200 || normalBullets.get(i).hitWall) {
                 normalBullets.remove(i);
             }
         }

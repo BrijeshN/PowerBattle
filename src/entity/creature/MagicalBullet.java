@@ -19,6 +19,7 @@ public class MagicalBullet extends Bullet {
     public MagicalBullet(Handler handler, float x, float y, boolean isRight) {
         super(handler, x, y, DEFAULT_BULLET_WIDTH, DEFAULT_BULLET_HEIGHT, false);
         this.isRight = isRight;
+        bounds.x = 140;
         bounds.height = 10;
         this.bulletSpeed = MAGICAL_BULLET_SPEED;
     }
