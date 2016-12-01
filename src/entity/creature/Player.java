@@ -186,14 +186,14 @@ public class Player extends Creature {
             b.update();
             if (isRight) {
                 for (Enemy e : enemis) {
-                    if (b.getX() > e.getX() - 35 && b.getY() > e.getY() - 60 && b.getY() < e.getY() + 60) {
+                    if (Math.abs(b.getX() - e.getX()) < 100 && b.getY() > e.getY() - 60 && b.getY() < e.getY() + 60) {
                         e.dead = true;
                         e.deadTime = time;
                     }
                 }
             } else {
                 for (Enemy e : enemis) {
-                    if (b.getX() > e.getX() - 15 && b.getY() > e.getY() - 60 && b.getY() < e.getY() + 60) {
+                    if (Math.abs(b.getX() - e.getX()) < 35 && b.getY() > e.getY() - 60 && b.getY() < e.getY() + 60) {
                         e.dead = true;
                         e.deadTime = time;
                     }
@@ -205,7 +205,7 @@ public class Player extends Creature {
             b.update();
             if (isRight) {
                 for (Enemy e : enemis) {
-                    if (b.getX() > e.getX() - 35 && b.getY() > e.getY() - 60 && b.getY() < e.getY() + 60) {
+                    if (Math.abs(b.getX() -e.getX()) > 35 && b.getY() > e.getY() - 60 && b.getY() < e.getY() + 60) {
                         e.dead = true;
                         e.deadTime = time;
                     }
