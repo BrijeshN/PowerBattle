@@ -38,77 +38,68 @@ public abstract class Creature extends Entity {
 
     }
 
-    public void move(){
+    public void move() {
         moveX();
         moveY();
     }
-    
+
     //move collision
-    public void moveX(){
-        
+    public void moveX() {
+
         //if greater than 0, moving right
-        if(xMove > 0){
-            
-            int tx = (int) (x + xMove + bounds.x + bounds.width) / Tile.TILEWIDTH;
+        if (xMove > 0) {
+
+            int tx = (int) (x + xMove+ bounds.x + bounds.width) / Tile.TILEWIDTH;
             // if its not solid then move
-            if(!collisionWithTile(tx, (int) (y + bounds.y) / Tile.TILEHEIGHT) && 
-                    !collisionWithTile(tx, (int) (y + bounds.y +bounds.height) / Tile.TILEHEIGHT)){
+            if (!collisionWithTile(tx, (int) (y + bounds.y) / Tile.TILEHEIGHT)
+                    && !collisionWithTile(tx, (int) (y + bounds.y + bounds.height) / Tile.TILEHEIGHT)) {
                 x += xMove;
-            } else {
-                x = tx * Tile.TILEWIDTH - bounds.x - bounds.width - 1;
             }
-            
-        } else if(xMove < 0){ // if less than 0, moving left
-           int tx = (int) (x + xMove + bounds.x) / Tile.TILEWIDTH;
+
+        } else if (xMove < 0) { // if less than 0, moving left
+            int tx = (int) (x + xMove) / Tile.TILEWIDTH;
             // if its not solid then move
-            if(!collisionWithTile(tx, (int) (y + bounds.y) / Tile.TILEHEIGHT) && 
-                    !collisionWithTile(tx, (int) (y + bounds.y +bounds.height) / Tile.TILEHEIGHT)){
+            if (!collisionWithTile(tx, (int) (y + bounds.y) / Tile.TILEHEIGHT)
+                    && !collisionWithTile(tx, (int) (y + bounds.y + bounds.height) / Tile.TILEHEIGHT)) {
                 x += xMove;
-            } else {
-                x = tx * Tile.TILEWIDTH + Tile.TILEWIDTH - bounds.x;
             }
         }
 
     }
-    
+
     // for collision
-    public void moveY(){
+    public void moveY() {
 //          if (y > 550) {
 //            y = 550;
 //        }
-       // y += yMove;
+        // y += yMove;
         // Moving up
-        if(yMove < 0) {
-            
+        if (yMove < 0) {
+
             int ty = (int) (y + yMove + bounds.y) / Tile.TILEHEIGHT;
-            
-            if(!collisionWithTile((int) (x + bounds.x) / Tile.TILEWIDTH, ty) &&
-                !collisionWithTile((int) (x + bounds.x + bounds.width) / Tile.TILEWIDTH, ty)    ){
+
+            if (!collisionWithTile((int) (x + bounds.x) / Tile.TILEWIDTH, ty)
+                    && !collisionWithTile((int) (x + bounds.x + bounds.width) / Tile.TILEWIDTH, ty)) {
                 y += yMove;
-            } else {
-                y = ty * Tile.TILEHEIGHT + Tile.TILEHEIGHT - bounds.y;
             }
-            
-        } else if(yMove > 0){// Moving Down
+
+        } else if (yMove > 0) {// Moving Down
             int ty = (int) (y + yMove + bounds.y + bounds.height) / Tile.TILEHEIGHT;
-            
-            if(!collisionWithTile((int) (x + bounds.x) / Tile.TILEWIDTH, ty) &&
-                !collisionWithTile((int) (x + bounds.x + bounds.width) / Tile.TILEWIDTH, ty)    ){
+
+            if (!collisionWithTile((int) (x + bounds.x) / Tile.TILEWIDTH, ty)
+                    && !collisionWithTile((int) (x + bounds.x + bounds.width) / Tile.TILEWIDTH, ty)) {
                 y += yMove;
-            } else {
-                y = ty * Tile.TILEHEIGHT - bounds.y - bounds.height - 1;
             }
-            
+
         }
 
     }
-    
+
     // takse x and y coordinate of the tile and check if it's solid or not
-    protected boolean collisionWithTile(int x, int y){
-        
+    protected boolean collisionWithTile(int x, int y) {
+
         return handler.getMap().getTile(x, y).isSolid();
     }
-
 
     //GETTERS and SETTERS
     public float getxMove() {
