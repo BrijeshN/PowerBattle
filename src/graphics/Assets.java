@@ -43,8 +43,6 @@ public class Assets {
         initTile();
         initPlayerImages();
         initEnemyImages();
-        bullet = ImageLoader.loadImage("/Bullet/BulletSprite.png");
-        bulletLeft = ImageLoader.loadImage("/Bullet/BulletLeftSprite.png");
     }
 
     public static void initEnemyImages() {
