@@ -5,7 +5,7 @@
  */
 package entity.creature;
 
-import entity.Bullet;
+import entity.NormalBullet;
 import graphics.Assets;
 import java.awt.Graphics;
 import java.util.ArrayList;
@@ -19,10 +19,14 @@ import tiles.Tile;
  */
 public class Player extends Creature {
 
+    //Set size of the character
+    public static final int DEFAULT_CREATURE_WIDTH = 130;
+    public static final int DEFAULT_CREATURE_HEIGHT = 111;
+
     final float BULLETSPEED = 5f;
     final int ATTACKDAMAGE = 30;
     int forward = 0;
-    boolean isRight = true, shootAni = false, firstShoot = false;
+    boolean isRight = true, shootAni = false, firstShoot = false, normalBulletShoot = false;
     boolean jump = false, fall = false, flag = true, dead = false, attackAni = false;
     float jumpspeed = 10; //Check how high the player can jump
     int jumpTimer = 0; //Make the player can jump again using this timer
@@ -30,9 +34,10 @@ public class Player extends Creature {
     int preTime, time;
     boolean deadAni = false, first = false, hit = false, bulletShoot = false, firstHit = false;
     ArrayList<Bullet> bullets = new ArrayList<>();
+    ArrayList<NormalBullet> normalBullets = new ArrayList<>();
 
     public Player(Handler handler, float x, float y) {
-        super(handler, x, y);
+        super(handler, x, y, DEFAULT_CREATURE_WIDTH, DEFAULT_CREATURE_HEIGHT);
 
         bounds.x = 32;
         bounds.y = 32;
@@ -65,6 +70,7 @@ public class Player extends Creature {
             x = 100;
 
             bullets.clear();
+            normalBullets.clear();
 
             for (Enemy e : enemis) {
                 e.restart = true;
@@ -121,7 +127,7 @@ public class Player extends Creature {
 
         hit = false;
 
-        if (handler.getKeyManager().shoot) {
+        if (handler.getKeyManager().magicalShoot) {
             if (!bulletShoot) {
                 Bullet bullet = new Bullet(handler, x, y, isRight);
                 bullets.add(bullet);
@@ -131,6 +137,17 @@ public class Player extends Creature {
             bulletShoot = false;
         }
 
+        if (handler.getKeyManager().normalShoot && !handler.getKeyManager().magicalShoot) {
+            if (!normalBulletShoot) {
+                System.out.println(x);
+                NormalBullet normalBullet = new NormalBullet(handler, x, y, isRight);
+                normalBullets.add(normalBullet);
+                normalBulletShoot = true;
+            }
+        } else {
+            normalBulletShoot = false;
+        }
+
         if (!handler.getKeyManager().attack) {
             for (Enemy e : enemis) {
                 e.hitByPlayer = false;
@@ -138,7 +155,8 @@ public class Player extends Creature {
             first = false;
             attackAni = false;
         }
-        if (!handler.getKeyManager().shoot) {
+
+        if (!handler.getKeyManager().magicalShoot && !handler.getKeyManager().normalShoot) {
             firstShoot = false;
             shootAni = false;
         }
@@ -164,41 +182,68 @@ public class Player extends Creature {
                 }
             }
         }
-        if (bullets.size() > 0) {
-            for (Bullet b : bullets) {
-                b.update();
-                if (isRight) {
-                    for (Enemy e : enemis) {
-                        if (b.getX() > e.getX() - 35 && b.getY() > e.getY() - 60 && b.getY() < e.getY() + 60) {
-                            e.dead = true;
-                            e.deadTime = time;
-                        }
+        for (Bullet b : bullets) {
+            b.update();
+            if (isRight) {
+                for (Enemy e : enemis) {
+                    if (b.getX() > e.getX() - 35 && b.getY() > e.getY() - 60 && b.getY() < e.getY() + 60) {
+                        e.dead = true;
+                        e.deadTime = time;
                     }
-                } else {
-                    for (Enemy e : enemis) {
-                        if (b.getX() > e.getX() - 15 && b.getY() > e.getY() - 60 && b.getY() < e.getY() + 60) {
-                            e.dead = true;
-                            e.deadTime = time;
-                        }
+                }
+            } else {
+                for (Enemy e : enemis) {
+                    if (b.getX() > e.getX() - 15 && b.getY() > e.getY() - 60 && b.getY() < e.getY() + 60) {
+                        e.dead = true;
+                        e.deadTime = time;
+                    }
+                }
+            }
+        }
+
+        for (NormalBullet b : normalBullets) {
+            b.update();
+            if (isRight) {
+                for (Enemy e : enemis) {
+                    if (b.getX() > e.getX() - 35 && b.getY() > e.getY() - 60 && b.getY() < e.getY() + 60) {
+                        e.dead = true;
+                        e.deadTime = time;
+                    }
+                }
+            } else {
+                for (Enemy e : enemis) {
+                    if (b.getX() > e.getX() - 15 && b.getY() > e.getY() - 60 && b.getY() < e.getY() + 60) {
+                        e.dead = true;
+                        e.deadTime = time;
                     }
                 }
             }
         }
 
         for (int i = 0; i < bullets.size(); i++) {
-            if (Math.abs(bullets.get(i).getX() - x) > 200) {
+            if (Math.abs(bullets.get(i).getX() - x) > 300) {
                 bullets.remove(i);
             }
         }
+
+//        for (int i = 0; i < normalBullets.size(); i++) {
+//           int tx = (int) (normalBullets.get(i).getX() + normalBullets.get(i).xMove + normalBullets.get(i).bounds.x + normalBullets.get(i).bounds.width) / Tile.TILEWIDTH;
+//            if (Math.abs(normalBullets.get(i).getX() - x) > 200 || collisionWithTile(tx, (int) (normalBullets.get(i).getY() + normalBullets.get(i).bounds.y) / Tile.TILEHEIGHT)
+//                    || collisionWithTile(tx, (int) (normalBullets.get(i).getY() + normalBullets.get(i).bounds.y +normalBullets.get(i).bounds.height))) {
+//                normalBullets.remove(i);
+//            }
+//        }
     }
 
     public void render(Graphics g, int time) {
         this.time = time;
 
-        if (bullets.size() > 0) {
-            for (Bullet b : bullets) {
-                b.render(g, time, x, bullets);
-            }
+        for (Bullet b : bullets) {
+            b.render(g, time);
+        }
+
+        for (NormalBullet b : normalBullets) {
+            b.render(g, time);
         }
 
         if (dead) {
@@ -246,7 +291,7 @@ public class Player extends Creature {
             } else {
                 animationIdleLeft(time / 3, g);
             }
-        } else if (handler.getKeyManager().shoot) {
+        } else if (handler.getKeyManager().magicalShoot || handler.getKeyManager().normalShoot) {
             if (!firstShoot) {
                 firstShoot = true;
                 preTime = time;
@@ -274,20 +319,20 @@ public class Player extends Creature {
             }
         }
 
-        if ((jump || fall) && !handler.getKeyManager().attack && !handler.getKeyManager().shoot) {
+        if ((jump || fall) && !handler.getKeyManager().attack && !handler.getKeyManager().magicalShoot && !handler.getKeyManager().normalShoot) {
             if (isRight) {
                 animationJumpRight(time, g);
             } else {
                 animationJumpLeft(time, g);
             }
-        } else if (handler.getKeyManager().right && !handler.getKeyManager().attack && !handler.getKeyManager().shoot) {
+        } else if (handler.getKeyManager().right && !handler.getKeyManager().attack && !handler.getKeyManager().magicalShoot && !handler.getKeyManager().normalShoot) {
             animationRunRight(time, g);
-        } else if (handler.getKeyManager().left && !handler.getKeyManager().attack && !handler.getKeyManager().shoot) {
+        } else if (handler.getKeyManager().left && !handler.getKeyManager().attack && !handler.getKeyManager().magicalShoot && !handler.getKeyManager().normalShoot) {
             animationRunLeft(time, g);
             isRight = false;
-        } else if (isRight && !handler.getKeyManager().attack && !handler.getKeyManager().shoot) {
+        } else if (isRight && !handler.getKeyManager().attack && !handler.getKeyManager().magicalShoot && !handler.getKeyManager().normalShoot) {
             animationIdleRight(time / 3, g);
-        } else if (!handler.getKeyManager().attack && !handler.getKeyManager().shoot) {
+        } else if (!handler.getKeyManager().attack && !handler.getKeyManager().magicalShoot && !handler.getKeyManager().normalShoot) {
             animationIdleLeft(time / 3, g);
 
         }
