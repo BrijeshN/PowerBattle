@@ -15,7 +15,7 @@ import java.awt.event.KeyListener;
 public class KeyManager implements KeyListener {
 
     private boolean[] keys;
-    public boolean up, down, left, right, attack, shoot, restart;
+    public boolean up, down, left, right, attack, magicalShoot, restart, normalShoot;
 
     public KeyManager() {
 
@@ -30,8 +30,9 @@ public class KeyManager implements KeyListener {
         left = keys[KeyEvent.VK_A];
         right = keys[KeyEvent.VK_D];
         attack = keys[KeyEvent.VK_J];
-        shoot = keys[KeyEvent.VK_K];
+        magicalShoot = keys[KeyEvent.VK_L];
         restart = keys[KeyEvent.VK_R];
+        normalShoot = keys[KeyEvent.VK_K];
 
     }
 
