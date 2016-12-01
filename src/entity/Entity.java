@@ -22,7 +22,7 @@ public abstract class Entity {
     
     protected Handler handler;
     
-    protected Rectangle bounds;
+    public Rectangle bounds;
     
     public Entity(Handler handler, float x, float y, int width, int height){
         this.handler = handler;
