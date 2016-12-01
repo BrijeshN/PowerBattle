@@ -24,7 +24,7 @@ public class Player extends Creature {
     public static final int DEFAULT_CREATURE_HEIGHT = 111;
 
     final float BULLETSPEED = 5f;
-    final int ATTACKDAMAGE = 60, DIEHEIGHT = 1200;
+    final int ATTACKDAMAGE = 60, DIEHEIGHT = 1600;
     int forward = 0;
     boolean isRight = true, shootAni = false, firstShoot = false, normalBulletShoot = false;
     boolean jump = false, fall = false, flag = true, dead = false, attackAni = false;

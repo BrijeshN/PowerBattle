@@ -23,7 +23,7 @@ public class GameState extends State {
     final int ENEMYNUM = 4;
     public static final int[][] ENEMYPOS = {{290, 1080}, {500, 1080}, {664, 1080}, {980, 1080}};
     public static final int PLAYER_SPAWN_X_POSITION = 150;
-    public static final int PLAYER_SPAWN_Y_POSITION = 1080;
+    public static final int PLAYER_SPAWN_Y_POSITION = 1475;
 
     public ArrayList<Enemy> enemis;
 
