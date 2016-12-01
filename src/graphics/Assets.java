@@ -87,10 +87,10 @@ public class Assets {
     }
 
     public static void initBullet() {
-        bullet = ImageLoader.loadImage("/BulletSprite.png");
-        bulletLeft = ImageLoader.loadImage("/BulletLeftSprite.png");
-        normalBullet = ImageLoader.loadImage("/bullet.jpg");
-        normalBulletLeft = ImageLoader.loadImage("/bulletLeft.jpg");
+        bullet = ImageLoader.loadImage("/Bullet/magicalBullet.png");
+        bulletLeft = ImageLoader.loadImage("/Bullet/magicalBulletLeft.png");
+        normalBullet = ImageLoader.loadImage("/Bullet/regBullet.png");
+        normalBulletLeft = ImageLoader.loadImage("/Bullet/regBulletLeft.png");
     }
 
     public static void initTile() {
