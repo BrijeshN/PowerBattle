@@ -27,6 +27,8 @@ public class Assets {
 
     public static BufferedImage empty, invisibleWall;
 
+    public static BufferedImage heartImage, ammo, magicalAmmo;
+
     public static BufferedImage grass1, grass2, grass3;
     public static BufferedImage dirt1, dirt2, dirt3, dirt4, dirt5, dirt6, dirt7, dirt8;
     public static BufferedImage floatDirt1, floatDirt2, floatDirt3;
@@ -45,6 +47,10 @@ public class Assets {
         initTile();
         initPlayerImages();
         initEnemyImages();
+        heartImage = ImageLoader.loadImage("/heart.png");
+        ammo = ImageLoader.loadImage("/Bullet/ammo.png");
+        magicalAmmo = ImageLoader.loadImage("/Bullet/magicalAmmo.png");
+
     }
 
     public static void initEnemyImages() {
@@ -130,9 +136,9 @@ public class Assets {
 
         SpriteSheet playerRight = new SpriteSheet(ImageLoader.loadImage("/Character/PlayerSprite.png"));
         SpriteSheet playerLeft = new SpriteSheet(ImageLoader.loadImage("/CharacterLeft/PlayerSpriteLeft.png"));
-        
+
         heart = ImageLoader.loadImage("/heart.png");
-        
+
         for (int i = 0; i < 5; i++) {
             runRight[i] = playerRight.crop(WIDTH * i, HEIGHT * 5, WIDTH, HEIGHT);
         }

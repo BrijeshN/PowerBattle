@@ -19,15 +19,17 @@ public class Enemy extends Creature {
     public static final int DEFAULT_ZOMBIE_HEIGHT = 111;
 
     boolean dead = false, deadAni = false, first = false, restart = false;
-    boolean isRight = false, attack = false, hit = false, hitByPlayer = false;
-    boolean magicalBulletHit = false, normalBulletHit = false;
+    boolean isRight = false, attack = false, hitRight = false, hitByPlayer = false;
+    boolean magicalBulletHit = false, normalBulletHit = false, hitLeft = false;
     int preTime, action = 0;
     final int IDLE = 0, MOVELEFT = 1, MOVERIGHT = 2;
     final float MOVESPEED = 1.0f, JUMPSPEED = 10f;
     Random r = new Random();
-    int time = 0;
+    int time = 0, i = 0;
     boolean firstCall = true, notDraw = false, aimPlayer = false, deadTimeSet = false;
     int id, deadTime = 0;
+    boolean isAmmo = false, pickedByPlayer = false, isHeart = false, isMagicalAmmo = false;
+    boolean isDraw = false, hitByMagicalBullet = false;
 
     public Enemy(Handler handler, float x, float y, int id) {
         super(handler, x, y, DEFAULT_ZOMBIE_WIDTH, DEFAULT_ZOMBIE_HEIGHT);
@@ -59,10 +61,21 @@ public class Enemy extends Creature {
         }
     }
 
+    public void doAction() {
+        if (firstCall) {
+            firstCall = false;
+            getAction();
+            action(action);
+            attack = r.nextInt(5) != 1;
+        }
+    }
+
     public void update(Player player) {
         if (restart) {
             resetPos();
             attack = dead = notDraw = deadAni = first = restart = deadTimeSet = false;
+            pickedByPlayer = isAmmo = isHeart = isMagicalAmmo = isDraw = false;
+            hitByMagicalBullet = false;
             action = IDLE;
             health = 100;
         }
@@ -76,7 +89,7 @@ public class Enemy extends Creature {
         }
 
         if (dead) {
-            if (time / 10 - deadTime / 10 == 3) {
+            if (pickedByPlayer) {
                 notDraw = true;
                 x = -100;
                 y = -100;
@@ -94,72 +107,61 @@ public class Enemy extends Creature {
                 action = MOVELEFT;
             } else if (!isRight && x < player.getX()) {
                 action = MOVERIGHT;
+            } else if (isRight) {
+                action = MOVERIGHT;
+            } else {
+                action = MOVELEFT;
             }
+            if (timeElapse % 3 == 0) {
+                if (!firstCall) {
+                    firstCall = true;
+                    attack = r.nextInt(10) != 1;
+                }
+            }
+            System.out.println(action);
             action(action);
         } else if (id % 2 == 0) {
             if (timeElapse % 2 == 0) {
-                if (firstCall) {
-                    firstCall = false;
-                    getAction();
-                    action(action);
-                    if (r.nextInt(3) != 1) {
-                        attack = false;
-                    } else {
-                        attack = false;
-                    }
-                }
+                doAction();
             } else {
                 firstCall = true;
             }
         } else if (id % 3 == 0) {
             if (timeElapse % 3 == 0) {
-                if (firstCall) {
-                    firstCall = false;
-                    getAction();
-                    action(action);
-                    if (r.nextInt(3) != 1) {
-                        attack = false;
-                    } else {
-                        attack = false;
-                    }
-                }
+                doAction();
             } else {
                 firstCall = true;
             }
         } else if (timeElapse % 4 == 0) {
-            if (firstCall) {
-                firstCall = false;
-                getAction();
-                action(action);
-                if (r.nextInt(3) != 1) {
-                    attack = false;
-                } else {
-                    attack = false;
-                }
-            }
+            doAction();
         } else {
             firstCall = true;
         }
 
-        hit = false;
         if (attack) {
 
             if (isRight) {
                 if (x > player.getX() - 55 && x < player.getX() + 15 && y > player.getY() - 60 && y < player.getY() + 60) {
-                    hit = true;
-                    player.dead = true;
-                    player.jump = false;
+                    if (!hitRight) {
+                        hitRight = true;
+                        player.health -= 1;
+                    }
+                } else {
+                    hitRight = false;
                 }
 
             } else if (x > player.getX() - 15 && x < player.getX() + 55 && y > player.getY() - 60 && y < player.getY() + 60) {
-                hit = true;
-                player.dead = true;
-                player.jump = false;
+                if (!hitLeft) {
+                    hitLeft = true;
+                    player.health -= 1;
+                }
+            } else {
+                hitLeft = false;
             }
 
         }
-
         yMove = JUMPSPEED;
+
         resetState();
 
         move();
@@ -345,7 +347,25 @@ public class Enemy extends Creature {
                 } else {
                     animationDeadLeft(time, g);
                 }
+            } else {
+
+                if (!isDraw) {
+                    i = r.nextInt(20);
+                    isDraw = true;
+                }
+                if (i % 2 == 0 && i < 20) {
+
+                    g.drawImage(Assets.ammo, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset() + 40), 100, 100, null);
+                    isAmmo = true;
+                } else if (i == 1 || i == 3) {
+                    g.drawImage(Assets.magicalAmmo, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset() + 40), 60, 60, null);
+                    isMagicalAmmo = true;
+                } else if (i < 10) {
+                    g.drawImage(Assets.heartImage, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset() + 50), null);
+                    isHeart = true;
+                }
             }
+
             return;
         }
 
