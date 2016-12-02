@@ -21,7 +21,7 @@ public abstract class Creature extends Entity {
 
     //Set size of the character
 
-    protected int health;
+    public int health;
     protected float runSpeed;
     boolean hitWall = false;
 
