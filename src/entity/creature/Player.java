@@ -20,8 +20,8 @@ import tiles.Tile;
 public class Player extends Creature {
 
     //Set size of the character
-    public static final int DEFAULT_CREATURE_WIDTH = 130;
-    public static final int DEFAULT_CREATURE_HEIGHT = 111;
+    public static final int DEFAULT_PLAYER_WIDTH = 130;
+    public static final int DEFAULT_PLAYER_HEIGHT = 111;
 
     final float BULLETSPEED = 5f;
     final int ATTACKDAMAGE = 60, DIEHEIGHT = 1600;
@@ -37,7 +37,7 @@ public class Player extends Creature {
     ArrayList<NormalBullet> normalBullets = new ArrayList<>();
 
     public Player(Handler handler, float x, float y) {
-        super(handler, x, y, DEFAULT_CREATURE_WIDTH, DEFAULT_CREATURE_HEIGHT);
+        super(handler, x, y, DEFAULT_PLAYER_WIDTH, DEFAULT_PLAYER_HEIGHT);
 
         bounds.x = 32;
         bounds.y = 32;
@@ -46,6 +46,7 @@ public class Player extends Creature {
     }
 
     public void update(ArrayList<Enemy> enemies) {
+        System.out.println(x + " " + y);
 
         getInput(enemies);
         move();
@@ -98,6 +99,14 @@ public class Player extends Creature {
             return;
         }
 
+        int ty = (int) (y + yMove + bounds.y + bounds.height) / Tile.TILEHEIGHT;
+        if (collisionWithTile((int) (x + bounds.x) / Tile.TILEWIDTH, ty)
+                || collisionWithTile((int) (x + bounds.x + bounds.width) / Tile.TILEWIDTH, ty)) {
+            fall = false;
+        } else {
+            fall = true;
+        }
+
         xMove = 0;
         if (handler.getKeyManager().up) {
             if (!jump && !fall) {
@@ -125,12 +134,6 @@ public class Player extends Creature {
             }
         } else {
             yMove = jumpspeed;
-        }
-
-        int ty = (int) (y + yMove + bounds.y + bounds.height) / Tile.TILEHEIGHT;
-        if (collisionWithTile((int) (x + bounds.x) / Tile.TILEWIDTH, ty)
-                || collisionWithTile((int) (x + bounds.x + bounds.width) / Tile.TILEWIDTH, ty)) {
-            fall = false;
         }
 
         hit = false;

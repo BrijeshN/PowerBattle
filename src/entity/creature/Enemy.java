@@ -14,8 +14,8 @@ import state.GameState;
 public class Enemy extends Creature {
 
     //Set size of the character
-    public static final int DEFAULT_CREATURE_WIDTH = 130;
-    public static final int DEFAULT_CREATURE_HEIGHT = 111;
+    public static final int DEFAULT_ZOMBIE_WIDTH = 130;
+    public static final int DEFAULT_ZOMBIE_HEIGHT = 111;
 
     boolean dead = false, deadAni = false, first = false, restart = false;
     boolean isRight = false, attack = false, hit = false, hitByPlayer = false;
@@ -24,11 +24,11 @@ public class Enemy extends Creature {
     final float MOVESPEED = 1.0f, JUMPSPEED = 10f;
     Random r = new Random();
     int time = 0;
-    boolean firstCall = true, notDraw = false;
+    boolean firstCall = true, notDraw = false, aimPlayer = false;
     int id, deadTime = 0;
 
     public Enemy(Handler handler, float x, float y, int id) {
-        super(handler, x, y, DEFAULT_CREATURE_WIDTH, DEFAULT_CREATURE_HEIGHT);
+        super(handler, x, y, DEFAULT_ZOMBIE_WIDTH, DEFAULT_ZOMBIE_HEIGHT);
         this.id = id;
         health = 100;
 
@@ -36,6 +36,15 @@ public class Enemy extends Creature {
         bounds.y = 32;
         bounds.width = 40;
         bounds.height = 55;
+
+    }
+
+    public void aimForPlayer(Player player) {
+        if (Math.abs(player.getX() - x) < 200 && Math.abs(player.getY() - y) < 20) {
+            aimPlayer = Math.abs(player.getX() - x) >= 20;
+        } else {
+            aimPlayer = false;
+        }
 
     }
 
@@ -77,10 +86,50 @@ public class Enemy extends Creature {
 
         int timeElapse = time / 10;
 
-        if (timeElapse % (id + 2) == 0) {
+        aimForPlayer(player);
+        //System.out.println(aimPlayer);
+        if (aimPlayer) {
+            if (isRight && x > player.getX()) {
+                action = MOVELEFT;
+            } else if (!isRight && x < player.getX()) {
+                action = MOVERIGHT;
+            }
+            action(action);
+        } else if (id % 2 == 0) {
+            if (timeElapse % 2 == 0) {
+                if (firstCall) {
+                    firstCall = false;
+                    getAction();
+                    action(action);
+                    if (r.nextInt(3) != 1) {
+                        attack = false;
+                    } else {
+                        attack = false;
+                    }
+                }
+            } else {
+                firstCall = true;
+            }
+        } else if (id % 3 == 0) {
+            if (timeElapse % 3 == 0) {
+                if (firstCall) {
+                    firstCall = false;
+                    getAction();
+                    action(action);
+                    if (r.nextInt(3) != 1) {
+                        attack = false;
+                    } else {
+                        attack = false;
+                    }
+                }
+            } else {
+                firstCall = true;
+            }
+        } else if (timeElapse % 4 == 0) {
             if (firstCall) {
                 firstCall = false;
                 getAction();
+                action(action);
                 if (r.nextInt(3) != 1) {
                     attack = false;
                 } else {
@@ -90,6 +139,7 @@ public class Enemy extends Creature {
         } else {
             firstCall = true;
         }
+
         hit = false;
         if (attack) {
 
@@ -116,62 +166,139 @@ public class Enemy extends Creature {
 
     public void resetState() {
         if (id == 0) {
-            if (x + xMove > 320) {
-                xMove = 0;
-                isRight = false;
-                action = IDLE;
-            }
-
-            if (x + xMove < 100) {
-                xMove = 0;
-                isRight = true;
-                action = IDLE;
-            }
-        }
-
-        if (id == 1) {
-            if (x + xMove < 450) {
+            if (x + xMove > 582) {
                 xMove = 0;
                 action = IDLE;
             }
 
-            if (x + xMove > 577) {
+            if (x + xMove < 132) {
                 xMove = 0;
-                isRight = false;
                 action = IDLE;
             }
         }
 
-        if (id == 2) {
-            if (x + xMove < 450) {
+        if (id == 1 || id == 2) {
+            if (x + xMove > 1890) {
                 xMove = 0;
                 action = IDLE;
             }
 
-            if (x + xMove > 720) {
+            if (x + xMove < 1500) {
                 xMove = 0;
-                isRight = false;
                 action = IDLE;
             }
         }
 
         if (id == 3) {
-            if (x + xMove < 865) {
+            if (x + xMove < 2661) {
                 xMove = 0;
                 action = IDLE;
             }
 
-            if (x + xMove > 1097) {
+            if (x + xMove > 2799) {
                 xMove = 0;
-                isRight = false;
+                action = IDLE;
+            }
+        }
+
+        if (id == 4) {
+            if (x + xMove < 3183) {
+                xMove = 0;
+                action = IDLE;
+            }
+
+            if (x + xMove > 3567) {
+                xMove = 0;
+                action = IDLE;
+            }
+        }
+
+        if (id == 5) {
+            if (x + xMove < 2406) {
+                xMove = 0;
+                action = IDLE;
+            }
+
+            if (x + xMove > 2673) {
+                xMove = 0;
+                action = IDLE;
+            }
+        }
+
+        if (id == 6) {
+            if (x + xMove < 1785) {
+                xMove = 0;
+                action = IDLE;
+            }
+
+            if (x + xMove > 2277) {
+                xMove = 0;
+                action = IDLE;
+            }
+        }
+
+        if (id == 7) {
+            if (x + xMove < 1104) {
+                xMove = 0;
+                action = IDLE;
+            }
+
+            if (x + xMove > 1623) {
+                xMove = 0;
+                action = IDLE;
+            }
+        }
+
+        if (id == 8) {
+            if (x + xMove < 264) {
+                xMove = 0;
+                action = IDLE;
+            }
+
+            if (x + xMove > 585) {
+                xMove = 0;
+                action = IDLE;
+            }
+        }
+
+        if (id == 9) {
+            if (x + xMove < 333) {
+                xMove = 0;
+                action = IDLE;
+            }
+
+            if (x + xMove > 717) {
+                xMove = 0;
+                action = IDLE;
+            }
+        }
+
+        if (id == 10) {
+            if (x + xMove < 1365) {
+                xMove = 0;
+                action = IDLE;
+            }
+
+            if (x + xMove > 1677) {
+                xMove = 0;
+                action = IDLE;
+            }
+        }
+
+        if (id == 11) {
+            if (x + xMove < 1833) {
+                xMove = 0;
+                action = IDLE;
+            }
+
+            if (x + xMove > 2145) {
+                xMove = 0;
                 action = IDLE;
             }
         }
     }
 
-    public void getAction() {
-
-        action = r.nextInt(3);
+    public void action(int action) {
 
         switch (action) {
             case MOVELEFT:
@@ -188,6 +315,11 @@ public class Enemy extends Creature {
             default:
                 break;
         }
+    }
+
+    public void getAction() {
+
+        action = r.nextInt(3);
     }
 
     public void stop() {
