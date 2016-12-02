@@ -33,7 +33,7 @@ public class GameState extends State {
 
     public GameState(Handler handler) {
         super(handler);
-        map = new Map(handler, "res/Maps/map1.txt");
+        map = new Map(handler, "map1.txt");
 
         handler.setMap(map);
         enemis = new ArrayList<>();

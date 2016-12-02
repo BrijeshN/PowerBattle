@@ -254,14 +254,12 @@ public class Player extends Creature {
                 if (Math.abs(b.getX() - e.getX()) < 85 && b.getY() > e.getY() - 60 && b.getY() < e.getY() + 60) {
                     if (!e.hitByMagicalBullet) {
                         b.hitEnemy = false;
-                        System.out.println(b.hitEnemy);
                     }
                     if (!b.hitEnemy) {
                         b.hitEnemy = true;
                         e.health -= MAGICALBULLETDAMAGE;
                         if (!e.hitByMagicalBullet) {
                             e.hitByMagicalBullet = true;
-                            System.out.println(b.hitEnemy);
                         }
                     }
                 } else {

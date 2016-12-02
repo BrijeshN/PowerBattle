@@ -107,8 +107,8 @@ public class Assets {
     }
 
     public static void initTile() {
-        SpriteSheet tile = new SpriteSheet(ImageLoader.loadImage("/Map/mapSprite.png"));
-        SpriteSheet tile2 = new SpriteSheet(ImageLoader.loadImage("/Map/png/waterSprite.png"));
+        SpriteSheet tile = new SpriteSheet(ImageLoader.loadImage("/MapTile/mapSprite.png"));
+        SpriteSheet tile2 = new SpriteSheet(ImageLoader.loadImage("/MapTile/png/waterSprite.png"));
 
         grass1 = tile.crop(0, 0, w, h);
         grass2 = tile.crop(w * 2, h * 2, w, h);
