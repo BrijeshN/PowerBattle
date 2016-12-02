@@ -20,12 +20,12 @@ public class GameState extends State {
     private Player player;
     private Map map;
     private Enemy[] enemy;
-    final int ENEMYNUM = 12;
+    public static final int ENEMYNUM = 12;
     public static final int[][] ENEMYPOS = {{500, 1455}, {1614, 1205}, {1776, 1205}, {2739, 1455},
     {3423, 1455}, {2520, 1075}, {2004, 685}, {1401, 685}, {369, 805}, {528, 545}, {1590, 160}
     , {1956, 160}};
-    public static final int PLAYER_SPAWN_X_POSITION = 1590;
-    public static final int PLAYER_SPAWN_Y_POSITION = 160;
+    public static final int PLAYER_SPAWN_X_POSITION = 150;
+    public static final int PLAYER_SPAWN_Y_POSITION = 1455;
 
     public ArrayList<Enemy> enemis;
 

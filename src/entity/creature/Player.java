@@ -6,6 +6,7 @@
 package entity.creature;
 
 import graphics.Assets;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import javax.swing.Timer;
@@ -23,8 +24,10 @@ public class Player extends Creature {
     public static final int DEFAULT_PLAYER_WIDTH = 130;
     public static final int DEFAULT_PLAYER_HEIGHT = 111;
 
+    int numOfNormalBullet = 25, numOfMagicalBullet = 5;
+
     final float BULLETSPEED = 5f;
-    final int ATTACKDAMAGE = 60, DIEHEIGHT = 1600;
+    final int ATTACKDAMAGE = 50, DIEHEIGHT = 1600, NORMALBULLETDAMAGE = 25, MAGICALBULLETDAMAGE = 75;
     int forward = 0;
     boolean isRight = true, shootAni = false, firstShoot = false, normalBulletShoot = false;
     boolean jump = false, fall = false, flag = true, dead = false, attackAni = false;
@@ -38,7 +41,7 @@ public class Player extends Creature {
 
     public Player(Handler handler, float x, float y) {
         super(handler, x, y, DEFAULT_PLAYER_WIDTH, DEFAULT_PLAYER_HEIGHT);
-
+        health = 5;
         bounds.x = 32;
         bounds.y = 32;
         bounds.width = 40;
@@ -46,7 +49,7 @@ public class Player extends Creature {
     }
 
     public void update(ArrayList<Enemy> enemies) {
-        System.out.println(x + " " + y);
+        // System.out.println(x + " " + y);
 
         getInput(enemies);
         move();
@@ -65,12 +68,18 @@ public class Player extends Creature {
         if (handler.getKeyManager().cheatMode) {
             jumpspeed = 15;
             runSpeed = 6.0f;
+            numOfMagicalBullet = 999;
+            numOfNormalBullet = 999;
         } else if (handler.getKeyManager().cheatModeOff) {
             jumpspeed = 10;
             runSpeed = 3.0f;
+            numOfMagicalBullet = 5;
+            numOfNormalBullet = 25;
         }
 
         if (handler.getKeyManager().restart) {
+            numOfMagicalBullet = 5;
+            numOfNormalBullet = 25;
             first = false;
             isRight = true;
             dead = false;
@@ -138,10 +147,11 @@ public class Player extends Creature {
 
         hit = false;
 
-        if (handler.getKeyManager().magicalShoot) {
+        if (handler.getKeyManager().magicalShoot && numOfMagicalBullet > 0) {
             if (!bulletShoot) {
                 MagicalBullet bullet = new MagicalBullet(handler, x, y, isRight);
                 bullets.add(bullet);
+                numOfMagicalBullet--;
                 bulletShoot = true;
             }
         } else {
@@ -149,9 +159,10 @@ public class Player extends Creature {
         }
 
         if (handler.getKeyManager().normalShoot && !handler.getKeyManager().magicalShoot) {
-            if (!normalBulletShoot) {
+            if (!normalBulletShoot && numOfNormalBullet > 0) {
                 NormalBullet normalBullet = new NormalBullet(handler, x, y, isRight);
                 normalBullets.add(normalBullet);
+                numOfNormalBullet--;
                 normalBulletShoot = true;
             }
         } else {
@@ -178,16 +189,16 @@ public class Player extends Creature {
                         if (!e.hitByPlayer) {
                             e.hitByPlayer = true;
                             e.health -= ATTACKDAMAGE;
-                            e.deadTime = time;
                         }
                     }
                 }
             } else {
                 for (Enemy e : enemis) {
                     if (x > e.getX() - 15 && x < e.getX() + 75 && y > e.getY() - 60 && y < e.getY() + 60) {
-                        e.hitByPlayer = true;
-                        e.health -= ATTACKDAMAGE;
-                        e.deadTime = time;
+                        if (!e.hitByPlayer) {
+                            e.hitByPlayer = true;
+                            e.health -= ATTACKDAMAGE;
+                        }
                     }
                 }
             }
@@ -196,9 +207,11 @@ public class Player extends Creature {
             b.update();
 
             for (Enemy e : enemis) {
-                if (Math.abs(b.getX() - e.getX()) < 105 && b.getY() > e.getY() - 60 && b.getY() < e.getY() + 60) {
-                    e.dead = true;
-                    e.deadTime = time;
+                if (Math.abs(b.getX() - e.getX()) < 85 && b.getY() > e.getY() - 60 && b.getY() < e.getY() + 60) {
+                    if (!b.hitEnemy) {
+                        b.hitEnemy = true;
+                        e.health -= MAGICALBULLETDAMAGE;
+                    }
                 }
             }
 
@@ -208,9 +221,11 @@ public class Player extends Creature {
             b.update();
 
             for (Enemy e : enemis) {
-                if (Math.abs(b.getX() - e.getX()) < 75 && b.getY() > e.getY() - 60 && b.getY() < e.getY() + 60) {
-                    e.dead = true;
-                    e.deadTime = time;
+                if (Math.abs(b.getX() - e.getX()) < 45 && b.getY() > e.getY() - 60 && b.getY() < e.getY() + 60) {
+                    if (!b.hitEnemy) {
+                        b.hitEnemy = true;
+                        e.health -= NORMALBULLETDAMAGE;
+                    }
                 }
             }
 
@@ -223,7 +238,7 @@ public class Player extends Creature {
         }
 
         for (int i = 0; i < normalBullets.size(); i++) {
-            if (normalBullets.get(i).distance > 200 || normalBullets.get(i).hitWall) {
+            if (normalBullets.get(i).distance > 200 || normalBullets.get(i).hitWall || normalBullets.get(i).hitEnemy) {
                 normalBullets.remove(i);
             }
         }
@@ -231,6 +246,12 @@ public class Player extends Creature {
 
     public void render(Graphics g, int time) {
         this.time = time;
+
+        //g.setColor(Color.GRAY);
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 17));
+        g.drawString("Margical Bullets remain:" + numOfMagicalBullet, (int) (x - handler.getGameCamera().getxOffset() - 430), (int) (y - handler.getGameCamera().getyOffset() - 130));
+        g.drawString("Normal   Bullets remain:" + numOfNormalBullet, (int) (x - handler.getGameCamera().getxOffset() - 430), (int) (y - handler.getGameCamera().getyOffset() - 115));
+        g.drawImage(Assets.heart, (int) (x - handler.getGameCamera().getxOffset() - 430), (int) (y - handler.getGameCamera().getyOffset() - 105), width, height, null);
 
         for (MagicalBullet b : bullets) {
             b.render(g, time);

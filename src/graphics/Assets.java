@@ -16,23 +16,21 @@ public class Assets {
 
     private static final int w = 128;
     private static final int h = 128;
-    
+
     private static final int waterWidth = 128;
     private static final int waterHeight = 99;
-
 
     public static BufferedImage runRight[], meleeRight[], runLeft[], meleeLeft[], shootLeft[], shootRight[];
     public static BufferedImage jumpRight[], jumpLeft[], deadLeft[], deadRight[];
 
     public static BufferedImage idleRight[], idleLeft[];
-    
+
     public static BufferedImage empty, invisibleWall;
 
-    
     public static BufferedImage grass1, grass2, grass3;
     public static BufferedImage dirt1, dirt2, dirt3, dirt4, dirt5, dirt6, dirt7, dirt8;
     public static BufferedImage floatDirt1, floatDirt2, floatDirt3;
-    public static BufferedImage water1;
+    public static BufferedImage water1, heart;
 
     public static BufferedImage bullet, bulletLeft;
     public static BufferedImage normalBullet, normalBulletLeft;
@@ -61,7 +59,6 @@ public class Assets {
 
         SpriteSheet zombieRight = new SpriteSheet(ImageLoader.loadImage("/Zombies/ZombiesSprite.png"));
         SpriteSheet zombieLeft = new SpriteSheet(ImageLoader.loadImage("/ZombiesLeft/ZombiesLeftSprite.png"));
-
         for (int i = 0; i < 8; i++) {
             zombieAttackRight[i] = zombieRight.crop(WIDTH * i, 0, WIDTH, ZOMBIEHIGHT);
         }
@@ -114,7 +111,7 @@ public class Assets {
         floatDirt2 = tile.crop(w, h, w, h);
         floatDirt3 = tile.crop(w * 2, h, w, h);
         water1 = tile2.crop(0, 0, waterWidth, waterHeight);
-  
+
     }
 
     public static void initPlayerImages() {
@@ -133,7 +130,9 @@ public class Assets {
 
         SpriteSheet playerRight = new SpriteSheet(ImageLoader.loadImage("/Character/PlayerSprite.png"));
         SpriteSheet playerLeft = new SpriteSheet(ImageLoader.loadImage("/CharacterLeft/PlayerSpriteLeft.png"));
-
+        
+        heart = ImageLoader.loadImage("/heart.png");
+        
         for (int i = 0; i < 5; i++) {
             runRight[i] = playerRight.crop(WIDTH * i, HEIGHT * 5, WIDTH, HEIGHT);
         }

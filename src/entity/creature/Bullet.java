@@ -19,7 +19,7 @@ public class Bullet extends Creature {
     public int bulletSpeed = 8, distance = 0;
 
     boolean remove = false, isRight = false, first = false;
-    boolean restart = false, isNormal = false;
+    boolean restart = false, isNormal = false, hitEnemy = false;
 
     public Bullet(Handler handler, float x, float y, int width, int height, boolean isNormal) {
         super(handler, x, y, width, height);

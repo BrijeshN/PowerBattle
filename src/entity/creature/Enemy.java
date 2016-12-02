@@ -6,6 +6,7 @@
 package entity.creature;
 
 import graphics.Assets;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Random;
 import powerbattle.Handler;
@@ -19,12 +20,13 @@ public class Enemy extends Creature {
 
     boolean dead = false, deadAni = false, first = false, restart = false;
     boolean isRight = false, attack = false, hit = false, hitByPlayer = false;
+    boolean magicalBulletHit = false, normalBulletHit = false;
     int preTime, action = 0;
     final int IDLE = 0, MOVELEFT = 1, MOVERIGHT = 2;
     final float MOVESPEED = 1.0f, JUMPSPEED = 10f;
     Random r = new Random();
     int time = 0;
-    boolean firstCall = true, notDraw = false, aimPlayer = false;
+    boolean firstCall = true, notDraw = false, aimPlayer = false, deadTimeSet = false;
     int id, deadTime = 0;
 
     public Enemy(Handler handler, float x, float y, int id) {
@@ -49,36 +51,35 @@ public class Enemy extends Creature {
     }
 
     public void resetPos() {
-        if (id == 0) {
-            x = GameState.ENEMYPOS[0][0];
-            y = GameState.ENEMYPOS[0][1];
-        }
-        if (id == 1) {
-            x = GameState.ENEMYPOS[1][0];
-            y = GameState.ENEMYPOS[1][1];
-        }
-
-        if (id == 2) {
-            x = GameState.ENEMYPOS[2][0];
-            y = GameState.ENEMYPOS[2][1];
+        for (int i = 0; i < GameState.ENEMYNUM; i++) {
+            if (id == i) {
+                x = GameState.ENEMYPOS[i][0];
+                y = GameState.ENEMYPOS[i][1];
+            }
         }
     }
 
     public void update(Player player) {
         if (restart) {
             resetPos();
-            attack = dead = notDraw = deadAni = first = restart = false;
+            attack = dead = notDraw = deadAni = first = restart = deadTimeSet = false;
             action = IDLE;
             health = 100;
         }
 
-        if (health < 0) {
+        if (health <= 0) {
             dead = true;
+            if (!deadTimeSet) {
+                deadTime = time;
+                deadTimeSet = true;
+            }
         }
 
         if (dead) {
             if (time / 10 - deadTime / 10 == 3) {
                 notDraw = true;
+                x = -100;
+                y = -100;
             }
             attack = false;
             return;
@@ -327,6 +328,7 @@ public class Enemy extends Creature {
     }
 
     public void render(Graphics g, int time) {
+
         this.time = time;
         if (notDraw) {
             return;
@@ -343,13 +345,15 @@ public class Enemy extends Creature {
                 } else {
                     animationDeadLeft(time, g);
                 }
-            } else if (isRight) {
-                g.drawImage(Assets.zombieDeadRight[11], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
-            } else {
-                g.drawImage(Assets.zombieDeadLeft[11], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
             }
             return;
         }
+
+        g.setColor(Color.white);
+        g.fillRect((int) (x - handler.getGameCamera().getxOffset() + 30), (int) (y - handler.getGameCamera().getyOffset()), 50, 15); //draws healthbar outline
+        g.setColor(Color.red);
+        g.fillRect((int) (x - handler.getGameCamera().getxOffset() + 30), (int) (y - handler.getGameCamera().getyOffset()), health / 2, 15); //draws health
+
         if (attack) {
             if (isRight) {
                 animationAttackRight(time, g);
