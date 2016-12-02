@@ -17,7 +17,7 @@ import tiles.Tile;
 public abstract class Creature extends Entity {
 
     public static final int DEFAULT_HEALTH = 10;
-    public static final float RUN_SPEED = 3.0f;
+    public static final float RUN_SPEED = 4.0f;
 
     //Set size of the character
 

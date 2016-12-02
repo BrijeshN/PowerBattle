@@ -72,7 +72,7 @@ public class Player extends Creature {
             numOfNormalBullet = 999;
         } else if (handler.getKeyManager().cheatModeOff) {
             jumpspeed = 10;
-            runSpeed = 3.0f;
+            runSpeed = Creature.RUN_SPEED;
             numOfMagicalBullet = 5;
             numOfNormalBullet = 25;
         }
