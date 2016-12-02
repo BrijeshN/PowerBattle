@@ -7,7 +7,11 @@ package state;
 
 import entity.creature.Enemy;
 import entity.creature.Player;
+import graphics.ImageLoader;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import map.Map;
 import powerbattle.Handler;
@@ -16,6 +20,8 @@ import powerbattle.Handler;
 // Item, enemy and player are entity
 // Entity wil contain all the entity
 public class GameState extends State {
+
+    public BufferedImage heartImage;
 
     private Player player;
     private Map map;
@@ -32,6 +38,8 @@ public class GameState extends State {
     public GameState(Handler handler) {
         super(handler);
         map = new Map(handler, "res/Maps/map1.txt");
+        heartImage = ImageLoader.loadImage("/heart.png");
+
         handler.setMap(map);
         enemis = new ArrayList<>();
         enemy = new Enemy[ENEMYNUM];
@@ -66,6 +74,13 @@ public class GameState extends State {
         for (Enemy e : enemy) {
             e.render(g, count);
         }
+        
+        g.drawImage(heartImage, 10, 10,null);
+        g.setFont(new Font("Franklin Gothic Heavy", Font.BOLD, 17));
+        g.setColor(Color.BLACK);
+        g.drawString("Ammo: " + player.numOfNormalBullet,7,90);
+        g.drawString("Magical Ammo: " + player.numOfMagicalBullet, 7, 110);
+        
         //g.drawImage(Assets.run, 0, 0, null);
         //Tile.tiles[1].render(g, -10, 600);
 

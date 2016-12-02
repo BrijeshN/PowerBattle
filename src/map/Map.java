@@ -5,7 +5,9 @@
  */
 package map;
 
+import graphics.ImageLoader;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import powerbattle.Game;
 import powerbattle.Handler;
 import tiles.Tile;
@@ -21,6 +23,10 @@ public class Map {
     private int width, height;
     private int[][] tiles;
     private int spawnX, spawnY;
+    private BufferedImage heartImage;
+    
+
+
     
     public Map(Handler handler, String path){
         this.handler = handler;
@@ -34,7 +40,8 @@ public class Map {
     }
     
     public void render(Graphics g){
-        
+            //heartImage = ImageLoader.loadImage("/BG.png");
+
         // making rendering map better, only render the part of the map which is visible on the screen
         
         //return the max number, avoiding negative mumber
@@ -52,6 +59,8 @@ public class Map {
                         (int) (y * Tile.TILEHEIGHT - handler.getGameCamera().getyOffset()));
             }
         }
+        
+    // g.drawImage(heartImage,10, 10, null);
         
     }
     

@@ -24,7 +24,7 @@ public class Player extends Creature {
     public static final int DEFAULT_PLAYER_WIDTH = 130;
     public static final int DEFAULT_PLAYER_HEIGHT = 111;
 
-    int numOfNormalBullet = 25, numOfMagicalBullet = 5;
+    public int numOfNormalBullet = 25, numOfMagicalBullet = 5;
 
     final float BULLETSPEED = 5f;
     final int ATTACKDAMAGE = 50, DIEHEIGHT = 1600, NORMALBULLETDAMAGE = 25, MAGICALBULLETDAMAGE = 75;
@@ -248,10 +248,10 @@ public class Player extends Creature {
         this.time = time;
 
         //g.setColor(Color.GRAY);
-        g.setFont(new Font("TimesRoman", Font.PLAIN, 17));
-        g.drawString("Margical Bullets remain:" + numOfMagicalBullet, (int) (x - handler.getGameCamera().getxOffset() - 430), (int) (y - handler.getGameCamera().getyOffset() - 130));
-        g.drawString("Normal   Bullets remain:" + numOfNormalBullet, (int) (x - handler.getGameCamera().getxOffset() - 430), (int) (y - handler.getGameCamera().getyOffset() - 115));
-        g.drawImage(Assets.heart, (int) (x - handler.getGameCamera().getxOffset() - 430), (int) (y - handler.getGameCamera().getyOffset() - 105), width, height, null);
+       // g.setFont(new Font("TimesRoman", Font.PLAIN, 17));
+       // g.drawString("Margical Bullets remain:" + numOfMagicalBullet, (int) (x - handler.getGameCamera().getxOffset() - 430), (int) (y - handler.getGameCamera().getyOffset() - 130));
+       // g.drawString("Normal   Bullets remain:" + numOfNormalBullet, (int) (x - handler.getGameCamera().getxOffset() - 430), (int) (y - handler.getGameCamera().getyOffset() - 115));
+       // g.drawImage(Assets.heart, (int) (x - handler.getGameCamera().getxOffset() - 430), (int) (y - handler.getGameCamera().getyOffset() - 105), width, height, null);
 
         for (MagicalBullet b : bullets) {
             b.render(g, time);
