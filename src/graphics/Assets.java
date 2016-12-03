@@ -89,7 +89,7 @@ public class Assets {
         zombieAttackRight = new BufferedImage[8];
 
         SpriteSheet zombieRight = new SpriteSheet(ImageLoader.loadImage("/Zombies/ZombiesSprite.png"));
-        SpriteSheet zombieLeft = new SpriteSheet(ImageLoader.loadImage("/ZombiesLeft/ZombiesLeftSprite.png"));
+        SpriteSheet zombieLeft = new SpriteSheet(ImageLoader.loadImage("/Zombies/ZombiesLeftSprite.png"));
         for (int i = 0; i < 8; i++) {
             zombieAttackRight[i] = zombieRight.crop(WIDTH * i, 0, WIDTH, ZOMBIEHIGHT);
         }
@@ -132,10 +132,10 @@ public class Assets {
     }
 
     public static void initRobotBullet() {
-        robotbullet = ImageLoader.loadImage("/Player2Bullets/Muzzle.png");
-        robotbulletLeft = ImageLoader.loadImage("/Player2Bullets/Muzzle.png");
-        robotnormalBullet = ImageLoader.loadImage("/Player2Bullets/BulletRight.png");
-        robotnormalBulletLeft = ImageLoader.loadImage("/Player2Bullets/BulletLeft.png");
+        robotbullet = ImageLoader.loadImage("/Player2/Muzzle.png");
+        robotbulletLeft = ImageLoader.loadImage("/Player2/Muzzle.png");
+        robotnormalBullet = ImageLoader.loadImage("/Player2/BulletRight.png");
+        robotnormalBulletLeft = ImageLoader.loadImage("/Player2/BulletLeft.png");
     }
 
     public static void initTile() {
@@ -167,7 +167,7 @@ public class Assets {
         idleRight = new BufferedImage[5];
 
         SpriteSheet playerRight = new SpriteSheet(ImageLoader.loadImage("/Character/PlayerSprite.png"));
-        SpriteSheet playerLeft = new SpriteSheet(ImageLoader.loadImage("/CharacterLeft/PlayerSpriteLeft.png"));
+        SpriteSheet playerLeft = new SpriteSheet(ImageLoader.loadImage("/Character/PlayerSpriteLeft.png"));
 
         heart = ImageLoader.loadImage("/heart.png");
 
@@ -230,8 +230,8 @@ public class Assets {
         robotidleLeft = new BufferedImage[10];
         robotidleRight = new BufferedImage[10];
 
-        SpriteSheet playerRight = new SpriteSheet(ImageLoader.loadImage("/Player2Bullets/RobotSprite.png"));
-        SpriteSheet playerLeft = new SpriteSheet(ImageLoader.loadImage("/Player2Bullets/RobotSpriteLeft.png"));
+        SpriteSheet playerRight = new SpriteSheet(ImageLoader.loadImage("/Player2/RobotSprite.png"));
+        SpriteSheet playerLeft = new SpriteSheet(ImageLoader.loadImage("/Player2/RobotSpriteLeft.png"));
 
         for (int i = 0; i < 10; i++) {
             robotdeadRight[i] = playerRight.crop(ROBOTWIDTH * i, 0, ROBOTWIDTH, ZOMBIEHIGHT);

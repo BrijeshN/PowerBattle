@@ -26,12 +26,24 @@ public class Bullet extends Creature {
         this.isNormal = isNormal;
     }
 
-    public void render(Graphics g, int time) {
+    public void render(Graphics g, int time, boolean isRobot) {
         if (!isNormal) {
-            if (isRight) {
+            if (isRobot) {
+                if (isRight) {
+                    g.drawImage(Assets.robotbullet, (int) (x - handler.getGameCamera().getxOffset() + 100), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+                } else {
+                    g.drawImage(Assets.robotbulletLeft, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+                }
+            } else if (isRight) {
                 g.drawImage(Assets.bullet, (int) (x - handler.getGameCamera().getxOffset() + 100), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
             } else {
                 g.drawImage(Assets.bulletLeft, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+            }
+        } else if (isRobot) {
+            if (isRight) {
+                g.drawImage(Assets.robotnormalBullet, (int) (x - handler.getGameCamera().getxOffset() + 100), (int) (y - handler.getGameCamera().getyOffset() + 50), width, height, null);
+            } else {
+                g.drawImage(Assets.robotnormalBulletLeft, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset() + 50), width, height, null);
             }
         } else if (isRight) {
             g.drawImage(Assets.normalBullet, (int) (x - handler.getGameCamera().getxOffset() + 100), (int) (y - handler.getGameCamera().getyOffset() + 50), width, height, null);

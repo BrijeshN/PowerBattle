@@ -5,8 +5,10 @@
  */
 package state;
 
+import entity.creature.Creature;
 import entity.creature.Enemy;
 import entity.creature.Player;
+import entity.creature.Robot;
 import graphics.Assets;
 import java.awt.Color;
 import java.awt.Font;
@@ -21,6 +23,7 @@ import powerbattle.Handler;
 public class GameState extends State {
 
     private Player player;
+    private Robot robot;
     private Map map;
     private Enemy[] enemy;
     public static final int ENEMYNUM = 12;
@@ -28,6 +31,11 @@ public class GameState extends State {
     {3423, 1455}, {2520, 1075}, {2004, 685}, {1401, 685}, {369, 805}, {528, 545}, {1590, 160}, {1956, 160}};
     public static final int PLAYER_SPAWN_X_POSITION = 150;
     public static final int PLAYER_SPAWN_Y_POSITION = 1455;
+    public static final int CHAOTIC_PLAYER1_SPAWN_X_POSITION = 20;
+    public static final int CHAOTIC_PLAYER1_SPAWN_Y_POSITION = 400;
+    public static final int CHAOTIC_PLAYER2_SPAWN_X_POSITION = 890;
+    public static final int CHAOTIC_PLAYER2_SPAWN_Y_POSITION = 400;
+    boolean chaotic = false, coop = true;
 
     public ArrayList<Enemy> enemis;
 
@@ -39,7 +47,17 @@ public class GameState extends State {
         enemis = new ArrayList<>();
         enemy = new Enemy[ENEMYNUM];
 
-        player = new Player(handler, PLAYER_SPAWN_X_POSITION, PLAYER_SPAWN_Y_POSITION);
+        if (coop) {
+            player = new Player(handler, PLAYER_SPAWN_X_POSITION, PLAYER_SPAWN_Y_POSITION);
+        } else if (chaotic) {
+            player = new Player(handler, CHAOTIC_PLAYER2_SPAWN_X_POSITION, CHAOTIC_PLAYER2_SPAWN_Y_POSITION);
+        }
+
+        if (coop) {
+            robot = new Robot(handler, PLAYER_SPAWN_X_POSITION, PLAYER_SPAWN_Y_POSITION);
+        } else {
+            robot = new Robot(handler, CHAOTIC_PLAYER1_SPAWN_X_POSITION, CHAOTIC_PLAYER1_SPAWN_Y_POSITION);
+        }
 
         for (int i = 0; i < ENEMYNUM; i++) {
             enemy[i] = new Enemy(handler, ENEMYPOS[i][0], ENEMYPOS[i][1], i);
@@ -53,31 +71,86 @@ public class GameState extends State {
 
     @Override
     public void update() {
+
+        boolean aimRobot = false, aimPlayer = false;
         map.update();
 
         for (Enemy e : enemy) {
-            e.update(player);
+            if (aimForPlayer(robot, e)) {
+                aimRobot = true;
+            }
         }
-        player.update(enemis);
 
+        if (chaotic || coop) {
+            for (Enemy e : enemy) {
+                if (!aimRobot && aimForPlayer(player, e)) {
+                    aimPlayer = true;
+                }
+            }
+            if (coop) {
+                player.update(enemis, null, chaotic);
+            } else {
+                player.update(enemis, robot, chaotic);
+            }
+        }
+
+        if (coop) {
+            robot.update(enemis, null, chaotic);
+        } else {
+            robot.update(enemis, player, chaotic);
+        }
+        for (Enemy e : enemy) {
+            if (aimRobot) {
+                e.update(robot);
+            } else {
+                e.update(player);
+            }
+        }
+
+        // center on this player entity
+        handler.getGameCamera().centerOnEntity(robot);
+    }
+
+    public boolean aimForPlayer(Creature player, Enemy e) {
+        if (Math.abs(player.getX() - e.x) < 200 && Math.abs(player.getY() - e.y) < 20) {
+            e.aimPlayer = Math.abs(player.getX() - e.x) >= 20;
+        } else {
+            e.aimPlayer = false;
+        }
+
+        return e.aimPlayer;
     }
 
     @Override
     public void render(Graphics g, int count) {
         map.render(g);
-        player.render(g, count);
+        if (chaotic || coop) {
+            player.render(g, count);
+        }
+        robot.render(g, count);
         for (Enemy e : enemy) {
             e.render(g, count);
         }
 
-        for (int i = 0; i < player.health; i++) {
-            g.drawImage(Assets.heartImage, 60 * (i + 1) - 55, 10, null);
+        for (int i = 0; i < robot.health; i++) {
+            g.drawImage(Assets.heartImage, 60 * (i + 1) - 55, 25, 50, 50, null);
         }
         g.setFont(new Font("Franklin Gothic Heavy", Font.BOLD, 17));
         g.setColor(Color.BLACK);
-        g.drawString("Ammo: " + player.numOfNormalBullet, 7, 90);
-        g.drawString("Magical Ammo: " + player.numOfMagicalBullet, 7, 110);
+        g.drawString("Ammo: " + robot.numOfNormalBullet, 7, 95);
+        g.drawString("Magical Ammo: " + robot.numOfMagicalBullet, 7, 115);
+        g.drawString("Robot:", 7, 18);
 
+        if (chaotic || coop) {
+            for (int i = 0; i < player.health; i++) {
+                g.drawImage(Assets.heartImage, 60 * (i + 1) + 625, 25, 50, 50, null);
+            }
+            g.setFont(new Font("Franklin Gothic Heavy", Font.BOLD, 17));
+            g.setColor(Color.BLACK);
+            g.drawString("Ammo: " + player.numOfNormalBullet, 685, 95);
+            g.drawString("Magical Ammo: " + player.numOfMagicalBullet, 685, 115);
+            g.drawString("Human:", 685, 18);
+        }
         //g.drawImage(Assets.run, 0, 0, null);
         //Tile.tiles[1].render(g, -10, 600);
     }

@@ -15,12 +15,13 @@ import java.awt.event.KeyListener;
 public class KeyManager implements KeyListener {
 
     private boolean[] keys;
-    public boolean up, down, left, right, attack, magicalShoot, restart, normalShoot;
-    public boolean cheatMode, cheatModeOff;
+    public boolean up, down, left, right, attack, magicalShoot, normalShoot;
+    public boolean cheatMode, cheatModeOff, restart;
+    public boolean pup, pdown, pleft, pright, pattack, pmagicalShoot, pnormalShoot;
 
     public KeyManager() {
 
-        keys = new boolean[256];
+        keys = new boolean[1000];
 
     }
 
@@ -30,10 +31,19 @@ public class KeyManager implements KeyListener {
         down = keys[KeyEvent.VK_S];
         left = keys[KeyEvent.VK_A];
         right = keys[KeyEvent.VK_D];
-        attack = keys[KeyEvent.VK_J];
-        magicalShoot = keys[KeyEvent.VK_L];
+        attack = keys[KeyEvent.VK_F];
+        magicalShoot = keys[KeyEvent.VK_H];
+        normalShoot = keys[KeyEvent.VK_G];
+
+        pup = keys[KeyEvent.VK_UP];
+        pdown = keys[KeyEvent.VK_DOWN];
+        pleft = keys[KeyEvent.VK_LEFT];
+        pright = keys[KeyEvent.VK_RIGHT];
+        pattack = keys[KeyEvent.VK_L];
+        pmagicalShoot = keys[KeyEvent.VK_QUOTE];
+        pnormalShoot = keys[KeyEvent.VK_SEMICOLON];
+
         restart = keys[KeyEvent.VK_R];
-        normalShoot = keys[KeyEvent.VK_K];
         cheatMode = keys[KeyEvent.VK_C];
         cheatModeOff = keys[KeyEvent.VK_V];
 

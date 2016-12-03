@@ -26,7 +26,7 @@ public class Enemy extends Creature {
     final float MOVESPEED = 1.0f, JUMPSPEED = 10f;
     Random r = new Random();
     int time = 0, i = 0;
-    boolean firstCall = true, notDraw = false, aimPlayer = false, deadTimeSet = false;
+    public boolean firstCall = true, notDraw = false, aimPlayer = false, deadTimeSet = false;
     int id, deadTime = 0;
     boolean isAmmo = false, pickedByPlayer = false, isHeart = false, isMagicalAmmo = false;
     boolean isDraw = false, hitByMagicalBullet = false;
@@ -40,15 +40,6 @@ public class Enemy extends Creature {
         bounds.y = 32;
         bounds.width = 40;
         bounds.height = 55;
-
-    }
-
-    public void aimForPlayer(Player player) {
-        if (Math.abs(player.getX() - x) < 200 && Math.abs(player.getY() - y) < 20) {
-            aimPlayer = Math.abs(player.getX() - x) >= 20;
-        } else {
-            aimPlayer = false;
-        }
 
     }
 
@@ -70,7 +61,7 @@ public class Enemy extends Creature {
         }
     }
 
-    public void update(Player player) {
+    public void update(Creature player) {
         if (restart) {
             resetPos();
             attack = dead = notDraw = deadAni = first = restart = deadTimeSet = false;
@@ -99,8 +90,6 @@ public class Enemy extends Creature {
         }
 
         int timeElapse = time / 10;
-
-        aimForPlayer(player);
         //System.out.println(aimPlayer);
         if (aimPlayer) {
             if (isRight && x > player.getX()) {
@@ -118,7 +107,6 @@ public class Enemy extends Creature {
                     attack = r.nextInt(10) != 1;
                 }
             }
-            System.out.println(action);
             action(action);
         } else if (id % 2 == 0) {
             if (timeElapse % 2 == 0) {

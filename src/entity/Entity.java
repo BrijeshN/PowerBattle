@@ -16,7 +16,7 @@ import powerbattle.Handler;
  */
 public abstract class Entity {
     
-    protected float x, y;
+    public float x, y;
     //to draw image at different sizes
     protected int width, height;
     

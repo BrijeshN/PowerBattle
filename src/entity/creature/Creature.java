@@ -18,9 +18,10 @@ public abstract class Creature extends Entity {
 
     public static final int DEFAULT_HEALTH = 10;
     public static final float RUN_SPEED = 4.0f;
+    final int ATTACKDAMAGE = 50, DIEHEIGHT = 1600, NORMALBULLETDAMAGE = 25, MAGICALBULLETDAMAGE = 75;
+    final int ATTACKPDAMAGE = 2, NORMALPBULLETDAMAGE = 1, MAGICALPBULLETDAMAGE = 3;
 
     //Set size of the character
-
     public int health;
     protected float runSpeed;
     boolean hitWall = false;
