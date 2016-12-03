@@ -10,9 +10,11 @@ import entity.creature.Enemy;
 import entity.creature.Player;
 import entity.creature.Robot;
 import graphics.Assets;
+import graphics.ImageLoader;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import map.Map;
 import powerbattle.Handler;
@@ -38,6 +40,9 @@ public class GameState extends State {
     public static final float STAR_X_POSITION = 3682;
     public static final float STAR_Y_POSITION = 175;
     boolean chaotic = false, coop = true; //set the game mode
+    
+        private BufferedImage bg;
+
 
     public ArrayList<Enemy> enemis;
 
@@ -48,7 +53,10 @@ public class GameState extends State {
         } else {
             map = new Map(handler, "map1.txt");
         }
+        
+        bg = ImageLoader.loadImage("/BG.png");
 
+        
         handler.setMap(map);
         enemis = new ArrayList<>();
         enemy = new Enemy[ENEMYNUM];
@@ -137,6 +145,8 @@ public class GameState extends State {
 
     @Override
     public void render(Graphics g, int count) {
+        g.drawImage(bg, 0, 0, null);
+
         map.render(g);
         if (chaotic || coop) {
             player.render(g, count);

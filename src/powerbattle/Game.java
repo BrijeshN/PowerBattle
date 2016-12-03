@@ -57,7 +57,7 @@ public class Game implements Runnable {
     private Handler handler;
 
     //Background image
-    private BufferedImage bg;
+    private BufferedImage menuBG;
     
     // Heart Image
    // private BufferedImage heartImage;
@@ -89,7 +89,7 @@ public class Game implements Runnable {
         display.getCanvas().addMouseMotionListener(mouseManager);
 
         // loads this image
-        bg = ImageLoader.loadImage("/BG.png");
+        menuBG = ImageLoader.loadImage("/Menu/menuBG.jpg");
 
        // heartImage = ImageLoader.loadImage("/heart.png");
         Assets.init();
@@ -134,7 +134,7 @@ public class Game implements Runnable {
         // Before we draw clear the screen
         g.clearRect(0, 0, width, height);
 
-        g.drawImage(bg, 0, 0, null);
+         g.drawImage(menuBG, 0, 0, 1000, 685, null);
      //   g.drawImage(heartImage, 10, 10, null);
 
         // End Drawing
