@@ -16,6 +16,9 @@ public class Assets {
 
     private static final int w = 128;
     private static final int h = 128;
+    
+    private static final int bw = 32;
+    private static final int bh = 32;
 
     private static final int waterWidth = 128;
     private static final int waterHeight = 99;
@@ -41,6 +44,9 @@ public class Assets {
     public static BufferedImage zombieIdleLeft[], zombieDeadLeft[];
     public static BufferedImage zombieRunLeft[], zombieRunRight[];
     public static BufferedImage zombieAttackLeft[], zombieAttackRight[];
+    
+    public static BufferedImage[] start;
+    public static BufferedImage[] exit;
 
     public static void init() {
         initBullet();
@@ -51,6 +57,15 @@ public class Assets {
         ammo = ImageLoader.loadImage("/Bullet/ammo.png");
         magicalAmmo = ImageLoader.loadImage("/Bullet/magicalAmmo.png");
 
+    }
+    
+    public static void initMenu(){
+        SpriteSheet menu = new SpriteSheet(ImageLoader.loadImage("/Button.png"));
+        start = new BufferedImage[2];
+        start[0] = menu.crop(bw, bh, bw, bh);
+        start[1] = menu.crop(bw * 2, bh * 2, bw, bh);
+
+        
     }
 
     public static void initEnemyImages() {
