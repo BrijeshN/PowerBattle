@@ -13,6 +13,7 @@ public class Assets {
     private static final int WIDTH = 130;
     private static final int HEIGHT = 111;
     private static final int ZOMBIEHIGHT = 100;
+    private static final int ROBOTWIDTH = 125;
 
     private static final int w = 128;
     private static final int h = 128;
@@ -25,6 +26,11 @@ public class Assets {
 
     public static BufferedImage idleRight[], idleLeft[];
 
+    public static BufferedImage robotrunRight[], robotmeleeRight[], robotrunLeft[], robotmeleeLeft[], robotshootLeft[], robotshootRight[];
+    public static BufferedImage robotjumpRight[], robotjumpLeft[], robotdeadLeft[], robotdeadRight[];
+
+    public static BufferedImage robotidleRight[], robotidleLeft[];
+
     public static BufferedImage empty, invisibleWall;
 
     public static BufferedImage heartImage, ammo, magicalAmmo;
@@ -36,6 +42,8 @@ public class Assets {
 
     public static BufferedImage bullet, bulletLeft;
     public static BufferedImage normalBullet, normalBulletLeft;
+    public static BufferedImage robotbullet, robotbulletLeft;
+    public static BufferedImage robotnormalBullet, robotnormalBulletLeft;
 
     public static BufferedImage zombieIdleRight[], zombieDeadRight[];
     public static BufferedImage zombieIdleLeft[], zombieDeadLeft[];
@@ -47,6 +55,8 @@ public class Assets {
         initTile();
         initPlayerImages();
         initEnemyImages();
+        initRobotImages();
+        initRobotBullet();
         heartImage = ImageLoader.loadImage("/heart.png");
         ammo = ImageLoader.loadImage("/Bullet/ammo.png");
         magicalAmmo = ImageLoader.loadImage("/Bullet/magicalAmmo.png");
@@ -106,6 +116,13 @@ public class Assets {
         normalBulletLeft = ImageLoader.loadImage("/Bullet/regBulletLeft.png");
     }
 
+    public static void initRobotBullet() {
+        robotbullet = ImageLoader.loadImage("/Player2Bullets/Muzzle.png");
+        robotbulletLeft = ImageLoader.loadImage("/Player2Bullets/Muzzle.png");
+        robotnormalBullet = ImageLoader.loadImage("/Player2Bullets/BulletRight.png");
+        robotnormalBulletLeft = ImageLoader.loadImage("/Player2Bullets/BulletLeft.png");
+    }
+
     public static void initTile() {
         SpriteSheet tile = new SpriteSheet(ImageLoader.loadImage("/MapTile/mapSprite.png"));
         SpriteSheet tile2 = new SpriteSheet(ImageLoader.loadImage("/MapTile/png/waterSprite.png"));
@@ -120,7 +137,7 @@ public class Assets {
 
     }
 
-    public static void initPlayerImages() {
+    public static void initRobotImages() {
         runRight = new BufferedImage[5];
         meleeRight = new BufferedImage[4];
         runLeft = new BufferedImage[5];
@@ -182,6 +199,69 @@ public class Assets {
 
         empty = playerRight.crop(WIDTH * 5, HEIGHT * 3, WIDTH, HEIGHT);
         invisibleWall = playerRight.crop(WIDTH * 5, HEIGHT * 3, WIDTH, HEIGHT);
+    }
+
+    public static void initPlayerImages() {
+        robotrunRight = new BufferedImage[8];
+        robotrunLeft = new BufferedImage[8];
+        robotmeleeRight = new BufferedImage[8];
+        robotmeleeLeft = new BufferedImage[8];
+        robotshootLeft = new BufferedImage[3];
+        robotshootRight = new BufferedImage[3];
+        robotjumpLeft = new BufferedImage[10];
+        robotjumpRight = new BufferedImage[10];
+        robotdeadLeft = new BufferedImage[10];
+        robotdeadRight = new BufferedImage[10];
+        robotidleLeft = new BufferedImage[10];
+        robotidleRight = new BufferedImage[10];
+
+        SpriteSheet playerRight = new SpriteSheet(ImageLoader.loadImage("/Player2Bullets/RobotSprite.png"));
+        SpriteSheet playerLeft = new SpriteSheet(ImageLoader.loadImage("/Player2Bullets/RobotSpriteLeft.png"));
+
+        for (int i = 0; i < 10; i++) {
+            robotdeadRight[i] = playerRight.crop(ROBOTWIDTH * i, 0, ROBOTWIDTH, ZOMBIEHIGHT);
+        }
+        for (int i = 0; i < 10; i++) {
+            robotdeadLeft[i] = playerLeft.crop(ROBOTWIDTH * i, 0, ROBOTWIDTH, ZOMBIEHIGHT);
+        }
+
+        for (int i = 0; i < 10; i++) {
+            robotidleRight[i] = playerRight.crop(ROBOTWIDTH * (i + 10), 0, ROBOTWIDTH, ZOMBIEHIGHT);
+        }
+        for (int i = 0; i < 10; i++) {
+            robotidleLeft[i] = playerLeft.crop(ROBOTWIDTH * (i + 10), 0, ROBOTWIDTH, ZOMBIEHIGHT);
+        }
+
+        for (int i = 0; i < 10; i++) {
+            robotjumpRight[i] = playerRight.crop(ROBOTWIDTH * (i + 20), 0, ROBOTWIDTH, ZOMBIEHIGHT);
+        }
+        for (int i = 0; i < 10; i++) {
+            robotjumpLeft[i] = playerLeft.crop(ROBOTWIDTH * (i + 20), 0, ROBOTWIDTH, ZOMBIEHIGHT);
+        }
+
+        for (int i = 0; i < 8; i++) {
+            robotmeleeRight[i] = playerRight.crop(ROBOTWIDTH * (i + 30), 0, ROBOTWIDTH, ZOMBIEHIGHT);
+        }
+
+        for (int i = 0; i < 8; i++) {
+            robotmeleeLeft[i] = playerLeft.crop(ROBOTWIDTH * (i + 30), 0, ROBOTWIDTH, ZOMBIEHIGHT);
+        }
+
+        for (int i = 0; i < 8; i++) {
+            robotrunRight[i] = playerRight.crop(ROBOTWIDTH * (i + 38), 0, ROBOTWIDTH, ZOMBIEHIGHT);
+        }
+
+        for (int i = 0; i < 8; i++) {
+            robotrunLeft[i] = playerLeft.crop(ROBOTWIDTH * (i + 38), 0, ROBOTWIDTH, ZOMBIEHIGHT);
+        }
+
+        for (int i = 0; i < 2; i++) {
+            robotshootRight[i] = playerRight.crop(ROBOTWIDTH * (i + 46), 0, ROBOTWIDTH, ZOMBIEHIGHT);
+        }
+
+        for (int i = 0; i < 2; i++) {
+            robotshootLeft[i] = playerLeft.crop(ROBOTWIDTH * (i + 46), 0, ROBOTWIDTH, ZOMBIEHIGHT);
+        }
     }
 
 }
