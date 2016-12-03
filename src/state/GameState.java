@@ -39,24 +39,25 @@ public class GameState extends State {
     public static final int CHAOTIC_PLAYER2_SPAWN_Y_POSITION = 400;
     public static final float STAR_X_POSITION = 3682;
     public static final float STAR_Y_POSITION = 175;
-    boolean chaotic = false, coop = true; //set the game mode
-    
-        private BufferedImage bg;
+    boolean chaotic = false, coop = false;
 
+    private BufferedImage bg;
 
     public ArrayList<Enemy> enemis;
 
-    public GameState(Handler handler) {
+    public GameState(Handler handler, boolean chaotic, boolean coop) {
         super(handler);
+
+        this.coop = coop;
+        this.chaotic = chaotic;
         if (chaotic) {
             map = new Map(handler, "map2.txt");
         } else {
             map = new Map(handler, "map1.txt");
         }
-        
+
         bg = ImageLoader.loadImage("/BG.png");
 
-        
         handler.setMap(map);
         enemis = new ArrayList<>();
         enemy = new Enemy[ENEMYNUM];
@@ -70,7 +71,7 @@ public class GameState extends State {
         if (chaotic) {
             robot = new Robot(handler, CHAOTIC_PLAYER1_SPAWN_X_POSITION, CHAOTIC_PLAYER1_SPAWN_Y_POSITION);
         } else {
-            robot = new Robot(handler, STAR_X_POSITION, STAR_Y_POSITION);
+            robot = new Robot(handler, PLAYER_SPAWN_X_POSITION, PLAYER_SPAWN_Y_POSITION);
         }
 
         for (int i = 0; i < ENEMYNUM; i++) {
