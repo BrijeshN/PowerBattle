@@ -18,8 +18,8 @@ public class Assets {
     private static final int w = 128;
     private static final int h = 128;
     
-    private static final int bw = 32;
-    private static final int bh = 32;
+    public static final int bw = 140;
+    public static final int bh = 70;
 
     private static final int waterWidth = 128;
     private static final int waterHeight = 99;
@@ -54,29 +54,28 @@ public class Assets {
     public static BufferedImage zombieAttackLeft[], zombieAttackRight[];
     
     public static BufferedImage[] start;
-    public static BufferedImage[] exit;
+    //public static BufferedImage[] exit;
 
     public static void init() {
+        SpriteSheet menu = new SpriteSheet(ImageLoader.loadImage("/MapTile/mapSprite.png"));
+        start = new BufferedImage[2];
+        start[0] = menu.crop(0, 0, w, h);
+        start[1] = menu.crop(w * 2, h * 2, w, h);
+        
+        
         initBullet();
         initTile();
         initPlayerImages();
         initEnemyImages();
         initRobotImages();
         initRobotBullet();
+        
         heartImage = ImageLoader.loadImage("/heart.png");
         ammo = ImageLoader.loadImage("/Bullet/ammo.png");
         magicalAmmo = ImageLoader.loadImage("/Bullet/magicalAmmo.png");
 
     }
-    
-    public static void initMenu(){
-        SpriteSheet menu = new SpriteSheet(ImageLoader.loadImage("/Button.png"));
-        start = new BufferedImage[2];
-        start[0] = menu.crop(bw, bh, bw, bh);
-        start[1] = menu.crop(bw * 2, bh * 2, bw, bh);
-
-        
-    }
+ 
 
     public static void initEnemyImages() {
         zombieIdleRight = new BufferedImage[15];

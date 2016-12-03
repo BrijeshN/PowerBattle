@@ -5,11 +5,12 @@
  */
 package state;
 
-import UserInterface.ClickListener;
+import powerbattle.ClickListener;
 import UserInterface.UIImageButton;
 import UserInterface.UIManager;
 import state.State;
 import graphics.Assets;
+import java.awt.Color;
 import java.awt.Graphics;
 import powerbattle.Game;
 import powerbattle.Handler;
@@ -20,15 +21,15 @@ import powerbattle.Handler;
  */
 public class MenuState extends State {
     
-    public UIManager uiManager;
+    private UIManager uiManager;
 
-    public MenuState(Handler handler){
+    public MenuState(final Handler handler){
         
         super(handler);
         uiManager = new UIManager(handler);
         handler.getMouseManager().setUIManager(uiManager);
         
-        uiManager.addObject(new UIImageButton(200, 200, 128, 64, Assets.start, new ClickListener(){
+        uiManager.addObject(new UIImageButton(300, 500, 140, 70, Assets.start, new ClickListener(){
             @Override
             public void onClick() {
                 handler.getMouseManager().setUIManager(null);
@@ -40,14 +41,17 @@ public class MenuState extends State {
     
     @Override
     public void update() {
-        
         uiManager.update();
+       
     }
 
-    @Override
-    public void render(Graphics g, int count) {
+        @Override
+
+    public void render(Graphics g, int time) {
         
         uiManager.render(g);
     }
+
+   
     
 }

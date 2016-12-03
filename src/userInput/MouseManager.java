@@ -44,7 +44,7 @@ public class MouseManager implements MouseListener, MouseMotionListener{
         return mouseX;
     }
     
-     public int getMouseY(){
+    public int getMouseY(){
         return mouseY;
     }
     
@@ -81,14 +81,19 @@ public class MouseManager implements MouseListener, MouseMotionListener{
         
     }
 
-    public UIManager getUiManager() {
-        return uiManager;
+    
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        
+        mouseX = e.getX();
+        mouseY = e.getY();
+        
+        if(uiManager != null){
+             uiManager.onMouseMove(e);
+         }
     }
-
-    public void setUiManager(UIManager uiManager) {
-        this.uiManager = uiManager;
-    }
-
+    
+    
     @Override
     public void mouseEntered(MouseEvent e) {
     }
@@ -100,16 +105,13 @@ public class MouseManager implements MouseListener, MouseMotionListener{
     @Override
     public void mouseDragged(MouseEvent e) {
     }
+    
+    public UIManager getUiManager() {
+        return uiManager;
+    }
 
-    @Override
-    public void mouseMoved(MouseEvent e) {
-        
-        mouseX = e.getX();
-        mouseY = e.getY();
-        
-        if(uiManager != null){
-             uiManager.onMouseMove(e);
-         }
+    public void setUiManager(UIManager uiManager) {
+        this.uiManager = uiManager;
     }
     
 }

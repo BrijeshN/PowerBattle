@@ -45,8 +45,8 @@ public class Game implements Runnable {
     public State menuState;
 
     // User Input
-    private KeyManager keyManager;
-    private MouseManager mouseManager;
+    public KeyManager keyManager;
+    public MouseManager mouseManager;
 
     //Game Camera
     private GameCamera gameCamera;
@@ -82,17 +82,18 @@ public class Game implements Runnable {
         display = new Display(title, width, height);
         // Getting the frame and adding key listener
         display.getFrame().addKeyListener(keyManager);
+       
         display.getFrame().addMouseListener(mouseManager);
-        
-        
         display.getFrame().addMouseMotionListener(mouseManager);
         display.getCanvas().addMouseListener(mouseManager);
         display.getCanvas().addMouseMotionListener(mouseManager);
 
         // loads this image
         bg = ImageLoader.loadImage("/BG.png");
+
        // heartImage = ImageLoader.loadImage("/heart.png");
         Assets.init();
+
 
         handler = new Handler(this);
         gameCamera = new GameCamera(handler, 0, 0);

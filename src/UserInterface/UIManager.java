@@ -21,7 +21,7 @@ public class UIManager {
     
     public UIManager(Handler handler){
         this.handler = handler;
-        objects = new ArrayList<UIObject>();
+        this.objects = new ArrayList<UIObject>();
     }
     
     public void update(){
@@ -38,22 +38,6 @@ public class UIManager {
             o.render(g);
         }
         
-    }
-
-    public Handler getHandler() {
-        return handler;
-    }
-
-    public void setHandler(Handler handler) {
-        this.handler = handler;
-    }
-
-    public ArrayList<UIObject> getObjects() {
-        return objects;
-    }
-
-    public void setObjects(ArrayList<UIObject> objects) {
-        this.objects = objects;
     }
     
     public void onMouseMove(MouseEvent e){
@@ -72,6 +56,7 @@ public class UIManager {
         
     }
     
+      
     public void addObject(UIObject o){
         objects.add(o);
     }
@@ -80,4 +65,22 @@ public class UIManager {
         objects.remove(o);
     }
     
+
+    public Handler getHandler() {
+        return handler;
+    }
+
+    public void setHandler(Handler handler) {
+        this.handler = handler;
+    }
+
+    public ArrayList<UIObject> getObjects() {
+        return objects;
+    }
+
+    public void setObjects(ArrayList<UIObject> objects) {
+        this.objects = objects;
+    }
+    
+  
 }

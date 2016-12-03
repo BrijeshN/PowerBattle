@@ -5,6 +5,7 @@
  */
 package UserInterface;
 
+import powerbattle.ClickListener;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
