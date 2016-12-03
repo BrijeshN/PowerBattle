@@ -115,6 +115,7 @@ public class Robot extends Creature {
         }
 
         if (dead) {
+            health = 0;
             stop();
             return;
         }

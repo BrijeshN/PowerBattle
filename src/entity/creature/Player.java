@@ -114,6 +114,7 @@ public class Player extends Creature {
         }
 
         if (dead) {
+            health = 0;
             stop();
             return;
         }
