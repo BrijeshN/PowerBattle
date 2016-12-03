@@ -53,8 +53,7 @@ public class GameState extends State {
 
     public GameState(Handler handler, boolean chaotic, boolean coop) {
         super(handler);
-        uiManager = new UIManager(handler);
-        handler.getMouseManager().setUIManager(uiManager);
+        handler.getMouseManager().setUIManager(null);
 
         if (chaotic) {
             JukeBox.loop("level1boss");
