@@ -53,6 +53,7 @@ public class Game implements Runnable {
 
     //Background image
     private BufferedImage menuBG;
+    private BufferedImage logo;
 
     // Heart Image
     // private BufferedImage heartImage;
@@ -87,7 +88,8 @@ public class Game implements Runnable {
 
         // loads this image
         menuBG = ImageLoader.loadImage("/Menu/menuBG.jpg");
-
+        logo = ImageLoader.loadImage("/Menu/PowerBattle.png");
+        
         // heartImage = ImageLoader.loadImage("/heart.png");
         Assets.init();
 
@@ -129,6 +131,7 @@ public class Game implements Runnable {
         g.clearRect(0, 0, width, height);
 
         g.drawImage(menuBG, 0, 0, 1000, 685, null);
+        g.drawImage(logo, 60, 60, 882, 113, null);
 
         // End Drawing
         if (State.getState() != null) {
@@ -139,6 +142,7 @@ public class Game implements Runnable {
 
         // Tell JAVA that we are done drawing
         bs.show();
+        
         // Make sure graphics object finish/done properly
         g.dispose();
 

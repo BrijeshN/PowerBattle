@@ -85,37 +85,37 @@ public class Assets {
     
 
     public static void init() {
-        SpriteSheet playMenu = new SpriteSheet(ImageLoader.loadImage("/Menu/PlaySprite.png"));
+        SpriteSheet playMenu = new SpriteSheet(ImageLoader.loadImage("/Menu/ButtonSprite/PlaySprite.png"));
         play = new BufferedImage[2];
         play[0] = playMenu.crop(0, 0, playWidth, menuHeight);
         play[1] = playMenu.crop(playWidth, 0, playWidth, menuHeight);
         
-        SpriteSheet singleMenu = new SpriteSheet(ImageLoader.loadImage("/Menu/SingleSprite.png"));
+        SpriteSheet singleMenu = new SpriteSheet(ImageLoader.loadImage("/Menu/ButtonSprite/SingleSprite.png"));
         single = new BufferedImage[2];
         single[0] = singleMenu.crop(0, 0, singleWidth, menuHeight);
         single[1] = singleMenu.crop(singleWidth, 0, singleWidth, menuHeight);
         
-        SpriteSheet chaoticMenu = new SpriteSheet(ImageLoader.loadImage("/Menu/ChaoticSprite.png"));
+        SpriteSheet chaoticMenu = new SpriteSheet(ImageLoader.loadImage("/Menu/ButtonSprite/ChaoticSprite.png"));
         chaotic = new BufferedImage[2];
         chaotic[0] = chaoticMenu.crop(0, 0, chaoticWidth, menuHeight);
         chaotic[1] = chaoticMenu.crop(chaoticWidth, 0, chaoticWidth, menuHeight);
         
-        SpriteSheet coopMenu = new SpriteSheet(ImageLoader.loadImage("/Menu/CoopSprite.png"));
+        SpriteSheet coopMenu = new SpriteSheet(ImageLoader.loadImage("/Menu/ButtonSprite/CoopSprite.png"));
         coop = new BufferedImage[2];
         coop[0] = coopMenu.crop(0, 0, coopWidth, menuHeight);
         coop[1] = coopMenu.crop(coopWidth, 0, coopWidth, menuHeight);
         
-        SpriteSheet controlsMenu = new SpriteSheet(ImageLoader.loadImage("/Menu/ControlsSprite.png"));
+        SpriteSheet controlsMenu = new SpriteSheet(ImageLoader.loadImage("/Menu/ButtonSprite/ControlsSprite.png"));
         controls = new BufferedImage[2];
         controls[0] = controlsMenu.crop(0, 0, controlsWidth, menuHeight);
         controls[1] = controlsMenu.crop(controlsWidth, 0, controlsWidth, menuHeight);
         
-        SpriteSheet quitMenu = new SpriteSheet(ImageLoader.loadImage("/Menu/QuitSprite.png"));
+        SpriteSheet quitMenu = new SpriteSheet(ImageLoader.loadImage("/Menu/ButtonSprite/QuitSprite.png"));
         quit = new BufferedImage[2];
         quit[0] = quitMenu.crop(0, 0, quitWidth, menuHeight);
         quit[1] = quitMenu.crop(quitWidth, 0, quitWidth, menuHeight);
         
-        SpriteSheet backMenu = new SpriteSheet(ImageLoader.loadImage("/Menu/BackSprite.png"));
+        SpriteSheet backMenu = new SpriteSheet(ImageLoader.loadImage("/Menu/ButtonSprite/BackSprite.png"));
         back = new BufferedImage[2];
         back[0] = backMenu.crop(0, 0, backWidth, menuHeight);
         back[1] = backMenu.crop(backWidth, 0, backWidth, menuHeight);

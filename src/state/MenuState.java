@@ -13,6 +13,7 @@ import graphics.Assets;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import powerbattle.Game;
 import powerbattle.Handler;
 
@@ -23,6 +24,7 @@ import powerbattle.Handler;
 public class MenuState extends State {
 
     private UIManager uiManager;
+    
 
     public MenuState(final Handler handler) {
 
@@ -30,15 +32,7 @@ public class MenuState extends State {
         uiManager = new UIManager(handler);
         handler.getMouseManager().setUIManager(uiManager);
 
-        uiManager.addObject(new UIImageButton(225, 300, 140, 70, Assets.controls, new ClickListener() {
-            @Override
-            public void onClick() {
-                ControlState controlState = new ControlState(handler);
-                State.setState(controlState);
-            }
-        }));
-
-        uiManager.addObject(new UIImageButton(425, 300, 140, 70, Assets.play, new ClickListener() {
+          uiManager.addObject(new UIImageButton(240, 350, 148, 76, Assets.play, new ClickListener() {
             @Override
             public void onClick() {
                 ModeState modeState = new ModeState(handler);
@@ -46,7 +40,15 @@ public class MenuState extends State {
             }
         }));
         
-        uiManager.addObject(new UIImageButton(425, 600, 140, 70, Assets.quit, new ClickListener() {
+        uiManager.addObject(new UIImageButton(640, 350, 148, 76, Assets.controls, new ClickListener() {
+            @Override
+            public void onClick() {
+                ControlState controlState = new ControlState(handler);
+                State.setState(controlState);
+            }
+        }));
+        
+        uiManager.addObject(new UIImageButton(440, 525, 148, 76, Assets.quit, new ClickListener() {
             @Override
             public void onClick() {
                 System.exit(0);
