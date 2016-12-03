@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 import userInput.KeyManager;
+import userInput.MouseManager;
 
 /**
  *
@@ -40,11 +41,12 @@ public class Game implements Runnable {
     private Graphics g;
 
     // States
-    private State gameState;
-    private State menuState;
+    public State gameState;
+    public State menuState;
 
     // User Input
     private KeyManager keyManager;
+    private MouseManager mouseManager;
 
     //Game Camera
     private GameCamera gameCamera;
@@ -68,6 +70,7 @@ public class Game implements Runnable {
         this.height = height;
         this.title = title;
         keyManager = new KeyManager();
+        mouseManager = new MouseManager();
 
     }
 
@@ -79,6 +82,12 @@ public class Game implements Runnable {
         display = new Display(title, width, height);
         // Getting the frame and adding key listener
         display.getFrame().addKeyListener(keyManager);
+        display.getFrame().addMouseListener(mouseManager);
+        
+        
+        display.getFrame().addMouseMotionListener(mouseManager);
+        display.getCanvas().addMouseListener(mouseManager);
+        display.getCanvas().addMouseMotionListener(mouseManager);
 
         // loads this image
         bg = ImageLoader.loadImage("/BG.png");
@@ -204,6 +213,12 @@ public class Game implements Runnable {
     public KeyManager getKeyManager() {
 
         return keyManager;
+
+    }
+    
+     public MouseManager getMouseManager() {
+
+        return mouseManager;
 
     }
 
