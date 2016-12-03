@@ -28,7 +28,7 @@ public class Robot extends Creature {
     final float BULLETSPEED = 5f;
     int forward = 0;
     boolean isRight = true, shootAni = false, firstShoot = false, normalBulletShoot = false;
-    boolean jump = false, fall = false, flag = true, dead = false, attackAni = false;
+    public boolean jump = false, fall = false, flag = true, dead = false, attackAni = false;
     public boolean cheat = false, hitByPlayer = false, hitByMagicalBullet = false;
     ;
     float jumpspeed = 10; //Check how high the player can jump

@@ -115,7 +115,11 @@ public class GameState extends State {
 
         // center on this player entity
         if (!chaotic) {
-            handler.getGameCamera().centerOnEntity(robot);
+            if (!robot.dead) {
+                handler.getGameCamera().centerOnEntity(robot);
+            }else{
+                handler.getGameCamera().centerOnEntity(player);
+            }
         }
     }
 
