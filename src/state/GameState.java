@@ -41,6 +41,8 @@ public class GameState extends State {
     public static final float STAR_Y_POSITION = 175;
     boolean chaotic = false, coop = false;
 
+    int time;
+
     private BufferedImage bg;
 
     public ArrayList<Enemy> enemis;
@@ -86,6 +88,14 @@ public class GameState extends State {
 
     @Override
     public void update() {
+
+        if (chaotic) {
+            if (robot.dead) {
+                State.getState().setState(new EndState(handler, time, "Human"));
+            } else if (player.dead) {
+                State.getState().setState(new EndState(handler, time, "Robot"));
+            }
+        }
 
         boolean aimRobot = false, aimPlayer = false;
         map.update();
@@ -145,16 +155,17 @@ public class GameState extends State {
     }
 
     @Override
-    public void render(Graphics g, int count) {
+    public void render(Graphics g, int time) {
         g.drawImage(bg, 0, 0, null);
+        this.time = time;
 
         map.render(g);
         if (chaotic || coop) {
-            player.render(g, count);
+            player.render(g, time);
         }
-        robot.render(g, count);
+        robot.render(g, time);
         for (Enemy e : enemy) {
-            e.render(g, count);
+            e.render(g, time);
         }
 
         g.drawImage(Assets.star, (int) (STAR_X_POSITION - handler.getGameCamera().getxOffset()), (int) (STAR_Y_POSITION - handler.getGameCamera().getyOffset()), 100, 100, null);

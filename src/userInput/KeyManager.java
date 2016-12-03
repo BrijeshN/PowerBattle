@@ -16,7 +16,7 @@ public class KeyManager implements KeyListener {
 
     private boolean[] keys;
     public boolean up, down, left, right, attack, magicalShoot, normalShoot;
-    public boolean cheatMode, cheatModeOff, restart;
+    public boolean cheatMode, cheatModeOff, restart, menu;
     public boolean pup, pdown, pleft, pright, pattack, pmagicalShoot, pnormalShoot;
 
     public KeyManager() {
@@ -26,6 +26,8 @@ public class KeyManager implements KeyListener {
     }
 
     public void update() {
+
+        menu = keys[KeyEvent.VK_ESCAPE];
 
         up = keys[KeyEvent.VK_W];
         down = keys[KeyEvent.VK_S];

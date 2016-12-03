@@ -10,7 +10,9 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import javax.swing.Timer;
 import powerbattle.Handler;
+import state.EndState;
 import state.GameState;
+import state.State;
 import tiles.Tile;
 
 /**
@@ -28,7 +30,7 @@ public class Player extends Creature {
     final float BULLETSPEED = 5f;
     int forward = 0;
     boolean isRight = true, shootAni = false, firstShoot = false, normalBulletShoot = false;
-    boolean jump = false, fall = false, flag = true, dead = false, attackAni = false;
+    public boolean jump = false, fall = false, flag = true, dead = false, attackAni = false;
     public boolean cheat = false, hitByPlayer = false, hitByMagicalBullet = false;
     float jumpspeed = 10; //Check how high the player can jump
     int jumpTimer = 0; //Make the player can jump again using this timer
@@ -48,6 +50,9 @@ public class Player extends Creature {
     }
 
     public void update(ArrayList<Enemy> enemies, Robot player, boolean chaotic) {
+        if (Math.abs(x - GameState.STAR_X_POSITION) < 20 && Math.abs(y - GameState.STAR_Y_POSITION) < 20) {
+            State.setState(new EndState(handler, time, "you"));
+        }
         // System.out.println(x + " " + y);
         getInput(enemies, player, chaotic);
         move();
@@ -77,6 +82,8 @@ public class Player extends Creature {
         }
 
         if (handler.getKeyManager().restart) {
+            runSpeed = Creature.RUN_SPEED;
+            jumpspeed = 10;
             cheat = false;
             health = 5;
             numOfMagicalBullet = 5;

@@ -40,10 +40,6 @@ public class Game implements Runnable {
     private BufferStrategy bs;
     private Graphics g;
 
-    // States
-    public State gameState;
-    public State menuState;
-
     // User Input
     public KeyManager keyManager;
     public MouseManager mouseManager;
@@ -58,10 +54,9 @@ public class Game implements Runnable {
 
     //Background image
     private BufferedImage menuBG;
-    
-    // Heart Image
-   // private BufferedImage heartImage;
 
+    // Heart Image
+    // private BufferedImage heartImage;
     // Game constructor, pass title, width and height since Diplay takes these three parameter
     public Game(String title, int width, int height) {
 
@@ -82,7 +77,7 @@ public class Game implements Runnable {
         display = new Display(title, width, height);
         // Getting the frame and adding key listener
         display.getFrame().addKeyListener(keyManager);
-       
+
         display.getFrame().addMouseListener(mouseManager);
         display.getFrame().addMouseMotionListener(mouseManager);
         display.getCanvas().addMouseListener(mouseManager);
@@ -91,15 +86,13 @@ public class Game implements Runnable {
         // loads this image
         menuBG = ImageLoader.loadImage("/Menu/menuBG.jpg");
 
-       // heartImage = ImageLoader.loadImage("/heart.png");
+        // heartImage = ImageLoader.loadImage("/heart.png");
         Assets.init();
-
 
         handler = new Handler(this);
         gameCamera = new GameCamera(handler, 0, 0);
 
-        menuState = new MenuState(handler);
-        State.setState(menuState);
+        State.setState(new MenuState(handler));
     }
 //int x = 0;
     // Updates everything for the game
@@ -133,8 +126,7 @@ public class Game implements Runnable {
         // Before we draw clear the screen
         g.clearRect(0, 0, width, height);
 
-         g.drawImage(menuBG, 0, 0, 1000, 685, null);
-     //   g.drawImage(heartImage, 10, 10, null);
+        g.drawImage(menuBG, 0, 0, 1000, 685, null);
 
         // End Drawing
         if (State.getState() != null) {
@@ -215,8 +207,8 @@ public class Game implements Runnable {
         return keyManager;
 
     }
-    
-     public MouseManager getMouseManager() {
+
+    public MouseManager getMouseManager() {
 
         return mouseManager;
 

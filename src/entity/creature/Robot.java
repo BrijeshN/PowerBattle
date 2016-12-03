@@ -10,7 +10,10 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import javax.swing.Timer;
 import powerbattle.Handler;
+import state.EndState;
 import state.GameState;
+import state.MenuState;
+import state.State;
 import tiles.Tile;
 
 /**
@@ -50,6 +53,14 @@ public class Robot extends Creature {
 
     public void update(ArrayList<Enemy> enemies, Player player, boolean chaotic) {
         // System.out.println(x + " " + y);
+
+        if (Math.abs(x - GameState.STAR_X_POSITION) < 20 && Math.abs(y - GameState.STAR_Y_POSITION) < 20) {
+            State.setState(new EndState(handler, time, "you"));
+        }
+
+        if (handler.getKeyManager().menu) {
+            State.setState(new MenuState(handler));
+        }
         getInput(enemies, player, chaotic);
         move();
 
@@ -79,6 +90,8 @@ public class Robot extends Creature {
 
         if (handler.getKeyManager().restart) {
             health = 5;
+            runSpeed = Creature.RUN_SPEED;
+            jumpspeed = 10;
             numOfMagicalBullet = 5;
             numOfNormalBullet = 25;
             first = false;

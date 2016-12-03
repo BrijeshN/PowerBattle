@@ -11,6 +11,7 @@ import UserInterface.UIManager;
 import state.State;
 import graphics.Assets;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import powerbattle.Game;
 import powerbattle.Handler;
@@ -29,32 +30,22 @@ public class MenuState extends State {
         uiManager = new UIManager(handler);
         handler.getMouseManager().setUIManager(uiManager);
 
+        uiManager.addObject(new UIImageButton(225, 300, 140, 70, Assets.start, new ClickListener() {
+            @Override
+            public void onClick() {
+                ControlState controlState = new ControlState(handler);
+                State.setState(controlState);
+            }
+        }));
+
         uiManager.addObject(new UIImageButton(425, 300, 140, 70, Assets.start, new ClickListener() {
             @Override
             public void onClick() {
-                GameState gameState = new GameState(handler, false, false);
-                State.setState(gameState);
+                ModeState modeState = new ModeState(handler);
+                State.setState(modeState);
             }
         }));
-
-        uiManager.addObject(new UIImageButton(425, 400, 140, 70, Assets.start, new ClickListener() {
-            @Override
-            public void onClick() {
-                handler.getMouseManager().setUIManager(null);
-                GameState gameState = new GameState(handler, false, true);
-                State.setState(gameState);
-            }
-        }));
-
-        uiManager.addObject(new UIImageButton(425, 500, 140, 70, Assets.start, new ClickListener() {
-            @Override
-            public void onClick() {
-                GameState gameState = new GameState(handler, true, false);
-                gameState.chaotic = false;
-                gameState.coop = true;
-                State.setState(gameState);
-            }
-        }));
+        
         uiManager.addObject(new UIImageButton(425, 600, 140, 70, Assets.start, new ClickListener() {
             @Override
             public void onClick() {
