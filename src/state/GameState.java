@@ -35,6 +35,8 @@ public class GameState extends State {
     public static final int CHAOTIC_PLAYER1_SPAWN_Y_POSITION = 400;
     public static final int CHAOTIC_PLAYER2_SPAWN_X_POSITION = 890;
     public static final int CHAOTIC_PLAYER2_SPAWN_Y_POSITION = 400;
+    public static final float STAR_X_POSITION = 3682;
+    public static final float STAR_Y_POSITION = 175;
     boolean chaotic = false, coop = true; //set the game mode
 
     public ArrayList<Enemy> enemis;
@@ -60,7 +62,7 @@ public class GameState extends State {
         if (chaotic) {
             robot = new Robot(handler, CHAOTIC_PLAYER1_SPAWN_X_POSITION, CHAOTIC_PLAYER1_SPAWN_Y_POSITION);
         } else {
-            robot = new Robot(handler, PLAYER_SPAWN_X_POSITION, PLAYER_SPAWN_Y_POSITION);
+            robot = new Robot(handler, STAR_X_POSITION, STAR_Y_POSITION);
         }
 
         for (int i = 0; i < ENEMYNUM; i++) {
@@ -117,7 +119,7 @@ public class GameState extends State {
         if (!chaotic) {
             if (!robot.dead) {
                 handler.getGameCamera().centerOnEntity(robot);
-            }else{
+            } else {
                 handler.getGameCamera().centerOnEntity(player);
             }
         }
@@ -144,6 +146,7 @@ public class GameState extends State {
             e.render(g, count);
         }
 
+        g.drawImage(Assets.star, (int) (STAR_X_POSITION - handler.getGameCamera().getxOffset()), (int) (STAR_Y_POSITION - handler.getGameCamera().getyOffset()), 100, 100, null);
         for (int i = 0; i < robot.health; i++) {
             g.drawImage(Assets.heartImage, 60 * (i + 1) - 55, 25, 50, 50, null);
         }

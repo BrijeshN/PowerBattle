@@ -41,7 +41,7 @@ public class Assets {
     public static BufferedImage grass1, grass2, grass3;
     public static BufferedImage dirt1, dirt2, dirt3, dirt4, dirt5, dirt6, dirt7, dirt8;
     public static BufferedImage floatDirt1, floatDirt2, floatDirt3;
-    public static BufferedImage water1, heart;
+    public static BufferedImage water1, heart, star;
 
     public static BufferedImage bullet, bulletLeft;
     public static BufferedImage normalBullet, normalBulletLeft;
@@ -73,6 +73,7 @@ public class Assets {
         heartImage = ImageLoader.loadImage("/heart.png");
         ammo = ImageLoader.loadImage("/Bullet/ammo.png");
         magicalAmmo = ImageLoader.loadImage("/Bullet/magicalAmmo.png");
+        star = ImageLoader.loadImage("/star.png");
 
     }
  
