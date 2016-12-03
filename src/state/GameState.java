@@ -35,28 +35,32 @@ public class GameState extends State {
     public static final int CHAOTIC_PLAYER1_SPAWN_Y_POSITION = 400;
     public static final int CHAOTIC_PLAYER2_SPAWN_X_POSITION = 890;
     public static final int CHAOTIC_PLAYER2_SPAWN_Y_POSITION = 400;
-    boolean chaotic = false, coop = true;
+    boolean chaotic = false, coop = true; //set the game mode
 
     public ArrayList<Enemy> enemis;
 
     public GameState(Handler handler) {
         super(handler);
-        map = new Map(handler, "map1.txt");
+        if (chaotic) {
+            map = new Map(handler, "map2.txt");
+        } else {
+            map = new Map(handler, "map1.txt");
+        }
 
         handler.setMap(map);
         enemis = new ArrayList<>();
         enemy = new Enemy[ENEMYNUM];
 
-        if (coop) {
-            player = new Player(handler, PLAYER_SPAWN_X_POSITION, PLAYER_SPAWN_Y_POSITION);
-        } else if (chaotic) {
+        if (chaotic) {
             player = new Player(handler, CHAOTIC_PLAYER2_SPAWN_X_POSITION, CHAOTIC_PLAYER2_SPAWN_Y_POSITION);
+        } else {
+            player = new Player(handler, PLAYER_SPAWN_X_POSITION, PLAYER_SPAWN_Y_POSITION);
         }
 
-        if (coop) {
-            robot = new Robot(handler, PLAYER_SPAWN_X_POSITION, PLAYER_SPAWN_Y_POSITION);
-        } else {
+        if (chaotic) {
             robot = new Robot(handler, CHAOTIC_PLAYER1_SPAWN_X_POSITION, CHAOTIC_PLAYER1_SPAWN_Y_POSITION);
+        } else {
+            robot = new Robot(handler, PLAYER_SPAWN_X_POSITION, PLAYER_SPAWN_Y_POSITION);
         }
 
         for (int i = 0; i < ENEMYNUM; i++) {
@@ -102,13 +106,17 @@ public class GameState extends State {
         for (Enemy e : enemy) {
             if (aimRobot) {
                 e.update(robot);
-            } else {
+            } else if (chaotic || coop) {
                 e.update(player);
+            } else {
+                e.update(robot);
             }
         }
 
         // center on this player entity
-        handler.getGameCamera().centerOnEntity(robot);
+        if (!chaotic) {
+            handler.getGameCamera().centerOnEntity(robot);
+        }
     }
 
     public boolean aimForPlayer(Creature player, Enemy e) {

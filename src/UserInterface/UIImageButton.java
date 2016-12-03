@@ -12,14 +12,14 @@ import java.awt.image.BufferedImage;
  *
  * @author Brijesh
  */
-public class UIImageButton extends UIObject{
-    
+public class UIImageButton extends UIObject {
+
     public BufferedImage[] images;
     public ClickListener clicker;
-    
-    public UIImageButton(float x, float y, int width, int height, BufferedImage[] images, ClickListener clicker){
+
+    public UIImageButton(float x, float y, int width, int height, BufferedImage[] images, ClickListener clicker) {
         super(x, y, width, height);
-        
+
         this.images = images;
         this.clicker = clicker;
     }
@@ -30,8 +30,8 @@ public class UIImageButton extends UIObject{
 
     @Override
     public void render(Graphics g) {
-        
-        if(hovering){
+
+        if (hovering) {
             g.drawImage(images[1], (int) x, (int) y, width, height, null);
 
         } else {
@@ -42,9 +42,9 @@ public class UIImageButton extends UIObject{
 
     @Override
     public void onClick() {
-        
+
         clicker.onClick();
-        
+
     }
-    
+
 }
