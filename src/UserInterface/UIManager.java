@@ -15,56 +15,54 @@ import powerbattle.Handler;
  * @author Brijesh
  */
 public class UIManager {
-    
+
     public Handler handler;
     public ArrayList<UIObject> objects;
-    
-    public UIManager(Handler handler){
+
+    public UIManager(Handler handler) {
         this.handler = handler;
         this.objects = new ArrayList<UIObject>();
     }
-    
-    public void update(){
-        
-        for(UIObject o : objects){
+
+    public void update() {
+
+        for (UIObject o : objects) {
             o.update();
         }
-        
+
     }
-    
-    public void render(Graphics g){
-        
-        for(UIObject o : objects){
+
+    public void render(Graphics g) {
+
+        for (UIObject o : objects) {
             o.render(g);
         }
-        
+
     }
-    
-    public void onMouseMove(MouseEvent e){
-        
-        for(UIObject o : objects){
+
+    public void onMouseMove(MouseEvent e) {
+
+        for (UIObject o : objects) {
             o.onMouseMove(e);
         }
-        
+
     }
-    
-    public void onMouseRelease(MouseEvent e){
-        
-        for(UIObject o : objects){
+
+    public void onMouseRelease(MouseEvent e) {
+
+        for (UIObject o : objects) {
             o.onMouseRelease(e);
         }
-        
+
     }
-    
-      
-    public void addObject(UIObject o){
+
+    public void addObject(UIObject o) {
         objects.add(o);
     }
-    
-    public void removeObject(UIObject o){
+
+    public void removeObject(UIObject o) {
         objects.remove(o);
     }
-    
 
     public Handler getHandler() {
         return handler;
@@ -81,6 +79,5 @@ public class UIManager {
     public void setObjects(ArrayList<UIObject> objects) {
         this.objects = objects;
     }
-    
-  
+
 }

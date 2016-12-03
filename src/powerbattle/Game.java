@@ -2,7 +2,7 @@
 // Start, run and close the game
 package powerbattle;
 
-import state.GameState;
+import Audio.JukeBox;
 import state.MenuState;
 import state.State;
 import graphics.Assets;
@@ -12,7 +12,6 @@ import graphics.ImageLoader;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 import userInput.KeyManager;
@@ -72,6 +71,9 @@ public class Game implements Runnable {
     // Run once, initilize graphics for the game.
     // Contains game loop, and updates and draw everything
     public void init() {
+
+        JukeBox.init();
+        JukeBox.load("/Music/level1boss.mp3", "level1boss");
         //Initilize the display, so that it runs on the thread
         // Create display  on the screen
         display = new Display(title, width, height);

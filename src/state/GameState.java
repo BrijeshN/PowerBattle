@@ -5,6 +5,8 @@
  */
 package state;
 
+import Audio.JukeBox;
+import UserInterface.UIManager;
 import entity.creature.Creature;
 import entity.creature.Enemy;
 import entity.creature.Player;
@@ -24,6 +26,8 @@ import powerbattle.Handler;
 // Entity wil contain all the entity
 public class GameState extends State {
 
+    private UIManager uiManager;
+
     private Player player;
     private Robot robot;
     private Map map;
@@ -39,7 +43,7 @@ public class GameState extends State {
     public static final int CHAOTIC_PLAYER2_SPAWN_Y_POSITION = 400;
     public static final float STAR_X_POSITION = 3682;
     public static final float STAR_Y_POSITION = 175;
-    boolean chaotic = false, coop = false;
+    boolean chaotic = false, coop = false, played = false;
 
     int time;
 
@@ -49,6 +53,12 @@ public class GameState extends State {
 
     public GameState(Handler handler, boolean chaotic, boolean coop) {
         super(handler);
+        uiManager = new UIManager(handler);
+        handler.getMouseManager().setUIManager(uiManager);
+
+        if (chaotic) {
+            JukeBox.loop("level1boss");
+        }
 
         this.coop = coop;
         this.chaotic = chaotic;

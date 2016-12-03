@@ -14,10 +14,12 @@ public class Assets {
     private static final int HEIGHT = 111;
     private static final int ZOMBIEHIGHT = 100;
     private static final int ROBOTWIDTH = 125;
+    private static final int NINJAWIDTH = 125;
+    private static final int NINJAHEIGHT = 100;
 
     private static final int w = 128;
     private static final int h = 128;
-    
+
     public static final int bw = 200;
     public static final int bh = 70;
 
@@ -52,7 +54,7 @@ public class Assets {
     public static BufferedImage zombieIdleLeft[], zombieDeadLeft[];
     public static BufferedImage zombieRunLeft[], zombieRunRight[];
     public static BufferedImage zombieAttackLeft[], zombieAttackRight[];
-    
+
     public static BufferedImage[] start;
     //public static BufferedImage[] exit;
 
@@ -60,23 +62,21 @@ public class Assets {
         SpriteSheet menu = new SpriteSheet(ImageLoader.loadImage("/Menu/menu.png"));
         start = new BufferedImage[2];
         start[0] = menu.crop(0, 0, bw, bh);
-        start[1] = menu.crop(0, bh , bw, bh);
-        
-        
+        start[1] = menu.crop(0, bh, bw, bh);
+
         initBullet();
         initTile();
         initPlayerImages();
         initEnemyImages();
         initRobotImages();
         initRobotBullet();
-        
+
         heartImage = ImageLoader.loadImage("/heart.png");
         ammo = ImageLoader.loadImage("/Bullet/ammo.png");
         magicalAmmo = ImageLoader.loadImage("/Bullet/magicalAmmo.png");
         star = ImageLoader.loadImage("/star.png");
 
     }
- 
 
     public static void initEnemyImages() {
         zombieIdleRight = new BufferedImage[15];
