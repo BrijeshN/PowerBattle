@@ -28,28 +28,28 @@ public class ModeState extends State {
         uiManager = new UIManager(handler);
         handler.getMouseManager().setUIManager(uiManager);
 
-        uiManager.addObject(new UIImageButton(425, 100, 140, 70, Assets.start, new ClickListener() {
+        uiManager.addObject(new UIImageButton(425, 100, 140, 70, Assets.back, new ClickListener() {
             @Override
             public void onClick() {
                 State.setState(new MenuState(handler));
             }
         }));
 
-        uiManager.addObject(new UIImageButton(425, 300, 140, 70, Assets.start, new ClickListener() {
+        uiManager.addObject(new UIImageButton(425, 300, 140, 70, Assets.single, new ClickListener() {
             @Override
             public void onClick() {
                 State.setState(new GameState(handler, false, false));
             }
         }));
 
-        uiManager.addObject(new UIImageButton(425, 400, 140, 70, Assets.start, new ClickListener() {
+        uiManager.addObject(new UIImageButton(425, 400, 140, 70, Assets.coop, new ClickListener() {
             @Override
             public void onClick() {
                 State.setState(new GameState(handler, false, true));
             }
         }));
 
-        uiManager.addObject(new UIImageButton(425, 500, 140, 70, Assets.start, new ClickListener() {
+        uiManager.addObject(new UIImageButton(425, 500, 140, 70, Assets.chaotic, new ClickListener() {
             @Override
             public void onClick() {
                 State.setState(new GameState(handler, true, false));

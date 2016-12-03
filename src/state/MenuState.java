@@ -30,7 +30,7 @@ public class MenuState extends State {
         uiManager = new UIManager(handler);
         handler.getMouseManager().setUIManager(uiManager);
 
-        uiManager.addObject(new UIImageButton(225, 300, 140, 70, Assets.start, new ClickListener() {
+        uiManager.addObject(new UIImageButton(225, 300, 140, 70, Assets.controls, new ClickListener() {
             @Override
             public void onClick() {
                 ControlState controlState = new ControlState(handler);
@@ -38,7 +38,7 @@ public class MenuState extends State {
             }
         }));
 
-        uiManager.addObject(new UIImageButton(425, 300, 140, 70, Assets.start, new ClickListener() {
+        uiManager.addObject(new UIImageButton(425, 300, 140, 70, Assets.play, new ClickListener() {
             @Override
             public void onClick() {
                 ModeState modeState = new ModeState(handler);
@@ -46,7 +46,7 @@ public class MenuState extends State {
             }
         }));
         
-        uiManager.addObject(new UIImageButton(425, 600, 140, 70, Assets.start, new ClickListener() {
+        uiManager.addObject(new UIImageButton(425, 600, 140, 70, Assets.quit, new ClickListener() {
             @Override
             public void onClick() {
                 System.exit(0);
