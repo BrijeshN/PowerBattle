@@ -18,7 +18,7 @@ public class Assets {
     private static final int w = 128;
     private static final int h = 128;
     
-    public static final int bw = 140;
+    public static final int bw = 200;
     public static final int bh = 70;
 
     private static final int waterWidth = 128;
@@ -57,10 +57,10 @@ public class Assets {
     //public static BufferedImage[] exit;
 
     public static void init() {
-        SpriteSheet menu = new SpriteSheet(ImageLoader.loadImage("/MapTile/mapSprite.png"));
+        SpriteSheet menu = new SpriteSheet(ImageLoader.loadImage("/Menu/menu.png"));
         start = new BufferedImage[2];
-        start[0] = menu.crop(0, 0, w, h);
-        start[1] = menu.crop(w * 2, h * 2, w, h);
+        start[0] = menu.crop(0, 0, bw, bh);
+        start[1] = menu.crop(0, bh , bw, bh);
         
         
         initBullet();

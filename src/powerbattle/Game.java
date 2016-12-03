@@ -100,7 +100,7 @@ public class Game implements Runnable {
 
         gameState = new GameState(handler);
         menuState = new MenuState(handler);
-        State.setState(gameState);
+        State.setState(menuState);
     }
 //int x = 0;
     // Updates everything for the game
