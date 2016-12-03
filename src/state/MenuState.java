@@ -10,6 +10,7 @@ import UserInterface.UIImageButton;
 import UserInterface.UIManager;
 import state.State;
 import graphics.Assets;
+import graphics.ImageLoader;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -24,6 +25,8 @@ import powerbattle.Handler;
 public class MenuState extends State {
 
     private UIManager uiManager;
+    private BufferedImage logo;
+
     
 
     public MenuState(final Handler handler) {
@@ -31,8 +34,11 @@ public class MenuState extends State {
         super(handler);
         uiManager = new UIManager(handler);
         handler.getMouseManager().setUIManager(uiManager);
+        
+        logo = ImageLoader.loadImage("/Menu/PowerBattle.png");
 
-          uiManager.addObject(new UIImageButton(240, 350, 148, 76, Assets.play, new ClickListener() {
+
+          uiManager.addObject(new UIImageButton(240, 350, 150, 76, Assets.play, new ClickListener() {
             @Override
             public void onClick() {
                 ModeState modeState = new ModeState(handler);
@@ -40,7 +46,7 @@ public class MenuState extends State {
             }
         }));
         
-        uiManager.addObject(new UIImageButton(640, 350, 148, 76, Assets.controls, new ClickListener() {
+        uiManager.addObject(new UIImageButton(640, 350, 150, 76, Assets.controls, new ClickListener() {
             @Override
             public void onClick() {
                 ControlState controlState = new ControlState(handler);
@@ -48,7 +54,7 @@ public class MenuState extends State {
             }
         }));
         
-        uiManager.addObject(new UIImageButton(440, 525, 148, 76, Assets.quit, new ClickListener() {
+        uiManager.addObject(new UIImageButton(440, 525, 150, 76, Assets.quit, new ClickListener() {
             @Override
             public void onClick() {
                 System.exit(0);
@@ -66,6 +72,8 @@ public class MenuState extends State {
     @Override
 
     public void render(Graphics g, int time) {
+        
+        g.drawImage(logo, 60, 60, 882, 113, null);
 
         uiManager.render(g);
     }

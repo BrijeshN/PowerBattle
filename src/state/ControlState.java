@@ -8,9 +8,11 @@ package state;
 import UserInterface.UIImageButton;
 import UserInterface.UIManager;
 import graphics.Assets;
+import graphics.ImageLoader;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import powerbattle.ClickListener;
 import powerbattle.Handler;
 
@@ -21,14 +23,23 @@ import powerbattle.Handler;
 public class ControlState extends State {
 
     private UIManager uiManager;
+    private BufferedImage controlLogo;
+    private BufferedImage controlsImage;
+
+
 
     public ControlState(Handler handler) {
         super(handler);
 
         uiManager = new UIManager(handler);
         handler.getMouseManager().setUIManager(uiManager);
+        
+        controlLogo = ImageLoader.loadImage("/Menu/ControlsLogo.png");
+        controlsImage = ImageLoader.loadImage("/Menu/ControlsImage.png");
 
-        uiManager.addObject(new UIImageButton(425, 525, 140, 70, Assets.back, new ClickListener() {
+
+
+        uiManager.addObject(new UIImageButton(425, 580, 150, 76, Assets.back, new ClickListener() {
             @Override
             public void onClick() {
                 State.setState(new MenuState(handler));
@@ -44,9 +55,10 @@ public class ControlState extends State {
 
     @Override
     public void render(Graphics g, int time) {
-        g.setFont(new Font("Franklin Gothic Heavy", Font.BOLD, 17));
-        g.setColor(Color.WHITE);
-        g.drawString("Controls", 500, 200);
+        
+        g.drawImage(controlLogo, 190, 60, 602, 113, null);
+        g.drawImage(controlsImage, 77, 230, 851, 315, null);
+
         uiManager.render(g);
     }
 
