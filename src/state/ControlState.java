@@ -28,7 +28,7 @@ public class ControlState extends State {
         uiManager = new UIManager(handler);
         handler.getMouseManager().setUIManager(uiManager);
 
-        uiManager.addObject(new UIImageButton(425, 300, 140, 70, Assets.back, new ClickListener() {
+        uiManager.addObject(new UIImageButton(425, 525, 140, 70, Assets.back, new ClickListener() {
             @Override
             public void onClick() {
                 State.setState(new MenuState(handler));
@@ -45,8 +45,8 @@ public class ControlState extends State {
     @Override
     public void render(Graphics g, int time) {
         g.setFont(new Font("Franklin Gothic Heavy", Font.BOLD, 17));
-        g.setColor(Color.BLACK);
-        g.drawString("Ammo: ", 500, 95);
+        g.setColor(Color.WHITE);
+        g.drawString("Controls", 500, 200);
         uiManager.render(g);
     }
 
