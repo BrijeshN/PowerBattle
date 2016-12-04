@@ -56,7 +56,7 @@ public class Robot extends Creature {
     }
 
     public void update(ArrayList<Enemy> enemies, Player player, boolean chaotic) {
-        // System.out.println(x + " " + y);
+        System.out.println(x + " " + y);
 
         if (Math.abs(x - GameState.STAR_X_POSITION) < 20 && Math.abs(y - GameState.STAR_Y_POSITION) < 20) {
             if (GameState.coop) {
@@ -139,6 +139,15 @@ public class Robot extends Creature {
 
         if (health <= 0) {
             dead = true;
+        }
+        if (GameState.chaotic) {
+            if (y > CHAOTICDIEHEIGHT) {
+                if (!cheat) {
+                    dead = true;
+                }
+                yMove = 0;
+                stop();
+            }
         }
 
         if (y > DIEHEIGHT) {
@@ -405,6 +414,15 @@ public class Robot extends Creature {
                 yMove = 0;
             }
             fall = false;
+        }
+
+        if (GameState.chaotic) {
+            if (y > CHAOTICDIEHEIGHT && cheat) {
+                if (!jump) {
+                    yMove = 0;
+                }
+                fall = false;
+            }
         }
     }
 
