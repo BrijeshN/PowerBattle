@@ -36,14 +36,14 @@ public class GameState extends State {
     public static final int[][] ENEMYPOS = {{500, 1455}, {1614, 1205}, {1776, 1205}, {2739, 1455},
     {3423, 1455}, {2520, 1075}, {2004, 685}, {1401, 685}, {369, 805}, {528, 545}, {1590, 160}, {1956, 160}};
     public static final int PLAYER_SPAWN_X_POSITION = 150;
-    public static final int PLAYER_SPAWN_Y_POSITION = 1455;
+    public static final int PLAYER_SPAWN_Y_POSITION = 1475;
     public static final int CHAOTIC_PLAYER1_SPAWN_X_POSITION = 20;
     public static final int CHAOTIC_PLAYER1_SPAWN_Y_POSITION = 400;
     public static final int CHAOTIC_PLAYER2_SPAWN_X_POSITION = 890;
     public static final int CHAOTIC_PLAYER2_SPAWN_Y_POSITION = 400;
     public static final float STAR_X_POSITION = 3682;
     public static final float STAR_Y_POSITION = 175;
-    boolean chaotic = false, coop = false, played = false;
+    public static boolean chaotic = false, coop = false, played = false;
 
     int time;
 
@@ -55,13 +55,9 @@ public class GameState extends State {
         super(handler);
         handler.getMouseManager().setUIManager(null);
 
-        if (chaotic) {
-            JukeBox.loop("level1boss");
-        }
-
         this.coop = coop;
         this.chaotic = chaotic;
-        if (chaotic) {
+        if (this.chaotic) {
             map = new Map(handler, "map2.txt");
         } else {
             map = new Map(handler, "map1.txt");
@@ -100,8 +96,12 @@ public class GameState extends State {
 
         if (chaotic) {
             if (robot.dead) {
+                JukeBox.stop("chaoticback");
+                JukeBox.loop("menuback");
                 State.getState().setState(new EndState(handler, time, "Human"));
             } else if (player.dead) {
+                JukeBox.stop("chaoticback");
+                JukeBox.loop("menuback");
                 State.getState().setState(new EndState(handler, time, "Robot"));
             }
         }

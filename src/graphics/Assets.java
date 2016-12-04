@@ -16,7 +16,7 @@ public class Assets {
     private static final int ROBOTWIDTH = 125;
     private static final int NINJAWIDTH = 125;
     private static final int NINJAHEIGHT = 100;
-   
+
     private static final int w = 128;
     private static final int h = 128;
 
@@ -54,27 +54,25 @@ public class Assets {
     public static BufferedImage zombieIdleLeft[], zombieDeadLeft[];
     public static BufferedImage zombieRunLeft[], zombieRunRight[];
     public static BufferedImage zombieAttackLeft[], zombieAttackRight[];
-    
+
     //Menu Width, heights and images
-      
     private static final int menuHeight = 59;
-    
+
     private static final int playWidth = 118;
-    
+
     private static final int chaoticWidth = 168;
-  
+
     private static final int singleWidth = 148;
-    
+
     private static final int coopWidth = 134;
-   
+
     private static final int controlsWidth = 194;
-    
+
     private static final int backWidth = 126;
 
     private static final int quitWidth = 114;
-    
-    //Menu Images
 
+    //Menu Images
     public static BufferedImage[] play;
     public static BufferedImage[] single;
     public static BufferedImage[] chaotic;
@@ -82,39 +80,38 @@ public class Assets {
     public static BufferedImage[] controls;
     public static BufferedImage[] quit;
     public static BufferedImage[] back;
-    
 
     public static void init() {
         SpriteSheet playMenu = new SpriteSheet(ImageLoader.loadImage("/Menu/ButtonSprite/PlaySprite.png"));
         play = new BufferedImage[2];
         play[0] = playMenu.crop(0, 0, playWidth, menuHeight);
         play[1] = playMenu.crop(playWidth, 0, playWidth, menuHeight);
-        
+
         SpriteSheet singleMenu = new SpriteSheet(ImageLoader.loadImage("/Menu/ButtonSprite/SingleSprite.png"));
         single = new BufferedImage[2];
         single[0] = singleMenu.crop(0, 0, singleWidth, menuHeight);
         single[1] = singleMenu.crop(singleWidth, 0, singleWidth, menuHeight);
-        
+
         SpriteSheet chaoticMenu = new SpriteSheet(ImageLoader.loadImage("/Menu/ButtonSprite/ChaoticSprite.png"));
         chaotic = new BufferedImage[2];
         chaotic[0] = chaoticMenu.crop(0, 0, chaoticWidth, menuHeight);
         chaotic[1] = chaoticMenu.crop(chaoticWidth, 0, chaoticWidth, menuHeight);
-        
+
         SpriteSheet coopMenu = new SpriteSheet(ImageLoader.loadImage("/Menu/ButtonSprite/CoopSprite.png"));
         coop = new BufferedImage[2];
         coop[0] = coopMenu.crop(0, 0, coopWidth, menuHeight);
         coop[1] = coopMenu.crop(coopWidth, 0, coopWidth, menuHeight);
-        
+
         SpriteSheet controlsMenu = new SpriteSheet(ImageLoader.loadImage("/Menu/ButtonSprite/ControlsSprite.png"));
         controls = new BufferedImage[2];
         controls[0] = controlsMenu.crop(0, 0, controlsWidth, menuHeight);
         controls[1] = controlsMenu.crop(controlsWidth, 0, controlsWidth, menuHeight);
-        
+
         SpriteSheet quitMenu = new SpriteSheet(ImageLoader.loadImage("/Menu/ButtonSprite/QuitSprite.png"));
         quit = new BufferedImage[2];
         quit[0] = quitMenu.crop(0, 0, quitWidth, menuHeight);
         quit[1] = quitMenu.crop(quitWidth, 0, quitWidth, menuHeight);
-        
+
         SpriteSheet backMenu = new SpriteSheet(ImageLoader.loadImage("/Menu/ButtonSprite/BackSprite.png"));
         back = new BufferedImage[2];
         back[0] = backMenu.crop(0, 0, backWidth, menuHeight);
@@ -208,7 +205,7 @@ public class Assets {
 
     }
 
-    public static void initRobotImages() {
+    public static void initPlayerImages() {
         runRight = new BufferedImage[5];
         meleeRight = new BufferedImage[4];
         runLeft = new BufferedImage[5];
@@ -272,7 +269,7 @@ public class Assets {
         invisibleWall = playerRight.crop(WIDTH * 5, HEIGHT * 3, WIDTH, HEIGHT);
     }
 
-    public static void initPlayerImages() {
+    public static void initRobotImages() {
         robotrunRight = new BufferedImage[8];
         robotrunLeft = new BufferedImage[8];
         robotmeleeRight = new BufferedImage[8];
@@ -330,9 +327,13 @@ public class Assets {
             robotshootRight[i] = playerRight.crop(ROBOTWIDTH * (i + 46), 0, ROBOTWIDTH, ZOMBIEHIGHT);
         }
 
+        robotshootRight[2] = playerRight.crop(6000, 0, 120, ZOMBIEHIGHT);
+
         for (int i = 0; i < 2; i++) {
             robotshootLeft[i] = playerLeft.crop(ROBOTWIDTH * (i + 46), 0, ROBOTWIDTH, ZOMBIEHIGHT);
         }
+
+        robotshootLeft[2] = playerLeft.crop(6000, 0, 120, ZOMBIEHIGHT);
     }
 
 }

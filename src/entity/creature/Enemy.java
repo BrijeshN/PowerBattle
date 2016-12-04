@@ -5,6 +5,7 @@
  */
 package entity.creature;
 
+import Audio.JukeBox;
 import graphics.Assets;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -29,7 +30,7 @@ public class Enemy extends Creature {
     public boolean firstCall = true, notDraw = false, aimPlayer = false, deadTimeSet = false;
     int id, deadTime = 0;
     boolean isAmmo = false, pickedByPlayer = false, isHeart = false, isMagicalAmmo = false;
-    boolean isDraw = false, hitByMagicalBullet = false;
+    boolean isDraw = false, hitByMagicalBullet = false, hitByRobot = false;
 
     public Enemy(Handler handler, float x, float y, int id) {
         super(handler, x, y, DEFAULT_ZOMBIE_WIDTH, DEFAULT_ZOMBIE_HEIGHT);
@@ -133,6 +134,7 @@ public class Enemy extends Creature {
                     if (!hitRight) {
                         hitRight = true;
                         player.health -= 1;
+                        JukeBox.play("playerhit");
                     }
                 } else {
                     hitRight = false;
@@ -142,6 +144,7 @@ public class Enemy extends Creature {
                 if (!hitLeft) {
                     hitLeft = true;
                     player.health -= 1;
+                    JukeBox.play("playerhit");
                 }
             } else {
                 hitLeft = false;
@@ -341,11 +344,11 @@ public class Enemy extends Creature {
                     i = r.nextInt(20);
                     isDraw = true;
                 }
-                if (i % 2 == 0 && i < 20) {
+                if (i % 2 == 0 && i < 10) {
 
                     g.drawImage(Assets.ammo, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset() + 40), 100, 100, null);
                     isAmmo = true;
-                } else if (i == 1 || i == 3) {
+                } else if (i == 1 || i == 3 || i < 20) {
                     g.drawImage(Assets.magicalAmmo, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset() + 40), 60, 60, null);
                     isMagicalAmmo = true;
                 } else if (i < 10) {

@@ -5,6 +5,7 @@
  */
 package UserInterface;
 
+import Audio.JukeBox;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
@@ -14,52 +15,56 @@ import java.awt.event.MouseEvent;
  * @author Brijesh
  */
 public abstract class UIObject {
-    
+
     public float x, y;
     public int width, height;
     public boolean hovering = false;
-    
+
     public Rectangle bounds;
-   
-       
-    public UIObject(float x, float y, int width, int height){
-        
+
+    public UIObject(float x, float y, int width, int height) {
+
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
-        
+
         bounds = new Rectangle((int) x, (int) y, width, height);
-        
-    }
-    
-    public abstract void update();
-    
-    public abstract void render(Graphics g);
-    
-    public abstract void onClick();
-    
-    public void onMouseMove(MouseEvent e){
-        
-        if(bounds.contains(e.getX(), e.getY())){
-            hovering = true;
-        } else{
-            hovering = false;
-        }
-        
-    }
-    
-    public void onMouseRelease(MouseEvent e){
-        
-        if(hovering){
-            onClick();
-        }
-        
+
     }
 
-    
+    public abstract void update();
+
+    public abstract void render(Graphics g);
+
+    public abstract void onClick();
+
+    boolean played = false;
+
+    public void onMouseMove(MouseEvent e) {
+
+        if (bounds.contains(e.getX(), e.getY())) {
+            if (!played) {
+                played = true;
+                JukeBox.play("menuoption");
+            }
+            hovering = true;
+        } else {
+            played= false;
+            hovering = false;
+        }
+
+    }
+
+    public void onMouseRelease(MouseEvent e) {
+
+        if (hovering) {
+            onClick();
+        }
+
+    }
+
     // GETTERS and SETTERS
-    
     public float getX() {
         return x;
     }
@@ -99,6 +104,5 @@ public abstract class UIObject {
     public void setHovering(boolean hovering) {
         this.hovering = hovering;
     }
- 
-    
+
 }

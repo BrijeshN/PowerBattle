@@ -14,6 +14,7 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.Timer;
 import java.util.TimerTask;
+import state.EndState;
 import userInput.KeyManager;
 import userInput.MouseManager;
 
@@ -73,7 +74,21 @@ public class Game implements Runnable {
     public void init() {
 
         JukeBox.init();
-        JukeBox.load("/Music/level1boss.mp3", "level1boss");
+        JukeBox.load("/Music/chaoticback.mp3", "chaoticback");
+        JukeBox.load("/Music/menuback.mp3", "menuback");
+        JukeBox.load("/Music/singleback.mp3", "singleback");
+        JukeBox.load("/Music/coopback.mp3", "coopback");
+        JukeBox.load("/Music/jump.mp3", "jump");
+        JukeBox.load("/Music/menuselect.mp3", "menuselect");
+        JukeBox.load("/Music/menuoption.mp3", "menuoption");
+        JukeBox.load("/Music/land.mp3", "land");
+        JukeBox.load("/Music/attack.mp3", "attack");
+        JukeBox.load("/Music/ammoclip.mp3", "ammoclip");
+        JukeBox.load("/Music/magicalammo.mp3", "magicalammo");
+        JukeBox.load("/Music/ammo.mp3", "ammo");
+        JukeBox.load("/Music/heart.mp3", "heart");
+        JukeBox.load("/Music/enemyhit.mp3", "enemyhit");
+        JukeBox.load("/Music/playerhit.mp3", "playerhit");
         //Initilize the display, so that it runs on the thread
         // Create display  on the screen
         display = new Display(title, width, height);
@@ -87,13 +102,14 @@ public class Game implements Runnable {
 
         // loads this image
         menuBG = ImageLoader.loadImage("/Menu/menuBG.jpg");
-        
+
         // heartImage = ImageLoader.loadImage("/heart.png");
         Assets.init();
 
         handler = new Handler(this);
         gameCamera = new GameCamera(handler, 0, 0);
 
+        JukeBox.loop("menuback");
         State.setState(new MenuState(handler));
     }
 //int x = 0;
@@ -139,7 +155,7 @@ public class Game implements Runnable {
 
         // Tell JAVA that we are done drawing
         bs.show();
-        
+
         // Make sure graphics object finish/done properly
         g.dispose();
 

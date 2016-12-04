@@ -5,6 +5,7 @@
  */
 package state;
 
+import Audio.JukeBox;
 import UserInterface.UIImageButton;
 import UserInterface.UIManager;
 import graphics.Assets;
@@ -40,6 +41,7 @@ public class EndState extends State {
         uiManager.addObject(new UIImageButton(425, 300, 150, 76, Assets.back, new ClickListener() {
             @Override
             public void onClick() {
+                JukeBox.play("menuselect");
                 State.setState(new MenuState(handler));
             }
         }));
@@ -54,7 +56,7 @@ public class EndState extends State {
     public void render(Graphics g, int time) {
         g.setFont(new Font("Franklin Gothic Heavy", Font.BOLD, 17));
         g.setColor(Color.BLACK);
-        g.drawString("Congratulations to " + winner + "! Your game time is " + hms, 500, 95);
+        g.drawString("Congratulations to " + winner + "! Your game time is " + hms, 300, 200);
         uiManager.render(g);
     }
 

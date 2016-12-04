@@ -5,6 +5,7 @@
  */
 package state;
 
+import Audio.JukeBox;
 import powerbattle.ClickListener;
 import UserInterface.UIImageButton;
 import UserInterface.UIManager;
@@ -41,6 +42,7 @@ public class MenuState extends State {
           uiManager.addObject(new UIImageButton(240, 350, 150, 76, Assets.play, new ClickListener() {
             @Override
             public void onClick() {
+                JukeBox.play("menuselect");
                 ModeState modeState = new ModeState(handler);
                 State.setState(modeState);
             }
@@ -49,6 +51,7 @@ public class MenuState extends State {
         uiManager.addObject(new UIImageButton(640, 350, 150, 76, Assets.controls, new ClickListener() {
             @Override
             public void onClick() {
+                JukeBox.play("menuselect");
                 ControlState controlState = new ControlState(handler);
                 State.setState(controlState);
             }
@@ -57,6 +60,7 @@ public class MenuState extends State {
         uiManager.addObject(new UIImageButton(440, 525, 150, 76, Assets.quit, new ClickListener() {
             @Override
             public void onClick() {
+                 JukeBox.play("menuselect");
                 System.exit(0);
             }
         }));

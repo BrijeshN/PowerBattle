@@ -5,6 +5,7 @@
  */
 package entity.creature;
 
+import Audio.JukeBox;
 import graphics.Assets;
 import java.awt.Graphics;
 import java.util.ArrayList;
@@ -44,6 +45,9 @@ public class Robot extends Creature {
 
     public Robot(Handler handler, float x, float y) {
         super(handler, x, y, DEFAULT_PLAYER_WIDTH, DEFAULT_PLAYER_HEIGHT);
+
+        played = true;
+
         health = 5;
         bounds.x = 32;
         bounds.y = 32;
@@ -55,13 +59,31 @@ public class Robot extends Creature {
         // System.out.println(x + " " + y);
 
         if (Math.abs(x - GameState.STAR_X_POSITION) < 20 && Math.abs(y - GameState.STAR_Y_POSITION) < 20) {
+            if (GameState.coop) {
+                JukeBox.stop("coopback");
+                JukeBox.loop("menuback");
+            } else {
+                JukeBox.stop("singleback");
+                JukeBox.loop("menuback");
+            }
             State.setState(new EndState(handler, time, "you"));
         }
 
         if (handler.getKeyManager().menu) {
+            if (GameState.chaotic) {
+                JukeBox.stop("chaoticback");
+                JukeBox.loop("menuback");
+            } else if (GameState.coop) {
+                JukeBox.stop("coopback");
+                JukeBox.loop("menuback");
+            } else {
+                JukeBox.stop("singleback");
+                JukeBox.loop("menuback");
+            }
             State.setState(new MenuState(handler));
         }
         getInput(enemies, player, chaotic);
+
         move();
 
     }
@@ -136,6 +158,7 @@ public class Robot extends Creature {
         xMove = 0;
         if (handler.getKeyManager().up) {
             if (!jump && !fall) {
+                JukeBox.play("jump");
                 jump = true;
                 fall = false;
             }
@@ -165,8 +188,14 @@ public class Robot extends Creature {
         int ty = (int) (y + yMove + bounds.y + bounds.height) / Tile.TILEHEIGHT;
         if (collisionWithTile((int) (x + bounds.x) / Tile.TILEWIDTH, ty)
                 || collisionWithTile((int) (x + bounds.x + bounds.width) / Tile.TILEWIDTH, ty)) {
+
             fall = false;
+            if (!jump && !played) {
+                played = true;
+                JukeBox.play("land");
+            }
         } else {
+            played = false;
             fall = true;
         }
 
@@ -178,6 +207,7 @@ public class Robot extends Creature {
                 bullets.add(bullet);
                 numOfMagicalBullet--;
                 bulletShoot = true;
+                JukeBox.play("magicalammo");
             }
         } else {
             bulletShoot = false;
@@ -189,6 +219,7 @@ public class Robot extends Creature {
                 normalBullets.add(normalBullet);
                 numOfNormalBullet--;
                 normalBulletShoot = true;
+                JukeBox.play("ammo");
             }
         } else {
             normalBulletShoot = false;
@@ -199,7 +230,7 @@ public class Robot extends Creature {
                 player.hitByPlayer = false;
             }
             for (Enemy e : enemis) {
-                e.hitByPlayer = false;
+                e.hitByRobot = false;
             }
             first = false;
             attackAni = false;
@@ -214,11 +245,13 @@ public class Robot extends Creature {
             if (isRight) {
                 if (e.isAmmo) {
                     if (x > e.getX() - 55 && x < e.getX() + 15 && y > e.getY() - 60 && y < e.getY() + 60) {
+                        JukeBox.play("ammoclip");
                         e.pickedByPlayer = true;
                         numOfNormalBullet += 5;
                     }
                 } else if (e.isMagicalAmmo) {
                     if (x > e.getX() - 55 && x < e.getX() + 15 && y > e.getY() - 60 && y < e.getY() + 60) {
+                        JukeBox.play("ammoclip");
                         e.pickedByPlayer = true;
                         numOfMagicalBullet += 1;
                     }
@@ -226,22 +259,26 @@ public class Robot extends Creature {
                     if (x > e.getX() - 55 && x < e.getX() + 15 && y > e.getY() - 60 && y < e.getY() + 60) {
                         e.pickedByPlayer = true;
                         health += 1;
+                        JukeBox.play("heart");
                     }
                 }
             } else if (e.isAmmo) {
                 if (x > e.getX() - 15 && x < e.getX() + 15 && y > e.getY() - 60 && y < e.getY() + 60) {
                     e.pickedByPlayer = true;
                     numOfNormalBullet += 5;
+                    JukeBox.play("ammoclip");
                 }
             } else if (e.isMagicalAmmo) {
                 if (x > e.getX() - 15 && x < e.getX() + 15 && y > e.getY() - 60 && y < e.getY() + 60) {
                     e.pickedByPlayer = true;
                     numOfMagicalBullet += 1;
+                    JukeBox.play("ammoclip");
                 }
             } else if (e.isHeart) {
                 if (x > e.getX() - 15 && x < e.getX() + 15 && y > e.getY() - 60 && y < e.getY() + 60) {
                     e.pickedByPlayer = true;
                     health += 1;
+                    JukeBox.play("heart");
                 }
             }
         }
@@ -253,14 +290,16 @@ public class Robot extends Creature {
                         if (!player.hitByPlayer) {
                             player.hitByPlayer = true;
                             player.health -= ATTACKPDAMAGE;
+                            JukeBox.play("playerhit");
                         }
                     }
                 }
                 for (Enemy e : enemis) {
                     if (x > e.getX() - 75 && x < e.getX() + 15 && y > e.getY() - 60 && y < e.getY() + 60) {
-                        if (!e.hitByPlayer) {
-                            e.hitByPlayer = true;
+                        if (!e.hitByRobot) {
+                            e.hitByRobot = true;
                             e.health -= ATTACKDAMAGE;
+                            JukeBox.play("enemyhit");
                         }
                     }
                 }
@@ -270,14 +309,16 @@ public class Robot extends Creature {
                         if (!player.hitByPlayer) {
                             player.hitByPlayer = true;
                             player.health -= ATTACKPDAMAGE;
+                            JukeBox.play("playerhit");
                         }
                     }
                 }
                 for (Enemy e : enemis) {
                     if (x > e.getX() - 15 && x < e.getX() + 75 && y > e.getY() - 60 && y < e.getY() + 60) {
-                        if (!e.hitByPlayer) {
-                            e.hitByPlayer = true;
+                        if (!e.hitByRobot) {
+                            e.hitByRobot = true;
                             e.health -= ATTACKDAMAGE;
+                            JukeBox.play("enemyhit");
                         }
                     }
                 }
@@ -293,6 +334,7 @@ public class Robot extends Creature {
                     if (!b.hitEnemy) {
                         b.hitEnemy = true;
                         player.health -= MAGICALPBULLETDAMAGE;
+                        JukeBox.play("playerhit");
                         if (!player.hitByMagicalBullet) {
                             player.hitByMagicalBullet = true;
                         }
@@ -310,6 +352,7 @@ public class Robot extends Creature {
                     if (!b.hitEnemy) {
                         b.hitEnemy = true;
                         e.health -= MAGICALBULLETDAMAGE;
+                        JukeBox.play("enemyhit");
                         if (!e.hitByMagicalBullet) {
                             e.hitByMagicalBullet = true;
                         }
@@ -328,6 +371,7 @@ public class Robot extends Creature {
                     if (!b.hitEnemy) {
                         b.hitEnemy = true;
                         player.health -= NORMALPBULLETDAMAGE;
+                        JukeBox.play("playerhit");
                     }
                 }
             }
@@ -337,6 +381,7 @@ public class Robot extends Creature {
                     if (!b.hitEnemy) {
                         b.hitEnemy = true;
                         e.health -= NORMALBULLETDAMAGE;
+                        JukeBox.play("enemyhit");
                     }
                 }
             }
@@ -391,19 +436,21 @@ public class Robot extends Creature {
                     animationDeadLeft(time, g);
                 }
             } else if (isRight) {
-                g.drawImage(Assets.robotdeadRight[4], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+                g.drawImage(Assets.robotdeadRight[9], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
             } else {
-                g.drawImage(Assets.robotdeadLeft[4], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+                g.drawImage(Assets.robotdeadLeft[9], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
             }
             return;
         }
 
         if (handler.getKeyManager().attack) {
             if (!first) {
+                JukeBox.play("attack");
                 first = true;
                 preTime = time;
             }
             if (!attackAni) {
+
                 if (isRight) {
                     animationAttackRight(time, g);
                 } else {
@@ -474,65 +521,65 @@ public class Robot extends Creature {
 
     public void animationDeadRight(int time, Graphics g) {
 
-        if (time / 2 - preTime / 2 < 5) {
+        if (time / 2 - preTime / 2 < 10) {
             g.drawImage(Assets.robotdeadRight[time / 2 - preTime / 2], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
         } else {
             deadAni = true;
-            g.drawImage(Assets.robotdeadRight[4], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+            g.drawImage(Assets.robotdeadRight[9], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
         }
     }
 
     public void animationDeadLeft(int time, Graphics g) {
-        if (time / 2 - preTime / 2 < 5) {
+        if (time / 2 - preTime / 2 < 10) {
             g.drawImage(Assets.robotdeadLeft[time / 2 - preTime / 2], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
         } else {
             deadAni = true;
-            g.drawImage(Assets.robotdeadLeft[4], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+            g.drawImage(Assets.robotdeadLeft[9], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
         }
     }
 
     public void animationIdleRight(int time, Graphics g) {
-        g.drawImage(Assets.robotidleRight[time % 5], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+        g.drawImage(Assets.robotidleRight[time % 10], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
     }
 
     public void animationIdleLeft(int time, Graphics g) {
-        g.drawImage(Assets.robotidleLeft[time % 5], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+        g.drawImage(Assets.robotidleLeft[time % 10], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
     }
 
     public void animationJumpRight(int time, Graphics g) {
-        g.drawImage(Assets.robotjumpRight[time % 5], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+        g.drawImage(Assets.robotjumpRight[time % 10], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
     }
 
     public void animationJumpLeft(int time, Graphics g) {
-        g.drawImage(Assets.robotjumpLeft[time % 5], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+        g.drawImage(Assets.robotjumpLeft[time % 10], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
     }
 
     public void animationRunRight(int time, Graphics g) {
-        g.drawImage(Assets.robotrunRight[time % 5], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+        g.drawImage(Assets.robotrunRight[time % 8], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
 
     }
 
     public void animationAttackRight(int time, Graphics g) {
-        if (time * 3 - preTime * 3 < 4) {
-            g.drawImage(Assets.robotmeleeRight[time * 3 - preTime * 3], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+        if (time - preTime < 8) {
+            g.drawImage(Assets.robotmeleeRight[time - preTime], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
         } else {
             attackAni = true;
-            g.drawImage(Assets.robotmeleeRight[3], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+            g.drawImage(Assets.robotmeleeRight[7], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
         }
 
     }
 
     public void animationRunLeft(int time, Graphics g) {
-        g.drawImage(Assets.robotrunLeft[time % 5], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+        g.drawImage(Assets.robotrunLeft[time % 8], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
 
     }
 
     public void animationAttackLeft(int time, Graphics g) {
-        if (time * 3 - preTime * 3 < 4) {
-            g.drawImage(Assets.robotmeleeLeft[time * 3 - preTime * 3], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+        if (time - preTime < 8) {
+            g.drawImage(Assets.robotmeleeLeft[time - preTime], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
         } else {
             attackAni = true;
-            g.drawImage(Assets.robotmeleeLeft[3], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+            g.drawImage(Assets.robotmeleeLeft[7], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
         }
     }
 

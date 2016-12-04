@@ -5,6 +5,7 @@
  */
 package state;
 
+import Audio.JukeBox;
 import UserInterface.UIImageButton;
 import UserInterface.UIManager;
 import graphics.Assets;
@@ -42,6 +43,7 @@ public class ControlState extends State {
         uiManager.addObject(new UIImageButton(425, 580, 150, 76, Assets.back, new ClickListener() {
             @Override
             public void onClick() {
+                JukeBox.play("menuselect");
                 State.setState(new MenuState(handler));
             }
         }));

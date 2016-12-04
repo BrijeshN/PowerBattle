@@ -5,8 +5,8 @@
  */
 package entity.creature;
 
+import Audio.JukeBox;
 import entity.Entity;
-import powerbattle.Game;
 import powerbattle.Handler;
 import tiles.Tile;
 
@@ -20,6 +20,7 @@ public abstract class Creature extends Entity {
     public static final float RUN_SPEED = 4.0f;
     final int ATTACKDAMAGE = 50, DIEHEIGHT = 1600, NORMALBULLETDAMAGE = 25, MAGICALBULLETDAMAGE = 75;
     final int ATTACKPDAMAGE = 2, NORMALPBULLETDAMAGE = 1, MAGICALPBULLETDAMAGE = 3;
+    boolean played = false, playedAttack = false;
 
     //Set size of the character
     public int health;
@@ -39,8 +40,20 @@ public abstract class Creature extends Entity {
     }
 
     public void move() {
+        playSound();
         moveX();
         moveY();
+    }
+
+    public void playSound() {
+//        if (handler.getKeyManager().attack) {
+//            if (!playedAttack) {
+//                JukeBox.play("attack");
+//                playedAttack = true;
+//            }
+//        } else {
+//            playedAttack = false;
+//        }
     }
 
     //move collision
@@ -80,6 +93,7 @@ public abstract class Creature extends Entity {
 //        }
         // y += yMove;
         // Moving up
+        //System.out.println(yMove);
         if (yMove < 0) {
 
             int ty = (int) (y + yMove + bounds.y) / Tile.TILEHEIGHT;

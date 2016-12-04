@@ -5,6 +5,7 @@
  */
 package entity.creature;
 
+import Audio.JukeBox;
 import graphics.Assets;
 import java.awt.Graphics;
 import java.util.ArrayList;
@@ -129,6 +130,7 @@ public class Player extends Creature {
         xMove = 0;
         if (handler.getKeyManager().pup) {
             if (!jump && !fall) {
+                JukeBox.play("jump");
                 jump = true;
                 fall = false;
             }
@@ -159,7 +161,12 @@ public class Player extends Creature {
         if (collisionWithTile((int) (x + bounds.x) / Tile.TILEWIDTH, ty)
                 || collisionWithTile((int) (x + bounds.x + bounds.width) / Tile.TILEWIDTH, ty)) {
             fall = false;
+            if (!jump && !played) {
+                played = true;
+                JukeBox.play("land");
+            }
         } else {
+            played = false;
             fall = true;
         }
 
@@ -171,6 +178,7 @@ public class Player extends Creature {
                 bullets.add(bullet);
                 numOfMagicalBullet--;
                 bulletShoot = true;
+                JukeBox.play("magicalammo");
             }
         } else {
             bulletShoot = false;
@@ -182,6 +190,7 @@ public class Player extends Creature {
                 normalBullets.add(normalBullet);
                 numOfNormalBullet--;
                 normalBulletShoot = true;
+                JukeBox.play("ammo");
             }
         } else {
             normalBulletShoot = false;
@@ -208,33 +217,39 @@ public class Player extends Creature {
                 if (e.isAmmo) {
                     if (x > e.getX() - 55 && x < e.getX() + 15 && y > e.getY() - 60 && y < e.getY() + 60) {
                         e.pickedByPlayer = true;
+                        JukeBox.play("ammoclip");
                         numOfNormalBullet += 5;
                     }
                 } else if (e.isMagicalAmmo) {
                     if (x > e.getX() - 55 && x < e.getX() + 15 && y > e.getY() - 60 && y < e.getY() + 60) {
                         e.pickedByPlayer = true;
+                        JukeBox.play("ammoclip");
                         numOfMagicalBullet += 1;
                     }
                 } else if (e.isHeart) {
                     if (x > e.getX() - 55 && x < e.getX() + 15 && y > e.getY() - 60 && y < e.getY() + 60) {
                         e.pickedByPlayer = true;
                         health += 1;
+                        JukeBox.play("heart");
                     }
                 }
             } else if (e.isAmmo) {
                 if (x > e.getX() - 15 && x < e.getX() + 15 && y > e.getY() - 60 && y < e.getY() + 60) {
                     e.pickedByPlayer = true;
                     numOfNormalBullet += 5;
+                    JukeBox.play("ammoclip");
                 }
             } else if (e.isMagicalAmmo) {
                 if (x > e.getX() - 15 && x < e.getX() + 15 && y > e.getY() - 60 && y < e.getY() + 60) {
                     e.pickedByPlayer = true;
                     numOfMagicalBullet += 1;
+                    JukeBox.play("ammoclip");
                 }
             } else if (e.isHeart) {
                 if (x > e.getX() - 15 && x < e.getX() + 15 && y > e.getY() - 60 && y < e.getY() + 60) {
                     e.pickedByPlayer = true;
                     health += 1;
+                    JukeBox.play("heart");
                 }
             }
         }
@@ -245,6 +260,7 @@ public class Player extends Creature {
                     if (!player.hitByPlayer) {
                         player.hitByPlayer = true;
                         player.health -= ATTACKPDAMAGE;
+                        JukeBox.play("playerhit");
                     }
                 }
             }
@@ -254,6 +270,7 @@ public class Player extends Creature {
                         if (!e.hitByPlayer) {
                             e.hitByPlayer = true;
                             e.health -= ATTACKDAMAGE;
+                            JukeBox.play("enemyhit");
                         }
                     }
                 }
@@ -263,6 +280,7 @@ public class Player extends Creature {
                         if (!player.hitByPlayer) {
                             player.hitByPlayer = true;
                             player.health -= ATTACKPDAMAGE;
+                            JukeBox.play("playerhit");
                         }
                     }
                 }
@@ -271,6 +289,7 @@ public class Player extends Creature {
                         if (!e.hitByPlayer) {
                             e.hitByPlayer = true;
                             e.health -= ATTACKDAMAGE;
+                            JukeBox.play("enemyhit");
                         }
                     }
                 }
@@ -287,6 +306,7 @@ public class Player extends Creature {
                     if (!b.hitEnemy) {
                         b.hitEnemy = true;
                         player.health -= MAGICALPBULLETDAMAGE;
+                        JukeBox.play("playerhit");
                         if (!player.hitByMagicalBullet) {
                             player.hitByMagicalBullet = true;
                         }
@@ -304,6 +324,7 @@ public class Player extends Creature {
                     if (!b.hitEnemy) {
                         b.hitEnemy = true;
                         e.health -= MAGICALBULLETDAMAGE;
+                        JukeBox.play("enemyhit");
                         if (!e.hitByMagicalBullet) {
                             e.hitByMagicalBullet = true;
                         }
@@ -323,6 +344,7 @@ public class Player extends Creature {
                     if (!b.hitEnemy) {
                         b.hitEnemy = true;
                         player.health -= NORMALPBULLETDAMAGE;
+                        JukeBox.play("playerhit");
                     }
                 }
             }
@@ -332,6 +354,7 @@ public class Player extends Creature {
                     if (!b.hitEnemy) {
                         b.hitEnemy = true;
                         e.health -= NORMALBULLETDAMAGE;
+                        JukeBox.play("enemyhit");
                     }
                 }
             }
@@ -395,6 +418,7 @@ public class Player extends Creature {
 
         if (handler.getKeyManager().pattack) {
             if (!first) {
+                JukeBox.play("attack");
                 first = true;
                 preTime = time;
             }
@@ -479,6 +503,7 @@ public class Player extends Creature {
 
     public void animationDeadLeft(int time, Graphics g) {
         if (time / 2 - preTime / 2 < 5) {
+            System.out.println(time / 2 - preTime / 2);
             g.drawImage(Assets.deadLeft[time / 2 - preTime / 2], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
         } else {
             deadAni = true;
@@ -508,8 +533,9 @@ public class Player extends Creature {
     }
 
     public void animationAttackRight(int time, Graphics g) {
-        if (time * 3 - preTime * 3 < 4) {
-            g.drawImage(Assets.meleeRight[time * 3 - preTime * 3], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+        System.out.println(time - preTime);
+        if (time - preTime < 4) {
+            g.drawImage(Assets.meleeRight[time - preTime], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
         } else {
             attackAni = true;
             g.drawImage(Assets.meleeRight[3], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
@@ -523,8 +549,8 @@ public class Player extends Creature {
     }
 
     public void animationAttackLeft(int time, Graphics g) {
-        if (time * 3 - preTime * 3 < 4) {
-            g.drawImage(Assets.meleeLeft[time * 3 - preTime * 3], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+        if (time - preTime < 4) {
+            g.drawImage(Assets.meleeLeft[time - preTime], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
         } else {
             attackAni = true;
             g.drawImage(Assets.meleeLeft[3], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
