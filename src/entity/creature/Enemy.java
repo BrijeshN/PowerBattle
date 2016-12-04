@@ -348,7 +348,7 @@ public class Enemy extends Creature {
 
                     g.drawImage(Assets.ammo, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset() + 40), 100, 100, null);
                     isAmmo = true;
-                } else if (i == 1 || i == 3 || i < 20) {
+                } else if (i == 1 || i == 3) {
                     g.drawImage(Assets.magicalAmmo, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset() + 40), 60, 60, null);
                     isMagicalAmmo = true;
                 } else if (i < 10) {
