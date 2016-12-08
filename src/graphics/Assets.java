@@ -79,6 +79,31 @@ public class Assets {
     public static BufferedImage[] controls;
     public static BufferedImage[] quit;
     public static BufferedImage[] back;
+    
+    // Object Height and Width
+    
+    //Box and Ice cube Width and Height
+    private static final int bcw = 101;
+    private static final int bch = 101;
+    
+    //Crystal and Tree Width and Height
+    private static final int ctw = 97;
+    private static final int cth = 78;
+    
+    //Sign and Snowman Width and Height
+    private static final int ssw = 87;
+    private static final int ssh = 93;
+    
+    // Stone Width and Height
+    private static final int stoneW = 90;
+    private static final int stoneH = 54;
+    
+    // Bush Width and Height
+    private static final int bushW = 73;
+    private static final int bushH = 47;
+    
+    // Object Images
+    public static BufferedImage box, ice, snowman, sign, tree, crystal, stone, bush;
 
     public static void init() {
         SpriteSheet playMenu = new SpriteSheet(ImageLoader.loadImage("/Menu/ButtonSprite/PlaySprite.png"));
@@ -116,6 +141,7 @@ public class Assets {
         back[0] = backMenu.crop(0, 0, backWidth, menuHeight);
         back[1] = backMenu.crop(backWidth, 0, backWidth, menuHeight);
 
+        initObject();
         initBullet();
         initTile();
         initPlayerImages();
@@ -336,6 +362,35 @@ public class Assets {
         }
 
         robotshootLeft[2] = playerLeft.crop(6000, 0, 120, ZOMBIEHIGHT);
+    }
+    
+    
+    // Map Objects
+    
+    public static void initObject(){
+        
+    SpriteSheet ss = new SpriteSheet(ImageLoader.loadImage("/Object/Object1.png"));
+    box = ss.crop(0, 0, bcw, bch);
+    ice = ss.crop(bcw, 0, bcw, bch);
+    
+    SpriteSheet ss1 = new SpriteSheet(ImageLoader.loadImage("/Object/Object2.png"));
+    crystal = ss1.crop(0, 0, ctw, cth);
+    tree = ss1.crop(ctw, 0, ctw, cth);
+
+    SpriteSheet ss2 = new SpriteSheet(ImageLoader.loadImage("/Object/Object3.png"));
+    sign = ss2.crop(0, 0, ssw, ssh);
+    snowman = ss2.crop(ssw, 0, ssw, ssh);
+    
+    SpriteSheet ss3 = new SpriteSheet(ImageLoader.loadImage("/Object/Stone.png"));
+    stone = ss3.crop(0, 0, stoneW, stoneH);
+    
+    SpriteSheet ss4 = new SpriteSheet(ImageLoader.loadImage("/Object/Bush.png"));
+    box = ss4.crop(0, 0, bushW, bushH);
+      
+    }
+    
+    public static void initMap2(){
+        
     }
 
 }

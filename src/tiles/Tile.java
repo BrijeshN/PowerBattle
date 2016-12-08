@@ -29,6 +29,7 @@ public class Tile {
         public static Tile water2 = new FullWaterTile(9);  
         public static Tile dirt = new Dirt(10);
         public static Tile dirt2 = new Dirt2(11);
+        public static Tile stone = new Stone(12);
 
 
         
