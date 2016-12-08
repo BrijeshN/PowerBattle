@@ -503,7 +503,7 @@ public class Player extends Creature {
 
     public void animationDeadLeft(int time, Graphics g) {
         if (time / 2 - preTime / 2 < 5) {
-            System.out.println(time / 2 - preTime / 2);
+          //  System.out.println(time / 2 - preTime / 2);
             g.drawImage(Assets.deadLeft[time / 2 - preTime / 2], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
         } else {
             deadAni = true;
@@ -533,7 +533,7 @@ public class Player extends Creature {
     }
 
     public void animationAttackRight(int time, Graphics g) {
-        System.out.println(time - preTime);
+      //  System.out.println(time - preTime);
         if (time - preTime < 4) {
             g.drawImage(Assets.meleeRight[time - preTime], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
         } else {

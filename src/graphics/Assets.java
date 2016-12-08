@@ -40,10 +40,9 @@ public class Assets {
 
     public static BufferedImage heartImage, ammo, magicalAmmo;
 
-    public static BufferedImage grass1, grass2, grass3;
-    public static BufferedImage dirt1, dirt2, dirt3, dirt4, dirt5, dirt6, dirt7, dirt8;
+    public static BufferedImage grass1, grass2, grass3, dirt, dirt2;
     public static BufferedImage floatDirt1, floatDirt2, floatDirt3;
-    public static BufferedImage water1, heart, star;
+    public static BufferedImage water1, water2, heart, star;
 
     public static BufferedImage bullet, bulletLeft;
     public static BufferedImage normalBullet, normalBulletLeft;
@@ -202,6 +201,9 @@ public class Assets {
         floatDirt2 = tile.crop(w, h, w, h);
         floatDirt3 = tile.crop(w * 2, h, w, h);
         water1 = tile2.crop(0, 0, waterWidth, waterHeight);
+        water2 = tile2.crop(0, waterHeight, waterWidth, waterHeight);
+        dirt = tile.crop(w * 4, 0 , w, h);
+        dirt2 = tile.crop(w, 0, w, w);
 
     }
 

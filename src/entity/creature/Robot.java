@@ -56,7 +56,7 @@ public class Robot extends Creature {
     }
 
     public void update(ArrayList<Enemy> enemies, Player player, boolean chaotic) {
-        System.out.println(x + " " + y);
+      //  System.out.println(x + " " + y);
 
         if (Math.abs(x - GameState.STAR_X_POSITION) < 20 && Math.abs(y - GameState.STAR_Y_POSITION) < 20) {
             if (GameState.coop) {

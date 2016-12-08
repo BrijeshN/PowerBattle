@@ -26,6 +26,10 @@ public class Tile {
         public static Tile floatTile2 = new SecondFloatTile(6);
         public static Tile floatTile3 = new ThirdFloatTile(7);  
         public static Tile water1 = new WaterTile(8);  
+        public static Tile water2 = new FullWaterTile(9);  
+        public static Tile dirt = new Dirt(10);
+        public static Tile dirt2 = new Dirt2(11);
+
 
         
         //Class
