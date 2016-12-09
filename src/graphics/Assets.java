@@ -104,6 +104,12 @@ public class Assets {
     
     // Object Images
     public static BufferedImage box, ice, snowman, sign, tree, crystal, stone, bush;
+    
+    /////////////////////////////////////////////////////////////////////////////////////
+    
+    // Map 2 Tile images
+    
+    public static BufferedImage mdirt, mdirt2, mdirt3, mgrass, mgrass2, mgrass3, fl, fl2, fl3;
 
     public static void init() {
         SpriteSheet playMenu = new SpriteSheet(ImageLoader.loadImage("/Menu/ButtonSprite/PlaySprite.png"));
@@ -385,7 +391,7 @@ public class Assets {
     stone = ss3.crop(0, 0, stoneW, stoneH);
     
     SpriteSheet ss4 = new SpriteSheet(ImageLoader.loadImage("/Object/Bush.png"));
-    box = ss4.crop(0, 0, bushW, bushH);
+    bush = ss4.crop(0, 0, bushW, bushH);
       
     }
     

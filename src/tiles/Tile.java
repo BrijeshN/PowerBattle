@@ -24,12 +24,26 @@ public class Tile {
         public static Tile grassTile3 = new ThirdGrassTile(4);
         public static Tile floatTile1 = new FirstFloatTile(5);
         public static Tile floatTile2 = new SecondFloatTile(6);
-        public static Tile floatTile3 = new ThirdFloatTile(7);  
-        public static Tile water1 = new WaterTile(8);  
-        public static Tile water2 = new FullWaterTile(9);  
+        public static Tile floatTile3 = new ThirdFloatTile(7); 
         public static Tile dirt = new Dirt(10);
         public static Tile dirt2 = new Dirt2(11);
+        
+        //Water Tiles
+        public static Tile water1 = new WaterTile(8);  
+        public static Tile water2 = new FullWaterTile(9);  
+        
+        
+        // Object Tiles
         public static Tile stone = new Stone(12);
+        public static Tile box = new BoxTile(13);
+        public static Tile bush = new Bush(14);
+        public static Tile sign = new SignTile(15);
+        public static Tile tree = new TreeTile(16);
+        public static Tile crystal = new CrystalTile(17);
+        public static Tile ice = new IceTile(18);
+        
+        // Map 2 Tile
+        
 
 
         
