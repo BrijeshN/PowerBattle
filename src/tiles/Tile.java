@@ -5,6 +5,15 @@
  */
 package tiles;
 
+import Map2.DirtTile;
+import Map2.DirtTile2;
+import Map2.DirtTile3;
+import Map2.FTTile;
+import Map2.FTTile2;
+import Map2.FTTile3;
+import Map2.GrassTile;
+import Map2.GrassTile2;
+import Map2.GrassTile3;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
@@ -44,7 +53,15 @@ public class Tile {
         
         // Map 2 Tile
         
-
+        public static Tile mdirt = new DirtTile(20);
+        public static Tile mdirt2 = new DirtTile2(21);
+        public static Tile mdirt3 = new DirtTile3(22);
+        public static Tile mgrass = new GrassTile(23);
+        public static Tile mgrass2 = new GrassTile2(24);
+        public static Tile mgrass3 = new GrassTile3(25);
+        public static Tile fl = new FTTile(26);
+        public static Tile fl2 = new FTTile2(27);
+        public static Tile fl3 = new FTTile3(28);
 
         
         //Class

@@ -147,6 +147,7 @@ public class Assets {
         back[0] = backMenu.crop(0, 0, backWidth, menuHeight);
         back[1] = backMenu.crop(backWidth, 0, backWidth, menuHeight);
 
+        initMap2();
         initObject();
         initBullet();
         initTile();
@@ -396,6 +397,18 @@ public class Assets {
     }
     
     public static void initMap2(){
+        
+        SpriteSheet map2 = new SpriteSheet(ImageLoader.loadImage("/Map2/Map2Sprite.png"));
+        
+        mgrass = map2.crop(0, 0, w, h);
+        mgrass2 = map2.crop(w, 0, w, h);
+        mgrass3 = map2.crop(w * 2, 0, w, h);
+        mdirt = map2.crop(w * 3, 0, w, h);
+        mdirt2 = map2.crop(w * 4, 0, w, h);
+        mdirt3 = map2.crop(w * 5, 0, w, h);
+        fl = map2.crop(w * 6, 0, w, h);
+        fl2 = map2.crop(w * 7, 0, w, h);
+        fl3 = map2.crop(w * 8, 0, w, h);
         
     }
 
