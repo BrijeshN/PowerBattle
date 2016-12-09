@@ -47,7 +47,7 @@ public class GameState extends State {
     
     // Map testing spawn
     public static final int testX = 200;
-    public static final int testY = 930;
+    public static final int testY = 920;
 
 
     int time;
@@ -83,7 +83,7 @@ public class GameState extends State {
         if (chaotic) {
             robot = new Robot(handler, CHAOTIC_PLAYER1_SPAWN_X_POSITION, CHAOTIC_PLAYER1_SPAWN_Y_POSITION);
         } else {
-            robot = new Robot(handler, testX, testY);
+            robot = new Robot(handler, PLAYER_SPAWN_X_POSITION, PLAYER_SPAWN_Y_POSITION);
         }
 
         for (int i = 0; i < ENEMYNUM; i++) {
