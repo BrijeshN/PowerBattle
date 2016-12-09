@@ -65,7 +65,7 @@ public class GameState extends State {
         if (this.chaotic) {
             map = new Map(handler, "map2.txt");
         } else {
-            map = new Map(handler, "map3.txt");
+            map = new Map(handler, "map1.txt");
         }
 
         bg = ImageLoader.loadImage("/BG.png");
