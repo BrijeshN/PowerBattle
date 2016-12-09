@@ -44,6 +44,11 @@ public class GameState extends State {
     public static final float STAR_X_POSITION = 3682;
     public static final float STAR_Y_POSITION = 175;
     public static boolean chaotic = false, coop = false, played = false;
+    
+    // Map testing spawn
+    public static final int testX = 200;
+    public static final int testY = 930;
+
 
     int time;
 
@@ -60,7 +65,7 @@ public class GameState extends State {
         if (this.chaotic) {
             map = new Map(handler, "map2.txt");
         } else {
-            map = new Map(handler, "map1.txt");
+            map = new Map(handler, "map3.txt");
         }
 
         bg = ImageLoader.loadImage("/BG.png");
@@ -78,7 +83,7 @@ public class GameState extends State {
         if (chaotic) {
             robot = new Robot(handler, CHAOTIC_PLAYER1_SPAWN_X_POSITION, CHAOTIC_PLAYER1_SPAWN_Y_POSITION);
         } else {
-            robot = new Robot(handler, PLAYER_SPAWN_X_POSITION, PLAYER_SPAWN_Y_POSITION);
+            robot = new Robot(handler, testX, testY);
         }
 
         for (int i = 0; i < ENEMYNUM; i++) {

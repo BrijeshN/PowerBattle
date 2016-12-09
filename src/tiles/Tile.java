@@ -50,6 +50,7 @@ public class Tile {
         public static Tile tree = new TreeTile(16);
         public static Tile crystal = new CrystalTile(17);
         public static Tile ice = new IceTile(18);
+        public static Tile snowman = new Snowman(19);
         
         // Map 2 Tile
         
