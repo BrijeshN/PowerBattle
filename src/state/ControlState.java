@@ -36,7 +36,7 @@ public class ControlState extends State {
         handler.getMouseManager().setUIManager(uiManager);
         
         controlLogo = ImageLoader.loadImage("/Menu/ControlsLogo.png");
-        controlsImage = ImageLoader.loadImage("/Menu/Controls.png");
+        controlsImage = ImageLoader.loadImage("/Menu/ControlsPic.png");
 
 
 
