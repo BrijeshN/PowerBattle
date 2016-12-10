@@ -89,6 +89,10 @@ public class ModeState extends State {
         g.setFont(new Font("Franklin Gothic Heavy", Font.BOLD, 35));
         g.setColor(Color.WHITE);
         g.drawString("Please SELECT GameMode", 280, 300);
+        
+        g.setFont(new Font("Franklin Gothic Heavy", Font.BOLD, 20));
+        g.setColor(Color.WHITE);
+        g.drawString("Created By: Da Lin, Brijesh Nayak", 330, 670);
         uiManager.render(g);
     }
 

@@ -60,6 +60,7 @@ public class ControlState extends State {
         
         g.drawImage(controlLogo, 190, 60, 602, 113, null);
         g.drawImage(controlsImage, 75, 175, 851, 400, null);
+       
 
         uiManager.render(g);
     }
