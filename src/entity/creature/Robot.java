@@ -141,8 +141,6 @@ public class Robot extends Creature {
             }
         }
 
-        System.out.println(y);
-
         if (health <= 0) {
             dead = true;
         }
