@@ -37,7 +37,7 @@ public class Player extends Creature {
     int jumpTimer = 0; //Make the player can jump again using this timer
     Timer timer;
     int preTime, time;
-    boolean deadAni = false, first = false, hit = false, bulletShoot = false, firstHit = false;
+    public boolean deadAni = false, first = false, hit = false, bulletShoot = false, firstHit = false;
     ArrayList<MagicalBullet> bullets = new ArrayList<>();
     ArrayList<NormalBullet> normalBullets = new ArrayList<>();
 
@@ -50,12 +50,12 @@ public class Player extends Creature {
         bounds.height = 50;
     }
 
-    public void update(ArrayList<Enemy> enemies, Robot player, boolean chaotic) {
+    public void update(ArrayList<Enemy> enemies, Robot player, boolean chaotic, boolean coop) {
         if (Math.abs(x - GameState.STAR_X_POSITION) < 20 && Math.abs(y - GameState.STAR_Y_POSITION) < 20) {
             State.setState(new EndState(handler, time, "you"));
         }
         // System.out.println(x + " " + y);
-        getInput(enemies, player, chaotic);
+        getInput(enemies, player, chaotic, coop);
         move();
 
     }
@@ -65,7 +65,7 @@ public class Player extends Creature {
         fall = jump = false;
     }
 
-    private void getInput(ArrayList<Enemy> enemis, Robot player, boolean chaotic) {
+    private void getInput(ArrayList<Enemy> enemis, Robot player, boolean chaotic, boolean coop) {
 
         if (handler.getKeyManager().cheatMode) {
             health = 15;
@@ -94,9 +94,12 @@ public class Player extends Creature {
             isRight = true;
             dead = false;
             deadAni = false;
-            if (!chaotic) {
+            if (!chaotic && !coop) {
                 y = GameState.PLAYER_SPAWN_Y_POSITION;
                 x = GameState.PLAYER_SPAWN_X_POSITION;
+            } else if (coop) {
+                x = GameState.COOP_SPAWN_X_POSITION;
+                y = GameState.COOP_SPAWN_Y_POSITION;
             } else {
                 y = GameState.CHAOTIC_PLAYER2_SPAWN_Y_POSITION;
                 x = GameState.CHAOTIC_PLAYER2_SPAWN_X_POSITION;
@@ -112,6 +115,24 @@ public class Player extends Creature {
 
         if (health <= 0) {
             dead = true;
+        }
+
+        if (chaotic) {
+            if (y > CHAOTICDIEHEIGHT) {
+                if (!cheat) {
+                    dead = true;
+                }
+                yMove = 0;
+                stop();
+            }
+        } else if (coop) {
+            if (y > COOPDIEHEIGHT) {
+                if (!cheat) {
+                    dead = true;
+                }
+                yMove = 0;
+                stop();
+            }
         }
 
         if (y > DIEHEIGHT) {
@@ -504,7 +525,7 @@ public class Player extends Creature {
 
     public void animationDeadLeft(int time, Graphics g) {
         if (time / 2 - preTime / 2 < 5) {
-          //  System.out.println(time / 2 - preTime / 2);
+            //  System.out.println(time / 2 - preTime / 2);
             g.drawImage(Assets.deadLeft[time / 2 - preTime / 2], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
         } else {
             deadAni = true;
@@ -534,7 +555,7 @@ public class Player extends Creature {
     }
 
     public void animationAttackRight(int time, Graphics g) {
-      //  System.out.println(time - preTime);
+        //  System.out.println(time - preTime);
         if (time - preTime < 4) {
             g.drawImage(Assets.meleeRight[time - preTime], (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
         } else {

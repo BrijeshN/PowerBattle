@@ -44,11 +44,10 @@ public class GameState extends State {
     public static final float STAR_X_POSITION = 3682;
     public static final float STAR_Y_POSITION = 175;
     public static boolean chaotic = false, coop = false, played = false;
-    
-    // Map testing spawn
-    public static final int testX = 200;
-    public static final int testY = 920;
 
+    // Map testing spawn
+    public static final int COOP_SPAWN_X_POSITION = 200;
+    public static final int COOP_SPAWN_Y_POSITION = 920;
 
     int time;
 
@@ -64,29 +63,42 @@ public class GameState extends State {
         this.chaotic = chaotic;
         if (this.chaotic) {
             map = new Map(handler, "map2.txt");
+            bg = ImageLoader.loadImage("/BG.png");
+        } else if (this.coop) {
+            map = new Map(handler, "map3.txt");
+            bg = ImageLoader.loadImage("/Map2/BG/BG.png");
         } else {
             map = new Map(handler, "map1.txt");
+            bg = ImageLoader.loadImage("/BG.png");
         }
-
-        bg = ImageLoader.loadImage("/BG.png");
 
         handler.setMap(map);
         enemis = new ArrayList<>();
-        enemy = new Enemy[ENEMYNUM];
 
         if (chaotic) {
             player = new Player(handler, CHAOTIC_PLAYER2_SPAWN_X_POSITION, CHAOTIC_PLAYER2_SPAWN_Y_POSITION);
+        } else if (this.coop) {
+            player = new Player(handler, COOP_SPAWN_X_POSITION, COOP_SPAWN_Y_POSITION);
         } else {
             player = new Player(handler, PLAYER_SPAWN_X_POSITION, PLAYER_SPAWN_Y_POSITION);
         }
 
         if (chaotic) {
             robot = new Robot(handler, CHAOTIC_PLAYER1_SPAWN_X_POSITION, CHAOTIC_PLAYER1_SPAWN_Y_POSITION);
+        } else if (this.coop) {
+            robot = new Robot(handler, COOP_SPAWN_X_POSITION, COOP_SPAWN_Y_POSITION);
         } else {
             robot = new Robot(handler, PLAYER_SPAWN_X_POSITION, PLAYER_SPAWN_Y_POSITION);
         }
 
-        for (int i = 0; i < ENEMYNUM; i++) {
+        if (!chaotic) {
+            enemy = new Enemy[ENEMYNUM];
+            for (int i = 0; i < ENEMYNUM; i++) {
+                enemy[i] = new Enemy(handler, ENEMYPOS[i][0], ENEMYPOS[i][1], i);
+            }
+        } else {
+            int i = 0;
+            enemy = new Enemy[1];
             enemy[i] = new Enemy(handler, ENEMYPOS[i][0], ENEMYPOS[i][1], i);
         }
 
@@ -100,11 +112,11 @@ public class GameState extends State {
     public void update() {
 
         if (chaotic) {
-            if (robot.dead) {
+            if (robot.dead && robot.deadAni) {
                 JukeBox.stop("chaoticback");
                 JukeBox.loop("menuback");
                 State.getState().setState(new EndState(handler, time, "Human"));
-            } else if (player.dead) {
+            } else if (player.dead && player.deadAni) {
                 JukeBox.stop("chaoticback");
                 JukeBox.loop("menuback");
                 State.getState().setState(new EndState(handler, time, "Robot"));
@@ -126,18 +138,21 @@ public class GameState extends State {
                     aimPlayer = true;
                 }
             }
-            if (coop) {
-                player.update(enemis, null, chaotic);
+
+            if (chaotic) {
+                player.update(enemis, robot, chaotic, coop);
             } else {
-                player.update(enemis, robot, chaotic);
+                player.update(enemis, null, chaotic, coop);
             }
+
         }
 
-        if (coop) {
-            robot.update(enemis, null, chaotic);
+        if (chaotic) {
+            robot.update(enemis, player, chaotic, coop);
         } else {
-            robot.update(enemis, player, chaotic);
+            robot.update(enemis, null, chaotic, coop);
         }
+
         for (Enemy e : enemy) {
             if (aimRobot) {
                 e.update(robot);
@@ -149,12 +164,21 @@ public class GameState extends State {
         }
 
         // center on this player entity
-        if (!chaotic) {
+        if (coop) {
+
+            if (robot.dead && player.dead && robot.deadAni && player.deadAni) {
+                JukeBox.stop("coopback");
+                JukeBox.loop("menuback");
+                State.getState().setState(new EndState(handler, time, "None"));
+            }
+
             if (!robot.dead) {
                 handler.getGameCamera().centerOnEntity(robot);
             } else {
                 handler.getGameCamera().centerOnEntity(player);
             }
+        } else if (!chaotic) {
+            handler.getGameCamera().centerOnEntity(robot);
         }
     }
 
@@ -174,10 +198,13 @@ public class GameState extends State {
         this.time = time;
 
         map.render(g);
+
         if (chaotic || coop) {
             player.render(g, time);
         }
+
         robot.render(g, time);
+        
         for (Enemy e : enemy) {
             e.render(g, time);
         }

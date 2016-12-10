@@ -20,6 +20,7 @@ public abstract class Creature extends Entity {
     public static final float RUN_SPEED = 4.0f;
     final int ATTACKDAMAGE = 50, DIEHEIGHT = 1600, NORMALBULLETDAMAGE = 25, MAGICALBULLETDAMAGE = 75;
     final int ATTACKPDAMAGE = 2, NORMALPBULLETDAMAGE = 1, MAGICALPBULLETDAMAGE = 3, CHAOTICDIEHEIGHT = 600;
+    final int COOPDIEHEIGHT = 1200;
     boolean played = false, playedAttack = false;
 
     //Set size of the character

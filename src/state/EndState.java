@@ -56,7 +56,11 @@ public class EndState extends State {
     public void render(Graphics g, int time) {
         g.setFont(new Font("Franklin Gothic Heavy", Font.BOLD, 17));
         g.setColor(Color.BLACK);
-        g.drawString("Congratulations to " + winner + "! Your game time is " + hms, 300, 200);
+        if (winner.equals("None")) {
+            g.drawString("You lose! Your game time is " + hms, 350, 200);
+        } else {
+            g.drawString("Congratulations to " + winner + "! Your game time is " + hms, 300, 200);
+        }
         uiManager.render(g);
     }
 
