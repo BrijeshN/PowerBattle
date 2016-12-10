@@ -104,6 +104,7 @@ public class Robot extends Creature {
             cheat = true;
         } else if (handler.getKeyManager().cheatModeOff) {
             jumpspeed = 10;
+            health = 5;
             runSpeed = Creature.RUN_SPEED;
             numOfMagicalBullet = 5;
             numOfNormalBullet = 25;
