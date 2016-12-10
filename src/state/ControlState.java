@@ -36,7 +36,7 @@ public class ControlState extends State {
         handler.getMouseManager().setUIManager(uiManager);
         
         controlLogo = ImageLoader.loadImage("/Menu/ControlsLogo.png");
-        controlsImage = ImageLoader.loadImage("/Menu/ControlsImage.png");
+        controlsImage = ImageLoader.loadImage("/Menu/Controls.png");
 
 
 
@@ -59,7 +59,7 @@ public class ControlState extends State {
     public void render(Graphics g, int time) {
         
         g.drawImage(controlLogo, 190, 60, 602, 113, null);
-        g.drawImage(controlsImage, 77, 230, 851, 315, null);
+        g.drawImage(controlsImage, 75, 175, 851, 400, null);
 
         uiManager.render(g);
     }

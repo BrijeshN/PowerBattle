@@ -78,6 +78,10 @@ public class MenuState extends State {
     public void render(Graphics g, int time) {
         
         g.drawImage(logo, 60, 60, 882, 113, null);
+        
+        g.setFont(new Font("Franklin Gothic Heavy", Font.BOLD, 20));
+        g.setColor(Color.WHITE);
+        g.drawString("Created By: Da Lin, Brijesh Nayak", 330, 670);
 
         uiManager.render(g);
     }
