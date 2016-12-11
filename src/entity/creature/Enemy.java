@@ -153,9 +153,60 @@ public class Enemy extends Creature {
         }
         yMove = JUMPSPEED;
 
-        resetState();
+        if (GameState.coop) {
+            coopResetState();
+        } else {
+            resetState();
+        }
 
         move();
+    }
+
+    public void coopResetState() {
+        if (id == 2) {
+            if (x + xMove > 1756) {
+                xMove = 0;
+                action = IDLE;
+            }
+
+            if (x + xMove < 1624) {
+                xMove = 0;
+                action = IDLE;
+            }
+        }
+
+        if (id == 3) {
+            if (x + xMove > 4220) {
+                xMove = 0;
+                action = IDLE;
+            }
+
+            if (x + xMove < 3848) {
+                xMove = 0;
+                action = IDLE;
+            }
+        }
+
+        if (id == 4) {
+
+            if (x + xMove < 5656) {
+                xMove = 0;
+                action = IDLE;
+            }
+        }
+
+        if (id == 5) {
+
+            if (x + xMove > 3440) {
+                xMove = 0;
+                action = IDLE;
+            }
+
+            if (x + xMove < 3064) {
+                xMove = 0;
+                action = IDLE;
+            }
+        }
     }
 
     public void resetState() {

@@ -55,18 +55,21 @@ public class Robot extends Creature {
         bounds.height = 50;
     }
 
-    public void update(ArrayList<Enemy> enemies, Player player, boolean chaotic, boolean coop) {
+    public void update(ArrayList<Enemy> enemies, Player player) {
         //  System.out.println(x + " " + y);
 
-        if (Math.abs(x - GameState.STAR_X_POSITION) < 20 && Math.abs(y - GameState.STAR_Y_POSITION) < 20) {
-            if (GameState.coop) {
-                JukeBox.stop("coopback");
-                JukeBox.loop("menuback");
-            } else {
-                JukeBox.stop("singleback");
-                JukeBox.loop("menuback");
+        System.out.println(x + " " + y);
+        if (!GameState.chaotic && !GameState.coop) {
+            if (Math.abs(x - GameState.STAR_X_POSITION) < 20 && Math.abs(y - GameState.STAR_Y_POSITION) < 20) {
+                if (GameState.coop) {
+                    JukeBox.stop("coopback");
+                    JukeBox.loop("menuback");
+                } else {
+                    JukeBox.stop("singleback");
+                    JukeBox.loop("menuback");
+                }
+                State.setState(new EndState(handler, time, "you"));
             }
-            State.setState(new EndState(handler, time, "you"));
         }
 
         if (handler.getKeyManager().menu) {
@@ -82,7 +85,7 @@ public class Robot extends Creature {
             }
             State.setState(new MenuState(handler));
         }
-        getInput(enemies, player, chaotic, coop);
+        getInput(enemies, player);
 
         move();
 
@@ -93,7 +96,7 @@ public class Robot extends Creature {
         fall = jump = false;
     }
 
-    private void getInput(ArrayList<Enemy> enemis, Player player, boolean chaotic, boolean coop) {
+    private void getInput(ArrayList<Enemy> enemis, Player player) {
 
         if (handler.getKeyManager().cheatMode) {
             health = 15;
@@ -122,10 +125,10 @@ public class Robot extends Creature {
             dead = false;
             deadAni = false;
             cheat = false;
-            if (!chaotic && !coop) {
+            if (!GameState.chaotic && !GameState.coop) {
                 y = GameState.PLAYER_SPAWN_Y_POSITION;
                 x = GameState.PLAYER_SPAWN_X_POSITION;
-            } else if (coop) {
+            } else if (GameState.coop) {
                 x = GameState.COOP_SPAWN_X_POSITION;
                 y = GameState.COOP_SPAWN_Y_POSITION;
             } else {
@@ -144,7 +147,7 @@ public class Robot extends Creature {
         if (health <= 0) {
             dead = true;
         }
-        if (chaotic) {
+        if (GameState.chaotic) {
             if (y > CHAOTICDIEHEIGHT) {
                 if (!cheat) {
                     dead = true;
@@ -152,7 +155,7 @@ public class Robot extends Creature {
                 yMove = 0;
                 stop();
             }
-        } else if (coop) {
+        } else if (GameState.coop) {
             if (y > COOPDIEHEIGHT) {
                 if (!cheat) {
                     dead = true;
@@ -160,9 +163,7 @@ public class Robot extends Creature {
                 yMove = 0;
                 stop();
             }
-        }
-
-        if (y > DIEHEIGHT) {
+        } else if (y > DIEHEIGHT) {
             if (!cheat) {
                 dead = true;
             }
@@ -247,7 +248,7 @@ public class Robot extends Creature {
         }
 
         if (!handler.getKeyManager().attack) {
-            if (chaotic) {
+            if (GameState.chaotic) {
                 player.hitByPlayer = false;
             }
             for (Enemy e : enemis) {
@@ -306,7 +307,7 @@ public class Robot extends Creature {
 
         if (handler.getKeyManager().attack) {
             if (isRight) {
-                if (chaotic) {
+                if (GameState.chaotic) {
                     if (x > player.getX() - 75 && x < player.getX() + 15 && y > player.getY() - 60 && y < player.getY() + 60) {
                         if (!player.hitByPlayer) {
                             player.hitByPlayer = true;
@@ -325,7 +326,7 @@ public class Robot extends Creature {
                     }
                 }
             } else {
-                if (chaotic) {
+                if (GameState.chaotic) {
                     if (x > player.getX() - 15 && x < player.getX() + 75 && y > player.getY() - 60 && y < player.getY() + 60) {
                         if (!player.hitByPlayer) {
                             player.hitByPlayer = true;
@@ -347,7 +348,7 @@ public class Robot extends Creature {
         }
         for (MagicalBullet b : bullets) {
             b.update();
-            if (chaotic) {
+            if (GameState.chaotic) {
                 if (Math.abs(b.getX() - player.getX()) < 85 && b.getY() > player.getY() - 60 && b.getY() < player.getY() + 60) {
                     if (!player.hitByMagicalBullet) {
                         b.hitEnemy = false;
@@ -387,7 +388,7 @@ public class Robot extends Creature {
 
         for (NormalBullet b : normalBullets) {
             b.update();
-            if (chaotic) {
+            if (GameState.chaotic) {
                 if (Math.abs(b.getX() - player.getX()) < 45 && b.getY() > player.getY() - 60 && b.getY() < player.getY() + 60) {
                     if (!b.hitEnemy) {
                         b.hitEnemy = true;
@@ -430,6 +431,15 @@ public class Robot extends Creature {
 
         if (GameState.chaotic) {
             if (y > CHAOTICDIEHEIGHT && cheat) {
+                if (!jump) {
+                    yMove = 0;
+                }
+                fall = false;
+            }
+        }
+
+        if (GameState.coop) {
+            if (y > COOPDIEHEIGHT && cheat) {
                 if (!jump) {
                     yMove = 0;
                 }

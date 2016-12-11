@@ -32,9 +32,11 @@ public class GameState extends State {
     private Robot robot;
     private Map map;
     private Enemy[] enemy;
-    public static final int ENEMYNUM = 12;
+    public static final int ENEMYNUM = 12, COOPENEMYNUM = 6;
     public static final int[][] ENEMYPOS = {{500, 1455}, {1614, 1205}, {1776, 1205}, {2739, 1455},
     {3423, 1455}, {2520, 1075}, {2004, 685}, {1401, 685}, {369, 805}, {528, 545}, {1590, 160}, {1956, 160}};
+
+    public static final int[][] COOPENEMYPOS = {{872, 950}, {556, 950}, {1708, 950}, {4072,815}, {6256, 945}, {3240, 170}};
     public static final int PLAYER_SPAWN_X_POSITION = 150;
     public static final int PLAYER_SPAWN_Y_POSITION = 1475;
     public static final int CHAOTIC_PLAYER1_SPAWN_X_POSITION = 20;
@@ -91,15 +93,20 @@ public class GameState extends State {
             robot = new Robot(handler, PLAYER_SPAWN_X_POSITION, PLAYER_SPAWN_Y_POSITION);
         }
 
-        if (!chaotic) {
+        if (!chaotic && !coop) {
             enemy = new Enemy[ENEMYNUM];
             for (int i = 0; i < ENEMYNUM; i++) {
                 enemy[i] = new Enemy(handler, ENEMYPOS[i][0], ENEMYPOS[i][1], i);
             }
-        } else {
+        } else if (chaotic) {
             int i = 0;
             enemy = new Enemy[1];
             enemy[i] = new Enemy(handler, ENEMYPOS[i][0], ENEMYPOS[i][1], i);
+        } else {
+            enemy = new Enemy[COOPENEMYNUM];
+            for (int i = 0; i < COOPENEMYNUM; i++) {
+                enemy[i] = new Enemy(handler, COOPENEMYPOS[i][0], COOPENEMYPOS[i][1], i);
+            }
         }
 
         for (Enemy e : enemy) {
@@ -140,17 +147,17 @@ public class GameState extends State {
             }
 
             if (chaotic) {
-                player.update(enemis, robot, chaotic, coop);
+                player.update(enemis, robot);
             } else {
-                player.update(enemis, null, chaotic, coop);
+                player.update(enemis, null);
             }
 
         }
 
         if (chaotic) {
-            robot.update(enemis, player, chaotic, coop);
+            robot.update(enemis, player);
         } else {
-            robot.update(enemis, null, chaotic, coop);
+            robot.update(enemis, null);
         }
 
         for (Enemy e : enemy) {
@@ -204,12 +211,13 @@ public class GameState extends State {
         }
 
         robot.render(g, time);
-        
+
         for (Enemy e : enemy) {
             e.render(g, time);
         }
-
-        g.drawImage(Assets.star, (int) (STAR_X_POSITION - handler.getGameCamera().getxOffset()), (int) (STAR_Y_POSITION - handler.getGameCamera().getyOffset()), 100, 100, null);
+        if (!chaotic && !coop) {
+            g.drawImage(Assets.star, (int) (STAR_X_POSITION - handler.getGameCamera().getxOffset()), (int) (STAR_Y_POSITION - handler.getGameCamera().getyOffset()), 100, 100, null);
+        }
         for (int i = 0; i < robot.health; i++) {
             g.drawImage(Assets.heartImage, 60 * (i + 1) - 55, 25, 50, 50, null);
         }
