@@ -143,7 +143,7 @@ public class Robot extends Creature {
             bullets.clear();
             normalBullets.clear();
 
-            if (GameState.coop || GameState.chaotic) {
+            if (GameState.coop) {
                 ninja.restart = true;
             }
 
