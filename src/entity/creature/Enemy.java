@@ -19,7 +19,7 @@ public class Enemy extends Creature {
     public static final int DEFAULT_ZOMBIE_WIDTH = 130;
     public static final int DEFAULT_ZOMBIE_HEIGHT = 111;
 
-    boolean dead = false, deadAni = false, first = false, restart = false;
+    public boolean dead = false, deadAni = false, first = false, restart = false;
     boolean isRight = false, attack = false, hitRight = false, hitByPlayer = false;
     boolean magicalBulletHit = false, normalBulletHit = false, hitLeft = false;
     int preTime, action = 0;
@@ -45,10 +45,19 @@ public class Enemy extends Creature {
     }
 
     public void resetPos() {
-        for (int i = 0; i < GameState.ENEMYNUM; i++) {
-            if (id == i) {
-                x = GameState.ENEMYPOS[i][0];
-                y = GameState.ENEMYPOS[i][1];
+        if (!GameState.chaotic && !GameState.coop) {
+            for (int i = 0; i < GameState.ENEMYNUM; i++) {
+                if (id == i) {
+                    x = GameState.ENEMYPOS[i][0];
+                    y = GameState.ENEMYPOS[i][1];
+                }
+            }
+        } else if (GameState.coop) {
+            for (int i = 0; i < GameState.COOPENEMYNUM; i++) {
+                if (id == i) {
+                    x = GameState.COOPENEMYPOS[i][0];
+                    y = GameState.COOPENEMYPOS[i][1];
+                }
             }
         }
     }
@@ -396,7 +405,6 @@ public class Enemy extends Creature {
                     isDraw = true;
                 }
                 if (i % 2 == 0 && i < 10) {
-
                     g.drawImage(Assets.ammo, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset() + 40), 100, 100, null);
                     isAmmo = true;
                 } else if (i == 1 || i == 3) {
@@ -405,6 +413,9 @@ public class Enemy extends Creature {
                 } else if (i < 10) {
                     g.drawImage(Assets.heartImage, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset() + 50), null);
                     isHeart = true;
+                } else {
+                    x = -100;
+                    y = -100;
                 }
             }
 

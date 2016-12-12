@@ -82,7 +82,7 @@ public class ModeState extends State {
     }
 
     @Override
-    public void render(Graphics g, int time) {
+    public void render(Graphics g) {
 
         g.drawImage(modeLogo, 110, 60, 784, 113, null);
 

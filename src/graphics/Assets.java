@@ -14,7 +14,7 @@ public class Assets {
     private static final int HEIGHT = 111;
     private static final int ZOMBIEHIGHT = 100;
     private static final int ROBOTWIDTH = 125;
-    private static final int NINJAWIDTH = 125;
+    private static final int NINJAWIDTH = 120;
     private static final int NINJAHEIGHT = 100;
 
     private static final int w = 128;
@@ -33,8 +33,11 @@ public class Assets {
 
     public static BufferedImage robotrunRight[], robotmeleeRight[], robotrunLeft[], robotmeleeLeft[], robotshootLeft[], robotshootRight[];
     public static BufferedImage robotjumpRight[], robotjumpLeft[], robotdeadLeft[], robotdeadRight[];
-
     public static BufferedImage robotidleRight[], robotidleLeft[];
+
+    public static BufferedImage ninjarunRight[], ninjameleeRight[], ninjarunLeft[], ninjameleeLeft[], ninjashootLeft[], ninjashootRight[];
+    public static BufferedImage ninjajumpRight[], ninjajumpLeft[], ninjadeadLeft[], ninjadeadRight[];
+    public static BufferedImage ninjaidleRight, ninjaidleLeft, kunai, kunaiLeft;
 
     public static BufferedImage empty, invisibleWall;
 
@@ -79,36 +82,33 @@ public class Assets {
     public static BufferedImage[] controls;
     public static BufferedImage[] quit;
     public static BufferedImage[] back;
-    
+
     // Object Height and Width
-    
     //Box and Ice cube Width and Height
     private static final int bcw = 101;
     private static final int bch = 101;
-    
+
     //Crystal and Tree Width and Height
     private static final int ctw = 97;
     private static final int cth = 78;
-    
+
     //Sign and Snowman Width and Height
     private static final int ssw = 87;
     private static final int ssh = 93;
-    
+
     // Stone Width and Height
     private static final int stoneW = 90;
     private static final int stoneH = 54;
-    
+
     // Bush Width and Height
     private static final int bushW = 73;
     private static final int bushH = 47;
-    
+
     // Object Images
     public static BufferedImage box, ice, snowman, sign, tree, crystal, stone, bush;
-    
+
     /////////////////////////////////////////////////////////////////////////////////////
-    
     // Map 2 Tile images
-    
     public static BufferedImage mdirt, mdirt2, mdirt3, mgrass, mgrass2, mgrass3, fl, fl2, fl3;
 
     public static void init() {
@@ -155,11 +155,70 @@ public class Assets {
         initEnemyImages();
         initRobotImages();
         initRobotBullet();
+        initNinjaImages();
 
+        kunai = ImageLoader.loadImage("/Bullet/Kunai.png");
+        kunaiLeft = ImageLoader.loadImage("/Bullet/KunaiLeft.png");
         heartImage = ImageLoader.loadImage("/heart.png");
         ammo = ImageLoader.loadImage("/Bullet/ammo.png");
         magicalAmmo = ImageLoader.loadImage("/Bullet/magicalAmmo.png");
         star = ImageLoader.loadImage("/star.png");
+
+    }
+
+    public static void initNinjaImages() {
+        ninjarunRight = new BufferedImage[10];
+        ninjameleeRight = new BufferedImage[10];
+        ninjarunLeft = new BufferedImage[10];
+        ninjameleeLeft = new BufferedImage[10];
+        ninjashootLeft = new BufferedImage[10];
+        ninjashootRight = new BufferedImage[10];
+        ninjajumpLeft = new BufferedImage[10];
+        ninjajumpRight = new BufferedImage[10];
+        ninjadeadLeft = new BufferedImage[9];
+        ninjadeadRight = new BufferedImage[9];
+
+        SpriteSheet ninjaRight = new SpriteSheet(ImageLoader.loadImage("/Ninja/NinjaSprite.png"));
+        SpriteSheet ninjaLeft = new SpriteSheet(ImageLoader.loadImage("/Ninja/NinjaSpriteLeft.png"));
+
+        for (int i = 0; i < 10; i++) {
+            ninjameleeRight[i] = ninjaRight.crop(NINJAWIDTH * i, 0, NINJAWIDTH, NINJAHEIGHT);
+        }
+
+        for (int i = 0; i < 10; i++) {
+            ninjameleeLeft[i] = ninjaLeft.crop(NINJAWIDTH * i, 0, NINJAWIDTH, NINJAHEIGHT);
+        }
+
+        for (int i = 0; i < 9; i++) {
+            ninjadeadRight[i] = ninjaRight.crop(NINJAWIDTH * (i + 10), 0, NINJAWIDTH, NINJAHEIGHT);
+        }
+        for (int i = 0; i < 9; i++) {
+            ninjadeadLeft[i] = ninjaLeft.crop(NINJAWIDTH * (i + 10), 0, NINJAWIDTH, NINJAHEIGHT);
+        }
+
+        for (int i = 0; i < 10; i++) {
+            ninjajumpRight[i] = ninjaRight.crop(NINJAWIDTH * (i + 19), 0, NINJAWIDTH, NINJAHEIGHT);
+        }
+        for (int i = 0; i < 10; i++) {
+            ninjajumpLeft[i] = ninjaLeft.crop(NINJAWIDTH * (i + 19), 0, NINJAWIDTH, NINJAHEIGHT);
+        }
+
+        for (int i = 0; i < 10; i++) {
+            ninjarunRight[i] = ninjaRight.crop(NINJAWIDTH * (i + 29), 0, NINJAWIDTH, NINJAHEIGHT);
+        }
+        for (int i = 0; i < 10; i++) {
+            ninjarunLeft[i] = ninjaLeft.crop(NINJAWIDTH * (i + 29), 0, NINJAWIDTH, NINJAHEIGHT);
+        }
+
+        for (int i = 0; i < 10; i++) {
+            ninjashootRight[i] = ninjaRight.crop(NINJAWIDTH * (i + 39), 0, NINJAWIDTH, NINJAHEIGHT);
+        }
+        for (int i = 0; i < 10; i++) {
+            ninjashootLeft[i] = ninjaLeft.crop(NINJAWIDTH * (i + 39), 0, NINJAWIDTH, NINJAHEIGHT);
+        }
+
+        ninjaidleRight = ninjaRight.crop(NINJAWIDTH * 40, 0, NINJAWIDTH, NINJAHEIGHT);
+        ninjaidleLeft = ninjaLeft.crop(NINJAWIDTH * 40, 0, NINJAWIDTH, NINJAHEIGHT);
 
     }
 
@@ -235,7 +294,7 @@ public class Assets {
         floatDirt3 = tile.crop(w * 2, h, w, h);
         water1 = tile2.crop(0, 0, waterWidth, waterHeight);
         water2 = tile2.crop(0, waterHeight, waterWidth, waterHeight);
-        dirt = tile.crop(w * 4, 0 , w, h);
+        dirt = tile.crop(w * 4, 0, w, h);
         dirt2 = tile.crop(w, 0, w, w);
 
     }
@@ -370,36 +429,34 @@ public class Assets {
 
         robotshootLeft[2] = playerLeft.crop(6000, 0, 120, ZOMBIEHIGHT);
     }
-    
-    
-    // Map Objects
-    
-    public static void initObject(){
-        
-    SpriteSheet ss = new SpriteSheet(ImageLoader.loadImage("/Object/Object1.png"));
-    box = ss.crop(0, 0, bcw, bch);
-    ice = ss.crop(bcw, 0, bcw, bch);
-    
-    SpriteSheet ss1 = new SpriteSheet(ImageLoader.loadImage("/Object/Object2.png"));
-    crystal = ss1.crop(0, 0, ctw, cth);
-    tree = ss1.crop(ctw, 0, ctw, cth);
 
-    SpriteSheet ss2 = new SpriteSheet(ImageLoader.loadImage("/Object/Object3.png"));
-    sign = ss2.crop(0, 0, ssw, ssh);
-    snowman = ss2.crop(ssw, 0, ssw, ssh);
-    
-    SpriteSheet ss3 = new SpriteSheet(ImageLoader.loadImage("/Object/Stone.png"));
-    stone = ss3.crop(0, 0, stoneW, stoneH);
-    
-    SpriteSheet ss4 = new SpriteSheet(ImageLoader.loadImage("/Object/Bush.png"));
-    bush = ss4.crop(0, 0, bushW, bushH);
-      
+    // Map Objects
+    public static void initObject() {
+
+        SpriteSheet ss = new SpriteSheet(ImageLoader.loadImage("/Object/Object1.png"));
+        box = ss.crop(0, 0, bcw, bch);
+        ice = ss.crop(bcw, 0, bcw, bch);
+
+        SpriteSheet ss1 = new SpriteSheet(ImageLoader.loadImage("/Object/Object2.png"));
+        crystal = ss1.crop(0, 0, ctw, cth);
+        tree = ss1.crop(ctw, 0, ctw, cth);
+
+        SpriteSheet ss2 = new SpriteSheet(ImageLoader.loadImage("/Object/Object3.png"));
+        sign = ss2.crop(0, 0, ssw, ssh);
+        snowman = ss2.crop(ssw, 0, ssw, ssh);
+
+        SpriteSheet ss3 = new SpriteSheet(ImageLoader.loadImage("/Object/Stone.png"));
+        stone = ss3.crop(0, 0, stoneW, stoneH);
+
+        SpriteSheet ss4 = new SpriteSheet(ImageLoader.loadImage("/Object/Bush.png"));
+        bush = ss4.crop(0, 0, bushW, bushH);
+
     }
-    
-    public static void initMap2(){
-        
+
+    public static void initMap2() {
+
         SpriteSheet map2 = new SpriteSheet(ImageLoader.loadImage("/Map2/Map2Sprite.png"));
-        
+
         mgrass = map2.crop(0, 0, w, h);
         mgrass2 = map2.crop(w, 0, w, h);
         mgrass3 = map2.crop(w * 2, 0, w, h);
@@ -409,7 +466,7 @@ public class Assets {
         fl = map2.crop(w * 6, 0, w, h);
         fl2 = map2.crop(w * 7, 0, w, h);
         fl3 = map2.crop(w * 8, 0, w, h);
-        
+
     }
 
 }

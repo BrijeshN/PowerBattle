@@ -50,22 +50,23 @@ public class Player extends Creature {
         bounds.height = 50;
     }
 
-    public void update(ArrayList<Enemy> enemies, Robot player) {
+    public void update(ArrayList<Enemy> enemies, Robot player, Ninja ninja) {
         if (Math.abs(x - GameState.STAR_X_POSITION) < 20 && Math.abs(y - GameState.STAR_Y_POSITION) < 20) {
             State.setState(new EndState(handler, time, "you"));
         }
         // System.out.println(x + " " + y);
-        getInput(enemies, player);
+        getInput(enemies, player, ninja);
         move();
 
     }
 
     public void stop() {
         xMove = 0;
+        yMove = 0;
         fall = jump = false;
     }
 
-    private void getInput(ArrayList<Enemy> enemis, Robot player) {
+    private void getInput(ArrayList<Enemy> enemis, Robot player, Ninja ninja) {
 
         if (handler.getKeyManager().cheatMode) {
             health = 15;
@@ -142,6 +143,8 @@ public class Player extends Creature {
         }
 
         if (dead) {
+            bullets.clear();
+            normalBullets.clear();
             health = 0;
             stop();
             return;
@@ -275,16 +278,28 @@ public class Player extends Creature {
         }
 
         if (handler.getKeyManager().pattack) {
-            if (GameState.chaotic) {
-                if (x > player.getX() - 75 && x < player.getX() + 15 && y > player.getY() - 60 && y < player.getY() + 60) {
-                    if (!player.hitByPlayer) {
-                        player.hitByPlayer = true;
-                        player.health -= ATTACKPDAMAGE;
-                        JukeBox.play("playerhit");
+
+            if (isRight) {
+                if (GameState.chaotic) {
+                    if (x > player.getX() - 75 && x < player.getX() + 15 && y > player.getY() - 60 && y < player.getY() + 60) {
+                        if (!player.hitByPlayer) {
+                            player.hitByPlayer = true;
+                            player.health -= ATTACKPDAMAGE;
+                            JukeBox.play("playerhit");
+                        }
                     }
                 }
-            }
-            if (isRight) {
+
+                if (GameState.coop) {
+                    if (x > ninja.getX() - 75 && x < ninja.getX() + 15 && y > ninja.getY() - 60 && y < ninja.getY() + 60) {
+                        if (!ninja.hitByRobot) {
+                            ninja.hitByRobot = true;
+                            ninja.health -= ATTACKDAMAGE;
+                            JukeBox.play("enemyhit");
+                        }
+                    }
+                }
+
                 for (Enemy e : enemis) {
                     if (x > e.getX() - 75 && x < e.getX() + 15 && y > e.getY() - 60 && y < e.getY() + 60) {
                         if (!e.hitByPlayer) {
@@ -295,6 +310,7 @@ public class Player extends Creature {
                     }
                 }
             } else {
+
                 if (GameState.chaotic) {
                     if (x > player.getX() - 15 && x < player.getX() + 75 && y > player.getY() - 60 && y < player.getY() + 60) {
                         if (!player.hitByPlayer) {
@@ -304,6 +320,17 @@ public class Player extends Creature {
                         }
                     }
                 }
+
+                if (GameState.coop) {
+                    if (x > ninja.getX() - 15 && x < ninja.getX() + 75 && y > ninja.getY() - 60 && y < ninja.getY() + 60) {
+                        if (!ninja.hitByRobot) {
+                            ninja.hitByRobot = true;
+                            ninja.health -= ATTACKDAMAGE;
+                            JukeBox.play("enemyhit");
+                        }
+                    }
+                }
+
                 for (Enemy e : enemis) {
                     if (x > e.getX() - 15 && x < e.getX() + 75 && y > e.getY() - 60 && y < e.getY() + 60) {
                         if (!e.hitByPlayer) {
@@ -333,6 +360,24 @@ public class Player extends Creature {
                     }
                 } else {
                     player.hitByMagicalBullet = false;
+                }
+            }
+
+            if (GameState.coop) {
+                if (Math.abs(b.getX() - ninja.getX()) < 85 && b.getY() > ninja.getY() - 60 && b.getY() < ninja.getY() + 60) {
+                    if (!ninja.hitByMagicalBullet) {
+                        b.hitEnemy = false;
+                    }
+                    if (!b.hitEnemy) {
+                        b.hitEnemy = true;
+                        ninja.health -= MAGICALBULLETDAMAGE;
+                        JukeBox.play("enemyhit");
+                        if (!ninja.hitByMagicalBullet) {
+                            ninja.hitByMagicalBullet = true;
+                        }
+                    }
+                } else {
+                    ninja.hitByMagicalBullet = false;
                 }
             }
 
@@ -369,6 +414,16 @@ public class Player extends Creature {
                 }
             }
 
+            if (GameState.coop) {
+                if (Math.abs(b.getX() - ninja.getX()) < 45 && b.getY() > ninja.getY() - 60 && b.getY() < ninja.getY() + 60) {
+                    if (!b.hitEnemy) {
+                        b.hitEnemy = true;
+                        ninja.health -= NORMALBULLETDAMAGE;
+                        JukeBox.play("enemyhit");
+                    }
+                }
+            }
+
             for (Enemy e : enemis) {
                 if (Math.abs(b.getX() - e.getX()) < 45 && b.getY() > e.getY() - 60 && b.getY() < e.getY() + 60) {
                     if (!b.hitEnemy) {
@@ -399,8 +454,7 @@ public class Player extends Creature {
             }
             fall = false;
         }
-        
-        
+
         if (GameState.coop) {
             if (y > COOPDIEHEIGHT && cheat) {
                 if (!jump) {
@@ -409,7 +463,7 @@ public class Player extends Creature {
                 fall = false;
             }
         }
-        
+
     }
 
     public void render(Graphics g, int time) {
@@ -421,11 +475,11 @@ public class Player extends Creature {
         // g.drawString("Normal   Bullets remain:" + numOfNormalBullet, (int) (x - handler.getGameCamera().getxOffset() - 430), (int) (y - handler.getGameCamera().getyOffset() - 115));
         // g.drawImage(Assets.heart, (int) (x - handler.getGameCamera().getxOffset() - 430), (int) (y - handler.getGameCamera().getyOffset() - 105), width, height, null);
         for (MagicalBullet b : bullets) {
-            b.render(g, time, false);
+            b.render(g, time, Bullet.HUMAN);
         }
 
         for (NormalBullet b : normalBullets) {
-            b.render(g, time, false);
+            b.render(g, time, Bullet.HUMAN);
         }
 
         if (dead) {

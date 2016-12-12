@@ -9,6 +9,7 @@ import Audio.JukeBox;
 import UserInterface.UIManager;
 import entity.creature.Creature;
 import entity.creature.Enemy;
+import entity.creature.Ninja;
 import entity.creature.Player;
 import entity.creature.Robot;
 import graphics.Assets;
@@ -18,6 +19,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 import map.Map;
 import powerbattle.Handler;
 
@@ -28,6 +31,7 @@ public class GameState extends State {
 
     private UIManager uiManager;
 
+    private Ninja ninja;
     private Player player;
     private Robot robot;
     private Map map;
@@ -36,7 +40,7 @@ public class GameState extends State {
     public static final int[][] ENEMYPOS = {{500, 1455}, {1614, 1205}, {1776, 1205}, {2739, 1455},
     {3423, 1455}, {2520, 1075}, {2004, 685}, {1401, 685}, {369, 805}, {528, 545}, {1590, 160}, {1956, 160}};
 
-    public static final int[][] COOPENEMYPOS = {{872, 950}, {556, 950}, {1708, 950}, {4072,815}, {6256, 945}, {3240, 170}};
+    public static final int[][] COOPENEMYPOS = {{872, 950}, {556, 950}, {1708, 950}, {4072, 815}, {6256, 945}, {3240, 170}};
     public static final int PLAYER_SPAWN_X_POSITION = 150;
     public static final int PLAYER_SPAWN_Y_POSITION = 1475;
     public static final int CHAOTIC_PLAYER1_SPAWN_X_POSITION = 20;
@@ -47,11 +51,13 @@ public class GameState extends State {
     public static final float STAR_Y_POSITION = 175;
     public static boolean chaotic = false, coop = false, played = false;
 
-    // Map testing spawn
-    public static final int COOP_SPAWN_X_POSITION = 200;
-    public static final int COOP_SPAWN_Y_POSITION = 920;
+    public static final int NINJA_SPAWN_X_POSITION = 7080;
+    public static final int NINJA_SPAWN_Y_POSITION = 950;
 
-    int time;
+    public static final int COOP_SPAWN_X_POSITION = 272;
+    public static final int COOP_SPAWN_Y_POSITION = 950;
+
+    int time = 0;
 
     private BufferedImage bg;
 
@@ -61,6 +67,14 @@ public class GameState extends State {
         super(handler);
         handler.getMouseManager().setUIManager(null);
 
+        Timer timer1 = new Timer();
+        timer1.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                time++;
+            }
+        }, 0, 100);
+        
         this.coop = coop;
         this.chaotic = chaotic;
         if (this.chaotic) {
@@ -103,6 +117,7 @@ public class GameState extends State {
             enemy = new Enemy[1];
             enemy[i] = new Enemy(handler, ENEMYPOS[i][0], ENEMYPOS[i][1], i);
         } else {
+            ninja = new Ninja(handler, NINJA_SPAWN_X_POSITION, NINJA_SPAWN_Y_POSITION);
             enemy = new Enemy[COOPENEMYNUM];
             for (int i = 0; i < COOPENEMYNUM; i++) {
                 enemy[i] = new Enemy(handler, COOPENEMYPOS[i][0], COOPENEMYPOS[i][1], i);
@@ -130,7 +145,7 @@ public class GameState extends State {
             }
         }
 
-        boolean aimRobot = false, aimPlayer = false;
+        boolean aimRobot = false, ninjaAimRobot = false;
         map.update();
 
         for (Enemy e : enemy) {
@@ -139,25 +154,38 @@ public class GameState extends State {
             }
         }
 
+        if (coop) {
+            if (ninjaAimForPlayer(robot, ninja)) {
+                ninjaAimRobot = true;
+            }
+        }
+
         if (chaotic || coop) {
             for (Enemy e : enemy) {
                 if (!aimRobot && aimForPlayer(player, e)) {
-                    aimPlayer = true;
+                }
+            }
+            if (coop) {
+                if (!ninjaAimRobot && ninjaAimForPlayer(player, ninja)) {
                 }
             }
 
             if (chaotic) {
-                player.update(enemis, robot);
+                player.update(enemis, robot, null);
+            } else if (coop) {
+                player.update(enemis, null, ninja);
             } else {
-                player.update(enemis, null);
+                player.update(enemis, null, null);
             }
 
         }
 
         if (chaotic) {
-            robot.update(enemis, player);
+            robot.update(enemis, player, null);
+        } else if (coop) {
+            robot.update(enemis, null, ninja);
         } else {
-            robot.update(enemis, null);
+            robot.update(enemis, null, null);
         }
 
         for (Enemy e : enemy) {
@@ -167,6 +195,16 @@ public class GameState extends State {
                 e.update(player);
             } else {
                 e.update(robot);
+            }
+        }
+
+        if (coop) {
+            if (ninjaAimRobot) {
+                ninja.update(robot);
+            } else if (chaotic || coop && !player.dead) {
+                ninja.update(player);
+            } else {
+                ninja.update(robot);
             }
         }
 
@@ -199,10 +237,19 @@ public class GameState extends State {
         return e.aimPlayer;
     }
 
+    public boolean ninjaAimForPlayer(Creature player, Ninja ninja) {
+        if (Math.abs(player.getX() - ninja.x) < 200 && Math.abs(player.getY() - ninja.y) < 20) {
+            ninja.aimPlayer = Math.abs(player.getX() - ninja.x) >= 20;
+        } else {
+            ninja.aimPlayer = false;
+        }
+
+        return ninja.aimPlayer;
+    }
+
     @Override
-    public void render(Graphics g, int time) {
+    public void render(Graphics g) {
         g.drawImage(bg, 0, 0, null);
-        this.time = time;
 
         map.render(g);
 
@@ -211,6 +258,10 @@ public class GameState extends State {
         }
 
         robot.render(g, time);
+
+        if (coop) {
+            ninja.render(g, time);
+        }
 
         for (Enemy e : enemy) {
             e.render(g, time);

@@ -55,19 +55,22 @@ public class Robot extends Creature {
         bounds.height = 50;
     }
 
-    public void update(ArrayList<Enemy> enemies, Player player) {
+    public void update(ArrayList<Enemy> enemies, Player player, Ninja ninja) {
         //  System.out.println(x + " " + y);
 
-        System.out.println(x + " " + y);
+        //System.out.println(x + " " + y);
         if (!GameState.chaotic && !GameState.coop) {
             if (Math.abs(x - GameState.STAR_X_POSITION) < 20 && Math.abs(y - GameState.STAR_Y_POSITION) < 20) {
-                if (GameState.coop) {
-                    JukeBox.stop("coopback");
-                    JukeBox.loop("menuback");
-                } else {
-                    JukeBox.stop("singleback");
-                    JukeBox.loop("menuback");
-                }
+                JukeBox.stop("singleback");
+                JukeBox.loop("menuback");
+                State.setState(new EndState(handler, time, "you"));
+            }
+        }
+
+        if (GameState.coop) {
+            if (ninja.dead && ninja.deadAni) {
+                JukeBox.stop("coopback");
+                JukeBox.loop("menuback");
                 State.setState(new EndState(handler, time, "you"));
             }
         }
@@ -85,7 +88,7 @@ public class Robot extends Creature {
             }
             State.setState(new MenuState(handler));
         }
-        getInput(enemies, player);
+        getInput(enemies, player, ninja);
 
         move();
 
@@ -93,10 +96,11 @@ public class Robot extends Creature {
 
     public void stop() {
         xMove = 0;
+        yMove = 0;
         fall = jump = false;
     }
 
-    private void getInput(ArrayList<Enemy> enemis, Player player) {
+    private void getInput(ArrayList<Enemy> enemis, Player player, Ninja ninja) {
 
         if (handler.getKeyManager().cheatMode) {
             health = 15;
@@ -139,6 +143,10 @@ public class Robot extends Creature {
             bullets.clear();
             normalBullets.clear();
 
+            if (GameState.coop || GameState.chaotic) {
+                ninja.restart = true;
+            }
+
             for (Enemy e : enemis) {
                 e.restart = true;
             }
@@ -152,26 +160,30 @@ public class Robot extends Creature {
                 if (!cheat) {
                     dead = true;
                 }
-                yMove = 0;
                 stop();
+                yMove = 0;
+
             }
         } else if (GameState.coop) {
             if (y > COOPDIEHEIGHT) {
                 if (!cheat) {
                     dead = true;
                 }
-                yMove = 0;
                 stop();
+                yMove = 0;
+
             }
         } else if (y > DIEHEIGHT) {
             if (!cheat) {
                 dead = true;
             }
-            yMove = 0;
             stop();
+            yMove = 0;
         }
 
         if (dead) {
+            bullets.clear();
+            normalBullets.clear();
             health = 0;
             stop();
             return;
@@ -254,6 +266,9 @@ public class Robot extends Creature {
             for (Enemy e : enemis) {
                 e.hitByRobot = false;
             }
+            if (GameState.coop) {
+                ninja.hitByRobot = false;
+            }
             first = false;
             attackAni = false;
         }
@@ -265,40 +280,28 @@ public class Robot extends Creature {
 
         for (Enemy e : enemis) {
             if (isRight) {
-                if (e.isAmmo) {
-                    if (x > e.getX() - 55 && x < e.getX() + 15 && y > e.getY() - 60 && y < e.getY() + 60) {
+                if (x > e.getX() - 55 && x < e.getX() + 15 && y > e.getY() - 60 && y < e.getY() + 60) {
+                    e.pickedByPlayer = true;
+                    if (e.isAmmo) {
                         JukeBox.play("ammoclip");
-                        e.pickedByPlayer = true;
                         numOfNormalBullet += 5;
-                    }
-                } else if (e.isMagicalAmmo) {
-                    if (x > e.getX() - 55 && x < e.getX() + 15 && y > e.getY() - 60 && y < e.getY() + 60) {
+                    } else if (e.isMagicalAmmo) {
                         JukeBox.play("ammoclip");
-                        e.pickedByPlayer = true;
                         numOfMagicalBullet += 1;
-                    }
-                } else if (e.isHeart) {
-                    if (x > e.getX() - 55 && x < e.getX() + 15 && y > e.getY() - 60 && y < e.getY() + 60) {
-                        e.pickedByPlayer = true;
+                    } else if (e.isHeart) {
                         health += 1;
                         JukeBox.play("heart");
                     }
                 }
-            } else if (e.isAmmo) {
-                if (x > e.getX() - 15 && x < e.getX() + 15 && y > e.getY() - 60 && y < e.getY() + 60) {
-                    e.pickedByPlayer = true;
+            } else if (x > e.getX() - 15 && x < e.getX() + 15 && y > e.getY() - 60 && y < e.getY() + 60) {
+                e.pickedByPlayer = true;
+                if (e.isAmmo) {
                     numOfNormalBullet += 5;
                     JukeBox.play("ammoclip");
-                }
-            } else if (e.isMagicalAmmo) {
-                if (x > e.getX() - 15 && x < e.getX() + 15 && y > e.getY() - 60 && y < e.getY() + 60) {
-                    e.pickedByPlayer = true;
+                } else if (e.isMagicalAmmo) {
                     numOfMagicalBullet += 1;
                     JukeBox.play("ammoclip");
-                }
-            } else if (e.isHeart) {
-                if (x > e.getX() - 15 && x < e.getX() + 15 && y > e.getY() - 60 && y < e.getY() + 60) {
-                    e.pickedByPlayer = true;
+                } else if (e.isHeart) {
                     health += 1;
                     JukeBox.play("heart");
                 }
@@ -316,6 +319,17 @@ public class Robot extends Creature {
                         }
                     }
                 }
+
+                if (GameState.coop) {
+                    if (x > ninja.getX() - 75 && x < ninja.getX() + 15 && y > ninja.getY() - 60 && y < ninja.getY() + 60) {
+                        if (!ninja.hitByRobot) {
+                            ninja.hitByRobot = true;
+                            ninja.health -= ATTACKDAMAGE;
+                            JukeBox.play("enemyhit");
+                        }
+                    }
+                }
+
                 for (Enemy e : enemis) {
                     if (x > e.getX() - 75 && x < e.getX() + 15 && y > e.getY() - 60 && y < e.getY() + 60) {
                         if (!e.hitByRobot) {
@@ -335,6 +349,17 @@ public class Robot extends Creature {
                         }
                     }
                 }
+
+                if (GameState.coop) {
+                    if (x > ninja.getX() - 15 && x < ninja.getX() + 75 && y > ninja.getY() - 60 && y < ninja.getY() + 60) {
+                        if (!ninja.hitByRobot) {
+                            ninja.hitByRobot = true;
+                            ninja.health -= ATTACKDAMAGE;
+                            JukeBox.play("enemyhit");
+                        }
+                    }
+                }
+
                 for (Enemy e : enemis) {
                     if (x > e.getX() - 15 && x < e.getX() + 75 && y > e.getY() - 60 && y < e.getY() + 60) {
                         if (!e.hitByRobot) {
@@ -346,6 +371,7 @@ public class Robot extends Creature {
                 }
             }
         }
+
         for (MagicalBullet b : bullets) {
             b.update();
             if (GameState.chaotic) {
@@ -363,6 +389,24 @@ public class Robot extends Creature {
                     }
                 } else {
                     player.hitByMagicalBullet = false;
+                }
+            }
+
+            if (GameState.coop) {
+                if (Math.abs(b.getX() - ninja.getX()) < 85 && b.getY() > ninja.getY() - 60 && b.getY() < ninja.getY() + 60) {
+                    if (!ninja.hitByMagicalBullet) {
+                        b.hitEnemy = false;
+                    }
+                    if (!b.hitEnemy) {
+                        b.hitEnemy = true;
+                        ninja.health -= MAGICALBULLETDAMAGE;
+                        JukeBox.play("enemyhit");
+                        if (!ninja.hitByMagicalBullet) {
+                            ninja.hitByMagicalBullet = true;
+                        }
+                    }
+                } else {
+                    ninja.hitByMagicalBullet = false;
                 }
             }
 
@@ -394,6 +438,16 @@ public class Robot extends Creature {
                         b.hitEnemy = true;
                         player.health -= NORMALPBULLETDAMAGE;
                         JukeBox.play("playerhit");
+                    }
+                }
+            }
+
+            if (GameState.coop) {
+                if (Math.abs(b.getX() - ninja.getX()) < 45 && b.getY() > ninja.getY() - 60 && b.getY() < ninja.getY() + 60) {
+                    if (!b.hitEnemy) {
+                        b.hitEnemy = true;
+                        ninja.health -= NORMALBULLETDAMAGE;
+                        JukeBox.play("enemyhit");
                     }
                 }
             }
@@ -457,11 +511,11 @@ public class Robot extends Creature {
         // g.drawString("Normal   Bullets remain:" + numOfNormalBullet, (int) (x - handler.getGameCamera().getxOffset() - 430), (int) (y - handler.getGameCamera().getyOffset() - 115));
         // g.drawImage(Assets.heart, (int) (x - handler.getGameCamera().getxOffset() - 430), (int) (y - handler.getGameCamera().getyOffset() - 105), width, height, null);
         for (MagicalBullet b : bullets) {
-            b.render(g, time, true);
+            b.render(g, time, Bullet.ROBOT);
         }
 
         for (NormalBullet b : normalBullets) {
-            b.render(g, time, true);
+            b.render(g, time, Bullet.ROBOT);
         }
 
         if (dead) {

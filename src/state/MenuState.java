@@ -75,7 +75,7 @@ public class MenuState extends State {
 
     @Override
 
-    public void render(Graphics g, int time) {
+    public void render(Graphics g) {
         
         g.drawImage(logo, 60, 60, 882, 113, null);
         

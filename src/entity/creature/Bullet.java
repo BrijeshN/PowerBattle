@@ -21,14 +21,16 @@ public class Bullet extends Creature {
     boolean remove = false, isRight = false, first = false;
     boolean restart = false, isNormal = false, hitEnemy = false;
 
+    public static final int ROBOT = 0, HUMAN = 1, NINJA = 2;
+
     public Bullet(Handler handler, float x, float y, int width, int height, boolean isNormal) {
         super(handler, x, y, width, height);
         this.isNormal = isNormal;
     }
 
-    public void render(Graphics g, int time, boolean isRobot) {
+    public void render(Graphics g, int time, int type) {
         if (!isNormal) {
-            if (isRobot) {
+            if (type == ROBOT) {
                 if (isRight) {
                     g.drawImage(Assets.robotbullet, (int) (x - handler.getGameCamera().getxOffset() + 100), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
                 } else {
@@ -39,11 +41,17 @@ public class Bullet extends Creature {
             } else {
                 g.drawImage(Assets.bulletLeft, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
             }
-        } else if (isRobot) {
+        } else if (type == ROBOT) {
             if (isRight) {
                 g.drawImage(Assets.robotnormalBullet, (int) (x - handler.getGameCamera().getxOffset() + 100), (int) (y - handler.getGameCamera().getyOffset() + 50), width, height, null);
             } else {
                 g.drawImage(Assets.robotnormalBulletLeft, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset() + 50), width, height, null);
+            }
+        } else if (type == NINJA) {
+            if (isRight) {
+                g.drawImage(Assets.kunai, (int) (x - handler.getGameCamera().getxOffset() + 100), (int) (y - handler.getGameCamera().getyOffset() + 20), 50, height, null);
+            } else {
+                g.drawImage(Assets.kunaiLeft, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset() + 20), 50, height, null);
             }
         } else if (isRight) {
             g.drawImage(Assets.normalBullet, (int) (x - handler.getGameCamera().getxOffset() + 100), (int) (y - handler.getGameCamera().getyOffset() + 50), width, height, null);

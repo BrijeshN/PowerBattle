@@ -46,9 +46,7 @@ public class Game implements Runnable {
 
     //Game Camera
     private GameCamera gameCamera;
-
-    int runTime = 0;
-
+    
     // Handler
     private Handler handler;
 
@@ -89,6 +87,7 @@ public class Game implements Runnable {
         JukeBox.load("/Music/heart.mp3", "heart");
         JukeBox.load("/Music/enemyhit.mp3", "enemyhit");
         JukeBox.load("/Music/playerhit.mp3", "playerhit");
+        JukeBox.load("/Music/kunai.mp3", "kunai");
         //Initilize the display, so that it runs on the thread
         // Create display  on the screen
         display = new Display(title, width, height);
@@ -150,7 +149,7 @@ public class Game implements Runnable {
         if (State.getState() != null) {
 
             // update method from the State Class
-            State.getState().render(g, runTime);
+            State.getState().render(g);
         }
 
         // Tell JAVA that we are done drawing
@@ -164,13 +163,6 @@ public class Game implements Runnable {
     // Always need this method when you implement Runnable
     @Override
     public void run() {
-        Timer timer1 = new Timer();
-        timer1.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                runTime++;
-            }
-        }, 0, 100);
 
         // Call the method called init, will be called only once
         init();

@@ -41,20 +41,8 @@ public abstract class Creature extends Entity {
     }
 
     public void move() {
-        playSound();
         moveX();
         moveY();
-    }
-
-    public void playSound() {
-//        if (handler.getKeyManager().attack) {
-//            if (!playedAttack) {
-//                JukeBox.play("attack");
-//                playedAttack = true;
-//            }
-//        } else {
-//            playedAttack = false;
-//        }
     }
 
     //move collision

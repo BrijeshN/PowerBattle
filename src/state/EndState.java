@@ -24,17 +24,16 @@ import powerbattle.Handler;
 public class EndState extends State {
 
     private UIManager uiManager;
-    int time;
     String hms;
     String winner;
 
     public EndState(Handler handler, int time, String winner) {
         super(handler);
         this.winner = winner;
-        this.time = time * 100;
+        time *= 100;
         hms = String.format("%02d:%02d",
-                TimeUnit.MILLISECONDS.toMinutes(this.time) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(this.time)),
-                TimeUnit.MILLISECONDS.toSeconds(this.time) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(this.time)));
+                TimeUnit.MILLISECONDS.toMinutes(time) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(time)),
+                TimeUnit.MILLISECONDS.toSeconds(time) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(time)));
         uiManager = new UIManager(handler);
         handler.getMouseManager().setUIManager(uiManager);
 
@@ -53,13 +52,13 @@ public class EndState extends State {
     }
 
     @Override
-    public void render(Graphics g, int time) {
-        g.setFont(new Font("Franklin Gothic Heavy", Font.BOLD, 17));
+    public void render(Graphics g) {
+        g.setFont(new Font("Franklin Gothic Heavy", Font.BOLD, 30));
         g.setColor(Color.BLACK);
         if (winner.equals("None")) {
-            g.drawString("You lose! Your game time is " + hms, 350, 200);
+            g.drawString("You lose! Your game time is " + hms, 250, 200);
         } else {
-            g.drawString("Congratulations to " + winner + "! Your game time is " + hms, 300, 200);
+            g.drawString("Congratulations to " + winner + "! Your game time is " + hms, 100, 200);
         }
         uiManager.render(g);
     }

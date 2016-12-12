@@ -56,7 +56,7 @@ public class ControlState extends State {
     }
 
     @Override
-    public void render(Graphics g, int time) {
+    public void render(Graphics g) {
         
         g.drawImage(controlLogo, 190, 60, 602, 113, null);
         g.drawImage(controlsImage, 75, 175, 851, 400, null);
