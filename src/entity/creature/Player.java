@@ -51,8 +51,10 @@ public class Player extends Creature {
     }
 
     public void update(ArrayList<Enemy> enemies, Robot player, Ninja ninja) {
-        if (Math.abs(x - GameState.STAR_X_POSITION) < 20 && Math.abs(y - GameState.STAR_Y_POSITION) < 20) {
-            State.setState(new EndState(handler, time, "you"));
+        if (!GameState.chaotic && !GameState.coop) {
+            if (Math.abs(x - GameState.STAR_X_POSITION) < 20 && Math.abs(y - GameState.STAR_Y_POSITION) < 20) {
+                State.setState(new EndState(handler, time, "you"));
+            }
         }
         // System.out.println(x + " " + y);
         getInput(enemies, player, ninja);
