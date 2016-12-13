@@ -14,9 +14,9 @@ Features:
 
 User Interface  
 Three game modes  
-Single Player  
-Co - Op  
-Chaotic Battle  
+  Single Player  
+  Co - Op  
+  Chaotic Battle  
 Controls  
 Power Ups  
 Melee and Shoot  
