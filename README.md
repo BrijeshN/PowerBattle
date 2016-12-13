@@ -12,17 +12,17 @@ Players can see the controls of the game in the main menu, and quit the game by 
  
 Features:
 
-User Interface
-Three game modes
-Single Player
-Co - Op
-Chaotic Battle
-Controls
-Power Ups
-Melee and Shoot
-AI for Enemies and the Boss
-Game sound
-HUD
+User Interface  
+Three game modes  
+Single Player  
+Co - Op  
+Chaotic Battle  
+Controls  
+Power Ups  
+Melee and Shoot  
+AI for Enemies and the Boss  
+Game sound  
+HUD  
 
 Installation:
 
